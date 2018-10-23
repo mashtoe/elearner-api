@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elearner.API", "Elearner.API.csproj", "{17665EE3-BAE7-40DF-9F45-A9858F940028}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17665EE3-BAE7-40DF-9F45-A9858F940028}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17665EE3-BAE7-40DF-9F45-A9858F940028}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17665EE3-BAE7-40DF-9F45-A9858F940028}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17665EE3-BAE7-40DF-9F45-A9858F940028}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4CF1ECBD-7B41-47D1-BF5C-BA11346FF30D}
+	EndGlobalSection
+EndGlobal
