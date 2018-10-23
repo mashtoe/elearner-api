@@ -18,5 +18,9 @@ namespace Elearner.API
         int Hello(int number) {
                 return number;
         }
+
+        void NewTestMethod() {
+            // slack pls
+        }
     }
 }
