@@ -15,8 +15,6 @@ namespace Elearner.API
 {
     public class Startup
     {
-        // test
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -41,8 +39,8 @@ namespace Elearner.API
             {
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
+            //Lars outcommented the line below in his Clean Architecture RestAPI setup guide. will figure out why when i watch the next series
+            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
