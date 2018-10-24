@@ -6,7 +6,7 @@ using ELearner.Core.DomainService;
 using ELearner.Core.Entity;
 
 namespace ELearner.Core.ApplicationService.Services {
-    class StudentService : IStudentService {
+    public class StudentService : IStudentService {
 
         readonly IStudentRepository studentRepo;
 
@@ -19,7 +19,6 @@ namespace ELearner.Core.ApplicationService.Services {
 
         public Student Create(Student entity) {
             // TODO check if entity is valid, and throw errors if not
-
             return studentRepo.Create(entity);
         }
 
