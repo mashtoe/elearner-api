@@ -1,36 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using ELearner.Core.DomainService;
 using ELearner.Core.Entity;
 
 namespace ELearner.Core.ApplicationService.Services {
     class StudentService : IStudentService {
 
-        public StudentService() {
+        readonly IStudentRepository studentRepo;
 
+        public StudentService(IStudentRepository studentRepo) {
+            this.studentRepo = studentRepo;
         }
         public Student New() {
             return new Student();
         }
 
         public Student Create(Student entity) {
-            throw new NotImplementedException();
+            // TODO check if entity is valid, and throw errors if not
+
+            return studentRepo.Create(entity);
         }
 
         public Student Delete(int id) {
-            throw new NotImplementedException();
+            return studentRepo.Delete(id);
         }
 
         public Student Get(int id) {
-            throw new NotImplementedException();
+            return studentRepo.Get(id);
         }
 
         public List<Student> GetAll() {
-            throw new NotImplementedException();
+            return studentRepo.GetAll().ToList();
         }
 
         public Student Update(Student entity) {
-            throw new NotImplementedException();
+            return studentRepo.Update(entity);
         }
     }
 }

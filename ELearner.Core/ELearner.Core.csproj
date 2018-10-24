@@ -8,8 +8,4 @@
     <ProjectReference Include="..\..\ELearner.Core.Entity\ELearner.Core.Entity.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DomainService\" />
-  </ItemGroup>
-
 </Project>
