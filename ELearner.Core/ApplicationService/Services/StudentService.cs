@@ -8,10 +8,10 @@ using ELearner.Core.Entity;
 namespace ELearner.Core.ApplicationService.Services {
     public class StudentService : IStudentService {
 
-        readonly IStudentRepository studentRepo;
+        readonly IStudentRepository _studentRepo;
 
         public StudentService(IStudentRepository studentRepo) {
-            this.studentRepo = studentRepo;
+            _studentRepo = studentRepo;
         }
         public Student New() {
             return new Student();
@@ -19,23 +19,23 @@ namespace ELearner.Core.ApplicationService.Services {
 
         public Student Create(Student entity) {
             // TODO check if entity is valid, and throw errors if not
-            return studentRepo.Create(entity);
+            return _studentRepo.Create(entity);
         }
 
         public Student Delete(int id) {
-            return studentRepo.Delete(id);
+            return _studentRepo.Delete(id);
         }
 
         public Student Get(int id) {
-            return studentRepo.Get(id);
+            return _studentRepo.Get(id);
         }
 
         public List<Student> GetAll() {
-            return studentRepo.GetAll().ToList();
+            return _studentRepo.GetAll().ToList();
         }
 
         public Student Update(Student entity) {
-            return studentRepo.Update(entity);
+            return _studentRepo.Update(entity);
         }
     }
 }
