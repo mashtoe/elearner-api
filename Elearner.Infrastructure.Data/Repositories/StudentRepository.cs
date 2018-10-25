@@ -9,14 +9,18 @@ namespace Elearner.Infrastructure.Data.Repositories
         {
             _context = context;
         }
-
+        Student Create(Student entity){
+            var stud = _context.Students.Add(entity).Entity;
+            _context.SaveChanges();
+            return stud;
+        }
         public Student Get(int id)
         {
-            throw new System.NotImplementedException();
+            return _context.Students.FirstOrDefault(stud => stud.Id == id);
         }
         public IEnumerable<Student> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _context.Students;
         }
         //Update Data
         public Student Update(Student entity)
