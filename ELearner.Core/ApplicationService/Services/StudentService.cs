@@ -6,6 +6,8 @@ using ELearner.Core.DomainService;
 using ELearner.Core.Entity;
 
 namespace ELearner.Core.ApplicationService.Services {
+
+    // Services are part of the onions core. The core contains classes that the outer layers can depend on
     public class StudentService : IStudentService {
 
         readonly IStudentRepository _studentRepo;
