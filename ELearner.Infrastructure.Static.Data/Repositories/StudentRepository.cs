@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 
 namespace ELearner.Infrastructure.Static.Data.Repositories {
+
+    // the implementaion of the repository interfaces are part of the Infrastructure layer, which is an outer layer of the onion
+    // the implementaions of the repository interfaces are decoupled & undepenable so that they are easily interchangeable & editable
     public class StudentRepository : IStudentRepository {
 
         public StudentRepository() {
