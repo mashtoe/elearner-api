@@ -3,10 +3,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ELearner.Core.Entity\ELearner.Core.Entity.csproj"/>
-    <ProjectReference Include="..\ELearner.Core\ELearner.Core.csproj"/>
+    <ProjectReference Include="..\ELearner.Core.Entity\ELearner.Core.Entity.csproj" />
+    <ProjectReference Include="..\ELearner.Core\ELearner.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
   </ItemGroup>
 </Project>
