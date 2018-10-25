@@ -10,9 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Elearner.API.Controllers {
     [Route("api/[controller]")]
+
     public class StudentsController : Controller {
         private readonly IStudentService _studentService;
-
+        // We get the student service class via dependancy injection. The service classes are part of the Core of the Onion architecture
+        // The call hierarchy goes: Controller --> Service --> Repository --> DB 
         public StudentsController(IStudentService studentService) {
             _studentService = studentService;
         }
