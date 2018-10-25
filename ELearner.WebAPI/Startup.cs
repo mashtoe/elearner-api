@@ -35,6 +35,10 @@ namespace Elearner.API
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IStudentService, StudentService>();
 
+            // Here Cross-Origin Resource Sharing is added
+            // Important that this line is before AddMvc
+            services.AddCors();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -49,8 +53,11 @@ namespace Elearner.API
             {
                 app.UseHsts();
             }
+            // Origins who are allowed to request data from this api is listed here. We allow all http methods and all headers atm
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
+
             //Lars outcommented the line below in his Clean Architecture RestAPI setup guide. will figure out why when i watch the next series
-            // means we can go to localhost witohut using https
+            // --means we can go to localhost witohut using https
             //app.UseHttpsRedirection();
             app.UseMvc();
         }
