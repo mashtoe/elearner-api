@@ -23,7 +23,6 @@ namespace Elearner.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             // here we define which implementation of the repositories we want to use, when we use interfaces for dependancyinjectection
             // in the constructor of the StudentsController class we dependancy inject the studentservice etc
             services.AddScoped<IStudentRepository, StudentRepository>();
