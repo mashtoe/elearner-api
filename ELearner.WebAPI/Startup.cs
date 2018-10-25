@@ -1,4 +1,5 @@
-﻿using ELearner.Core.ApplicationService;
+﻿using Elearner.Infrastructure.Data.Repositories;
+using ELearner.Core.ApplicationService;
 using ELearner.Core.ApplicationService.Services;
 using ELearner.Core.DomainService;
 using Microsoft.AspNetCore.Builder;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ELearner.Infrastructure.Data.Repositories;
+//using ELearner.Infrastructure.Data.Repositories;
 
 namespace Elearner.API
 {
@@ -25,7 +26,7 @@ namespace Elearner.API
 
             // here we define which implementation of the repositories we want to use, when we use interfaces for dependancyinjectection
             // in the constructor of the StudentsController class we dependancy inject the studentservice etc
-           services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IStudentService, StudentService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

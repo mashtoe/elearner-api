@@ -1,4 +1,9 @@
-using Elearner.Core.DomainService;
+//using Elearner.Core.DomainService;
+
+using ELearner.Core.DomainService;
+using ELearner.Core.Entity;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Elearner.Infrastructure.Data.Repositories
 {
@@ -9,7 +14,7 @@ namespace Elearner.Infrastructure.Data.Repositories
         {
             _context = context;
         }
-        Student Create(Student entity){
+        public Student Create(Student entity){
             var stud = _context.Students.Add(entity).Entity;
             _context.SaveChanges();
             return stud;
