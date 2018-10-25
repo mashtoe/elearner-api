@@ -10,10 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Elearner.API.Controllers {
     [Route("api/[controller]")]
-    public class CourseController : Controller {
+    public class CoursesController : Controller {
         private readonly ICourseService _courseService;
 
-        public CourseController(ICourseService courseService) {
+        public CoursesController(ICourseService courseService) {
             _courseService = courseService;
         }
 
@@ -38,6 +38,7 @@ namespace Elearner.API.Controllers {
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         public ActionResult<Course> Put(int id, [FromBody]Course course) {
+            course.Id = id;
             return Ok(_courseService.Update(course));
         }
 

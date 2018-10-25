@@ -38,6 +38,7 @@ namespace Elearner.API.Controllers {
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         public ActionResult<Student> Put(int id, [FromBody]Student student) {
+            student.Id = id;
             return Ok(_studentService.Update(student));
         }
 
