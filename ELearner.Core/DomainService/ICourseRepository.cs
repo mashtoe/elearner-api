@@ -7,12 +7,12 @@ namespace ELearner.Core.DomainService {
     public interface ICourseRepository {
         //Create Data
         //No Id on enter, but Id on exit
-        Course Create(Course entity);
+        Course Create(Course course);
         //Read Data
         Course Get(int id);
         IEnumerable<Course> GetAll();
         //Update Data
-        Course Update(Course entity);
+        Course Update(Course course);
         //Delete Data
         Course Delete(int id);
     }

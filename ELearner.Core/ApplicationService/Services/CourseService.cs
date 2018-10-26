@@ -16,9 +16,9 @@ namespace ELearner.Core.ApplicationService.Services {
             return new Course();
         }
 
-        public Course Create(Course entity) {
+        public Course Create(Course course) {
             // TODO check if entity is valid, and throw errors if not
-            return _courseRepo.Create(entity);
+            return _courseRepo.Create(course);
         }
 
         public Course Delete(int id) {
@@ -33,8 +33,8 @@ namespace ELearner.Core.ApplicationService.Services {
             return _courseRepo.GetAll().ToList();
         }
 
-        public Course Update(Course entity) {
-            return _courseRepo.Update(entity);
+        public Course Update(Course course) {
+            return _courseRepo.Update(course);
         }
     }
 }

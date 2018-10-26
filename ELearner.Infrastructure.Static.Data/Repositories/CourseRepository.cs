@@ -17,10 +17,10 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             }
         }
 
-        public Course Create(Course entity) {
-            entity.Id = FakeDB.Id++;
-            FakeDB.Courses.Add(entity);
-            return entity;
+        public Course Create(Course course) {
+            course.Id = FakeDB.Id++;
+            FakeDB.Courses.Add(course);
+            return course;
         }
 
         public Course Get(int id) {
@@ -31,11 +31,11 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             return FakeDB.Courses;
         }
 
-        public Course Update(Course entity) {
-            var entityFromDb = Get(entity.Id);
+        public Course Update(Course course) {
+            var entityFromDb = Get(course.Id);
             if (entityFromDb == null) return null;
 
-            entityFromDb.Name = entity.Name;
+            entityFromDb.Name = course.Name;
             return entityFromDb;
         }
 
