@@ -39,7 +39,8 @@ namespace Elearner.Infrastructure.Data.Repositories
         //Delete Data
         public Student Delete(int id)
         {
-            var studRemoved = _context.Remove(new Student {Id = id}).Entity;
+            var studRemoved = Get(id);
+            _context.Remove(studRemoved);
             _context.SaveChanges();
             return studRemoved;
         }
