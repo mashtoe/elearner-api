@@ -19,5 +19,6 @@ namespace ELearner.Core.DomainService {
         Student Update(Student student);
         //Delete Data
         Student Delete(int id);
+        IEnumerable<Student> GetAllById(params int[] ids);
     }
 }

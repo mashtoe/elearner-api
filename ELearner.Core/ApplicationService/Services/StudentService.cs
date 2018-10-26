@@ -29,7 +29,11 @@ namespace ELearner.Core.ApplicationService.Services {
         }
 
         public Student Get(int id) {
-            return _studentRepo.Get(id);
+            var student = _studentRepo.Get(id);
+            foreach (var item in student.Courses) {
+
+            }
+            return student;
         }
 
         public List<Student> GetAll() {
