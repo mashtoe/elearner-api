@@ -30,12 +30,18 @@ namespace Elearner.Infrastructure.Data.Repositories
         //Update Data
         public Student Update(Student entity)
         {
-            throw new System.NotImplementedException();
+            //var stud = _context.Students.Update(entity).Entity;
+            var stud = Get(entity.Id);
+            stud.Username = entity.Username;
+            _context.SaveChanges();
+            return stud;
         }
         //Delete Data
         public Student Delete(int id)
         {
-            throw new System.NotImplementedException();
+            var studRemoved = _context.Remove(new Student {Id = id}).Entity;
+            _context.SaveChanges();
+            return studRemoved;
         }
 
     }
