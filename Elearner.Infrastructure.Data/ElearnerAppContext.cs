@@ -8,6 +8,8 @@ namespace Elearner.Infrastructure.Data {
         }
 
         public DbSet<Student> Students { get; set; }
+        public DbSet<Course> Courses { get; set; }
+
 
     }
 }
