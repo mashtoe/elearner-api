@@ -19,9 +19,9 @@ namespace ELearner.Core.ApplicationService.Services {
             return new Student();
         }
 
-        public Student Create(Student entity) {
+        public Student Create(Student student) {
             // TODO check if entity is valid, and throw errors if not
-            return _studentRepo.Create(entity);
+            return _studentRepo.Create(student);
         }
 
         public Student Delete(int id) {
@@ -36,8 +36,8 @@ namespace ELearner.Core.ApplicationService.Services {
             return _studentRepo.GetAll().ToList();
         }
 
-        public Student Update(Student entity) {
-            return _studentRepo.Update(entity);
+        public Student Update(Student student) {
+            return _studentRepo.Update(student);
         }
     }
 }
