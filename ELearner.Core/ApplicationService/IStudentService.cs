@@ -10,13 +10,13 @@ namespace ELearner.Core.ApplicationService
         //returns new student
         Student New();
         //save one student (CRUD: Create)
-        Student Create(Student entity);
+        Student Create(Student student);
         //get one student by id (CRUD: Read)
         Student Get(int id);
         //returns all students (CRUD: Read)
         List<Student> GetAll();
         //Update  (CRUD: Update)
-        Student Update(Student entity);
+        Student Update(Student student);
         //Delete one student with id (CRUD: Delete)
         Student Delete(int id);
 

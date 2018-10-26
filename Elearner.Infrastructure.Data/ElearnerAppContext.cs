@@ -1,11 +1,9 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ELearner.Core.Entity;
 
-namespace Elearner.Infrastructure.Data
-{
-    public class ElearnerAppContext : DbContext
-    {
-        public ElearnerAppContext(DbContextOptions<ElearnerAppContext> options) : base (options){
+namespace Elearner.Infrastructure.Data {
+    public class ElearnerAppContext : DbContext {
+        public ElearnerAppContext(DbContextOptions<ElearnerAppContext> options) : base(options) {
 
         }
 

@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{D78812D6-FA18-4ED9-9C28-65DAEF2EC8BE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elearner.Infrastructure.Data", "Elearner.Infrastructure.Data\Elearner.Infrastructure.Data.csproj", "{5A2E1D85-959F-4874-8A50-42707F7978FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{9FD1B645-B750-4D2F-881B-275062189BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FD1B645-B750-4D2F-881B-275062189BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FD1B645-B750-4D2F-881B-275062189BA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A2E1D85-959F-4874-8A50-42707F7978FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A2E1D85-959F-4874-8A50-42707F7978FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A2E1D85-959F-4874-8A50-42707F7978FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A2E1D85-959F-4874-8A50-42707F7978FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

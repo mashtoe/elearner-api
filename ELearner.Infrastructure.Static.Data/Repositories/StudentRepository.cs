@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 
 namespace ELearner.Infrastructure.Static.Data.Repositories {
+
+    // the implementaion of the repository interfaces are part of the Infrastructure layer, which is an outer layer of the onion
+    // the implementaions of the repository interfaces are decoupled & undepenable so that they are easily interchangeable & editable
     public class StudentRepository : IStudentRepository {
 
         public StudentRepository() {
@@ -18,10 +21,10 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             }
         }
 
-        public Student Create(Student entity) {
-            entity.Id = FakeDB.Id++;
-            FakeDB.Students.Add(entity);
-            return entity;
+        public Student Create(Student student) {
+            student.Id = FakeDB.Id++;
+            FakeDB.Students.Add(student);
+            return student;
         }
 
         public Student Get(int id) {
@@ -32,11 +35,11 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             return FakeDB.Students;
         }
 
-        public Student Update(Student entity) {
-            var studentFromDb = Get(entity.Id);
+        public Student Update(Student student) {
+            var studentFromDb = Get(student.Id);
             if (studentFromDb == null) return null;
 
-            studentFromDb.Username = entity.Username;
+            studentFromDb.Username = student.Username;
             return studentFromDb;
         }
 
