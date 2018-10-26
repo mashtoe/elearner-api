@@ -11,5 +11,7 @@ namespace ELearner.Core.Entity
     {
         public string Username { get; set; }
         public int Id { get; set; }
+
+        public List<StudentCourse> Courses { get; set; }
     }
 }

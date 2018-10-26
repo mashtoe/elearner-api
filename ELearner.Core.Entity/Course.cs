@@ -6,5 +6,7 @@ namespace ELearner.Core.Entity {
     public class Course {
         public string Name { get; set; }
         public int Id { get; set; }
+
+        public List<StudentCourse> Students { get; set; }
     }
 }
