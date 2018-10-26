@@ -27,6 +27,7 @@ namespace Elearner.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ElearnerAppContext>(option => option.UseInMemoryDatabase("TheDB"));
+            //services.AddDbContext<ElearnerAppContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             // here we define which implementation of the repositories we want to use, when we use interfaces for dependancyinjectection
             // in the constructor of the StudentsController class we dependancy inject the studentservice etc
             services.AddScoped<IStudentRepository, StudentRepository>();
