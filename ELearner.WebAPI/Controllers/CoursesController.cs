@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity;
+using ELearner.Core.Entity.BusinessObjects;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,32 +20,32 @@ namespace Elearner.API.Controllers {
 
         // GET: api/<controller>
         [HttpGet]
-        public ActionResult<IEnumerable<Course>> Get() {
+        public ActionResult<IEnumerable<CourseBO>> Get() {
             return Ok(_courseService.GetAll());
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public ActionResult<Course> Get(int id) {
+        public ActionResult<CourseBO> Get(int id) {
             return Ok(_courseService.Get(id));
         }
 
         // POST api/<controller>
         [HttpPost]
-        public ActionResult<Course> Post([FromBody]Course course) {
+        public ActionResult<CourseBO> Post([FromBody]CourseBO course) {
             return Ok(_courseService.Create(course));
         }
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public ActionResult<Course> Put(int id, [FromBody]Course course) {
+        public ActionResult<CourseBO> Put(int id, [FromBody]CourseBO course) {
             course.Id = id;
             return Ok(_courseService.Update(course));
         }
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
-        public ActionResult<Course> Delete(int id) {
+        public ActionResult<CourseBO> Delete(int id) {
             return Ok(_courseService.Delete(id));
         }
     }

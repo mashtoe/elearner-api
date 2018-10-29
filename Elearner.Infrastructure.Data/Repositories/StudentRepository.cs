@@ -1,7 +1,7 @@
 //using Elearner.Core.DomainService;
 
 using ELearner.Core.DomainService;
-using ELearner.Core.Entity;
+using ELearner.Core.Entity.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,7 @@ namespace Elearner.Infrastructure.Data.Repositories
     public class StudentRepository : IStudentRepository
     {
         readonly ElearnerAppContext _context;
+
         public StudentRepository(ElearnerAppContext context)
         {
             _context = context;
@@ -22,7 +23,8 @@ namespace Elearner.Infrastructure.Data.Repositories
         }
         public Student Get(int id)
         {
-            return _context.Students.Include(s => s.Courses).FirstOrDefault(stud => stud.Id == id);
+            var student = _context.Students.Include(s => s.Courses).FirstOrDefault(stud => stud.Id == id);
+            return student;
         }
         public IEnumerable<Student> GetAll()
         {
@@ -46,8 +48,9 @@ namespace Elearner.Infrastructure.Data.Repositories
             return studRemoved;
         }
 
-        public IEnumerable<Student> GetAllById(params int[] ids) {
-            return _context.Students.Where(e => ids.Contains(e.Id));
+        public IEnumerable<Student> GetAllById(IEnumerable<int> ids) {
+            var students = _context.Students.Where(e => ids.Contains(e.Id));
+            return students;
         }
     }
 }

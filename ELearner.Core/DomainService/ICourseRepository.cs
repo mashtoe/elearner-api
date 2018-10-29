@@ -1,4 +1,5 @@
 ﻿using ELearner.Core.Entity;
+using ELearner.Core.Entity.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,5 +16,6 @@ namespace ELearner.Core.DomainService {
         Course Update(Course course);
         //Delete Data
         Course Delete(int id);
+        IEnumerable<Course> GetAllById(IEnumerable<int> ids);
     }
 }

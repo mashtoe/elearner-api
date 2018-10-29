@@ -1,4 +1,5 @@
 ﻿using ELearner.Core.Entity;
+using ELearner.Core.Entity.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,12 +14,13 @@ namespace ELearner.Core.DomainService {
         //No Id on enter, but Id on exit
         Student Create(Student student);
         //Read Data
+        // Should return student with all courses
         Student Get(int id);
         IEnumerable<Student> GetAll();
         //Update Data
         Student Update(Student student);
         //Delete Data
         Student Delete(int id);
-        IEnumerable<Student> GetAllById(params int[] ids);
+        IEnumerable<Student> GetAllById(IEnumerable<int> ids);
     }
 }

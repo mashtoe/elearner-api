@@ -1,5 +1,6 @@
 ﻿using ELearner.Core.DomainService;
 using ELearner.Core.Entity;
+using ELearner.Core.Entity.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,11 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             if (entityFromDb == null) return null;
             FakeDB.Courses.Remove(entityFromDb);
             return entityFromDb;
+        }
+
+        public IEnumerable<Course> GetAllById(IEnumerable<int> ids) {
+            var courses = FakeDB.Courses.Where(c => ids.Contains(c.Id));
+            return courses;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ELearner.Core.Entity;
+using ELearner.Core.Entity.BusinessObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,16 +7,16 @@ using System.Text;
 namespace ELearner.Core.ApplicationService {
     public interface ICourseService {
         //returns new course
-        Course New();
+        CourseBO New();
         //save one course (CRUD: Create)
-        Course Create(Course course);
+        CourseBO Create(CourseBO course);
         //get one course by id (CRUD: Read)
-        Course Get(int id);
+        CourseBO Get(int id);
         //returns all courses (CRUD: Read)
-        List<Course> GetAll();
+        List<CourseBO> GetAll();
         //Update  (CRUD: Update)
-        Course Update(Course course);
+        CourseBO Update(CourseBO course);
         //Delete one course with id (CRUD: Delete)
-        Course Delete(int id);
+        CourseBO Delete(int id);
     }
 }
