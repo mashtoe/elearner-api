@@ -17,6 +17,12 @@ namespace Elearner.Infrastructure.Data.Repositories
             _context = context;
         }
         public Student Create(Student entity){
+            _context.Attach(entity.Courses);
+
+            /*
+            foreach (var item in entity.Courses) {
+                _context.Attach(item);
+            }*/
             var stud = _context.Students.Add(entity).Entity;
             _context.SaveChanges();
             return stud;
