@@ -3,6 +3,7 @@ using Elearner.Infrastructure.Data.Repositories;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.ApplicationService.Services;
 using ELearner.Core.DomainService;
+using ELearner.Core.Entity;
 using ELearner.Infrastructure.Static.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,8 +24,8 @@ namespace Elearner.API {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            //services.AddDbContext<ElearnerAppContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<ElearnerAppContext>(option => option.UseInMemoryDatabase("TheDB"));
+            services.AddDbContext<ElearnerAppContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<ElearnerAppContext>(option => option.UseInMemoryDatabase("TheDB"));
             // here we define which implementation of the repositories we want to use, when we use interfaces for dependancyinjectection
             // in the constructor of the StudentsController class we dependancy inject the studentservice etc
             services.AddScoped<IStudentRepository, Infrastructure.Data.Repositories.StudentRepository>();
@@ -43,6 +44,11 @@ namespace Elearner.API {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var _context = scope.ServiceProvider.GetService<ElearnerAppContext>();
+                   DBInit.SeedDB(_context);
+                }
             } else {
                 app.UseHsts();
             }
