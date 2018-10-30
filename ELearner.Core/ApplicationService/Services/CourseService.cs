@@ -12,9 +12,15 @@ namespace ELearner.Core.ApplicationService.Services {
         readonly ICourseRepository _courseRepo;
         readonly CourseConverter _crsConv;
 
-        public CourseService(ICourseRepository courseRepo) {
+        readonly IStudentRepository _studRepo;
+        readonly StudentConverter _studConv;
+
+
+        public CourseService(ICourseRepository courseRepo, IStudentRepository studRepo) {
             _courseRepo = courseRepo;
+            _studRepo = studRepo;
             _crsConv = new CourseConverter();
+            _studConv = new StudentConverter();
         }
         public CourseBO New() {
             return new CourseBO();
@@ -32,8 +38,9 @@ namespace ELearner.Core.ApplicationService.Services {
         }
 
         public CourseBO Get(int id) {
-            var course = _courseRepo.Get(id);
-            return _crsConv.Convert(course);
+            var course = _crsConv.Convert(_courseRepo.Get(id));
+            course.Students = _studRepo.GetAllById(course.StudentIds).Select(s => _studConv.Convert(s)).ToList();
+            return course;
         }
 
         public List<CourseBO> GetAll() {

@@ -41,8 +41,6 @@ namespace ELearner.Core.ApplicationService.Services {
         public StudentBO Get(int id) {
             var student = _studConv.Convert(_studentRepo.Get(id));
             student.Courses = _courseRepo.GetAllById(student.CourseIds).Select(c => _crsConv.Convert(c)).ToList();
-            //_studentRepo.GetAllById();
-            // student.Courses = 
             return student;
         }
 

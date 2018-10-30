@@ -53,8 +53,7 @@ namespace Elearner.API {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
                     var _context = scope.ServiceProvider.GetService<ElearnerAppContext>();
-                    _context.Database.EnsureCreated();
-                    //DBInit.SeedDB(_context);
+                    DBInit.SeedDB(_context);
                 }
             } else {
                 app.UseHsts();

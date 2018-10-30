@@ -1,6 +1,7 @@
 ﻿using ELearner.Core.DomainService;
 using ELearner.Core.Entity;
 using ELearner.Core.Entity.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Elearner.Infrastructure.Data.Repositories {
             return courseFromDb;
         }
         public Course Get(int id) {
-            return _context.Courses.FirstOrDefault(course => course.Id == id);
+            return _context.Courses.Include(c => c.Students).FirstOrDefault(course => course.Id == id);
         }
         public IEnumerable<Course> GetAll() {
             return _context.Courses;

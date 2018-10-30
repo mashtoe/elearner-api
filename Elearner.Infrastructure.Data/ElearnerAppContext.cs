@@ -27,7 +27,7 @@ namespace Elearner.Infrastructure.Data {
             modelBuilder.Entity<StudentCourse>()
                 .HasOne(sc => sc.Course)
                 .WithMany(crs => crs.Students)
-                .HasForeignKey(sc => sc.StudentId);
+                .HasForeignKey(sc => sc.CourseId);
             #endregion  
         }
     }

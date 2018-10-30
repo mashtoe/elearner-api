@@ -16,6 +16,9 @@ namespace Elearner.Infrastructure.Data
             {
                 Username = "FunnyMan"
             });
+            context.Courses.Add(new Course() {
+                   Name = "EFCourse"
+            });
             context.SaveChanges();
         }
     }

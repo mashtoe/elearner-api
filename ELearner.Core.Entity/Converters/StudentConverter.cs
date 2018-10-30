@@ -11,7 +11,7 @@ namespace ELearner.Core.Entity.Converters {
             if (student == null) {
                 return null;
             }
-            return new Student() {
+            var converted = new Student() {
                 Id = student.Id,
                 Username = student.Username,
                 Courses = student.CourseIds?.Select(cId => new StudentCourse() {
@@ -19,6 +19,7 @@ namespace ELearner.Core.Entity.Converters {
                     StudentId = student.Id
                 }).ToList()
             };
+            return converted;
         }
 
         public StudentBO Convert(Student student) {

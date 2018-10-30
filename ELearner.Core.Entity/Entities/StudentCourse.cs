@@ -5,12 +5,13 @@ using System.Text;
 
 namespace ELearner.Core.Entity.Entities {
     public class StudentCourse {
+
         public Student Student { get; set; }
-        [ForeignKey("StudentId")]
+        //[ForeignKey("StudentId")]
         public int StudentId { get; set; }
 
         public Course Course { get; set; }
-        [ForeignKey("CourseId")]
+        //[ForeignKey("CourseId")]
         public int CourseId { get; set; }
     }
 }
