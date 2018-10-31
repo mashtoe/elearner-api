@@ -17,7 +17,6 @@ namespace Elearner.Infrastructure.Data.Repositories {
         }
         public Course Create(Course course) {
             var courseFromDb = _context.Courses.Add(course).Entity;
-            _context.SaveChanges();
             return courseFromDb;
         }
         public Course Get(int id) {
@@ -30,14 +29,12 @@ namespace Elearner.Infrastructure.Data.Repositories {
         public Course Update(Course course) {
             var courseFromDb = Get(course.Id);
             courseFromDb.Name = course.Name;
-            _context.SaveChanges();
             return courseFromDb;
         }
         //Delete Data
         public Course Delete(int id) {
             var courseFromDb = Get(id);
             _context.Remove(courseFromDb);
-            _context.SaveChanges();
             return courseFromDb;
         }
 

@@ -1,8 +1,10 @@
 ﻿using Elearner.Infrastructure.Data;
 using Elearner.Infrastructure.Data.Repositories;
+using Elearner.Infrastructure.Data.UOW;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.ApplicationService.Services;
 using ELearner.Core.DomainService;
+using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity;
 using ELearner.Infrastructure.Static.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -32,7 +34,7 @@ namespace Elearner.API {
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<ICourseRepository, Infrastructure.Data.Repositories.CourseRepository>();
             services.AddScoped<ICourseService, CourseService>();
-
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Here Cross-Origin Resource Sharing is added
             // Important that this line is before AddMvc
