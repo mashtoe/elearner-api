@@ -1,4 +1,5 @@
 ﻿using ELearner.Core.Entity;
+using ELearner.Core.Entity.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;

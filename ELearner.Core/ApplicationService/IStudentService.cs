@@ -1,4 +1,5 @@
 ﻿using ELearner.Core.Entity;
+using ELearner.Core.Entity.BusinessObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,17 +9,17 @@ namespace ELearner.Core.ApplicationService
     public interface IStudentService
     {
         //returns new student
-        Student New();
+        StudentBO New();
         //save one student (CRUD: Create)
-        Student Create(Student student);
+        StudentBO Create(StudentBO student);
         //get one student by id (CRUD: Read)
-        Student Get(int id);
+        StudentBO Get(int id);
         //returns all students (CRUD: Read)
-        List<Student> GetAll();
+        List<StudentBO> GetAll();
         //Update  (CRUD: Update)
-        Student Update(Student student);
+        StudentBO Update(StudentBO student);
         //Delete one student with id (CRUD: Delete)
-        Student Delete(int id);
+        StudentBO Delete(int id);
 
     }
 }

@@ -30,7 +30,7 @@ namespace Elearner.API {
             // in the constructor of the StudentsController class we dependancy inject the studentservice etc
             services.AddScoped<IStudentRepository, Infrastructure.Data.Repositories.StudentRepository>();
             services.AddScoped<IStudentService, StudentService>();
-            services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<ICourseRepository, Infrastructure.Data.Repositories.CourseRepository>();
             services.AddScoped<ICourseService, CourseService>();
 
 
@@ -53,7 +53,7 @@ namespace Elearner.API {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
                     var _context = scope.ServiceProvider.GetService<ElearnerAppContext>();
-                   DBInit.SeedDB(_context);
+                    DBInit.SeedDB(_context);
                 }
             } else {
                 app.UseHsts();

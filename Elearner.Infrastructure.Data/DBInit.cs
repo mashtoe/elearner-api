@@ -1,4 +1,4 @@
-using ELearner.Core.Entity;
+using ELearner.Core.Entity.Entities;
 
 namespace Elearner.Infrastructure.Data
 {
@@ -15,6 +15,9 @@ namespace Elearner.Infrastructure.Data
             context.Students.Add(new Student()
             {
                 Username = "FunnyMan"
+            });
+            context.Courses.Add(new Course() {
+                   Name = "EFCourse"
             });
             context.SaveChanges();
         }
