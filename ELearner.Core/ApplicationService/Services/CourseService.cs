@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ELearner.Core.DomainService;
+using ELearner.Core.DomainService.Facade;
 using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity;
 using ELearner.Core.Entity.BusinessObjects;
@@ -16,60 +17,55 @@ namespace ELearner.Core.ApplicationService.Services {
 
         readonly CourseConverter _crsConv;
         readonly StudentConverter _studConv;
-        readonly IUnitOfWork _uow;
+        readonly IDataAccessFacade _facade;
 
 
-        public CourseService(IUnitOfWork uow) {
+        public CourseService(IDataAccessFacade facade) {
             _crsConv = new CourseConverter();
             _studConv = new StudentConverter();
-            _uow = uow;
+            _facade = facade;
         }
         public CourseBO New() {
             return new CourseBO();
         }
 
         public CourseBO Create(CourseBO course) {
-            using (_uow)
-            {
+            using (var uow = _facade.UnitOfWork) {
                 // TODO check if entity is valid, and throw errors if not
-                var courseCreated = _uow.CourseRepo.Create(_crsConv.Convert(course));
-                _uow.Complete();
+                var courseCreated = uow.CourseRepo.Create(_crsConv.Convert(course));
+                uow.Complete();
                 return _crsConv.Convert(courseCreated);
             }
                 
         }
 
         public CourseBO Delete(int id) {
-            using (_uow)
-            {
-                var courseDeleted = _uow.CourseRepo.Delete(id);
-                _uow.Complete();
+            using (var uow = _facade.UnitOfWork) {
+                var courseDeleted = uow.CourseRepo.Delete(id);
+                uow.Complete();
                 return _crsConv.Convert(courseDeleted);
             }
         }
 
         public CourseBO Get(int id) {
-            using (_uow)
-            {
-                var course = _crsConv.Convert(_uow.CourseRepo.Get(id));
-                course.Students = _uow.StudentRepo.GetAllById(course.StudentIds).Select(s => _studConv.Convert(s)).ToList();
+            using (var uow = _facade.UnitOfWork) {
+                var course = _crsConv.Convert(uow.CourseRepo.Get(id));
+                course.Students = uow.StudentRepo.GetAllById(course.StudentIds).Select(s => _studConv.Convert(s)).ToList();
                 return course;
             }
         }
 
         public List<CourseBO> GetAll() {
-            using (_uow)
-            {
-                var courses = _uow.CourseRepo.GetAll();
+            using (var uow = _facade.UnitOfWork) {
+                var courses = uow.CourseRepo.GetAll();
                 return courses.Select(c => _crsConv.Convert(c)).ToList();
             }
         }
 
         public CourseBO Update(CourseBO course) {
-            using (_uow)
-            {
-                var updatedCourse = _uow.CourseRepo.Update(_crsConv.Convert(course));
-                _uow.Complete();
+            using (var uow = _facade.UnitOfWork) {
+                var updatedCourse = uow.CourseRepo.Update(_crsConv.Convert(course));
+                uow.Complete();
                 return _crsConv.Convert(updatedCourse);
             }
         }

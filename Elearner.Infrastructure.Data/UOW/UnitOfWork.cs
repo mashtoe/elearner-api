@@ -14,7 +14,7 @@ namespace Elearner.Infrastructure.Data.UOW
 
         readonly ElearnerAppContext _context;
 
-        public UnitOfWork(ElearnerAppContext context, IStudentRepository studentRepo, ICourseRepository courseRepo)
+        public UnitOfWork(ElearnerAppContext context)
         {
             _context = context;
             StudentRepo = new StudentRepository(context);
