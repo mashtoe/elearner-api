@@ -35,7 +35,14 @@ namespace ELearner.Core.ApplicationService.Services {
             // TODO check if entity is valid, and throw errors if not
             using (var uow = _facade.UnitOfWork)
             {
+                //var studentCreated = uow.StudentRepo.Create(_studConv.Convert(student));
+                //student.Username += "1";
+                //if (studentCreated != null) {
+                //    throw new InvalidOperationException();
+                //}
                 var studentCreated = uow.StudentRepo.Create(_studConv.Convert(student));
+
+
                 uow.Complete();
                 return _studConv.Convert(studentCreated);
             }
@@ -52,7 +59,9 @@ namespace ELearner.Core.ApplicationService.Services {
         public StudentBO Get(int id) {
             using (var uow = _facade.UnitOfWork) {
                 var student = _studConv.Convert(uow.StudentRepo.Get(id));
-                student.Courses = uow.CourseRepo.GetAllById(student.CourseIds).Select(c => _crsConv.Convert(c)).ToList();
+                if (student != null) {
+                    student.Courses = uow.CourseRepo.GetAllById(student.CourseIds).Select(c => _crsConv.Convert(c)).ToList();
+                }
                 return student;
             }
         }

@@ -34,9 +34,9 @@ namespace Elearner.API {
             
             services.AddScoped<IServicesFacade, ServicesFacade>();
 
-            services.AddScoped<IDataAccessFacade, DataAccessFacade>();
+            //services.AddScoped<IDataAccessFacade, DataAccessFacade>();
             // use following line instead for static "db"
-            //services.AddScoped<IDataAccessFacade, DataAccessFacadeStatic>();
+            services.AddScoped<IDataAccessFacade, DataAccessFacadeStatic>();
 
             // Here Cross-Origin Resource Sharing is added
             // Important that this line is before AddMvc

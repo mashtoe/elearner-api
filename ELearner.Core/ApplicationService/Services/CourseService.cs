@@ -50,7 +50,9 @@ namespace ELearner.Core.ApplicationService.Services {
         public CourseBO Get(int id) {
             using (var uow = _facade.UnitOfWork) {
                 var course = _crsConv.Convert(uow.CourseRepo.Get(id));
-                course.Students = uow.StudentRepo.GetAllById(course.StudentIds).Select(s => _studConv.Convert(s)).ToList();
+                if (course != null) {
+                    course.Students = uow.StudentRepo.GetAllById(course.StudentIds).Select(s => _studConv.Convert(s)).ToList();
+                }
                 return course;
             }
         }

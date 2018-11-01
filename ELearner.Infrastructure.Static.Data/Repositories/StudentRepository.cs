@@ -12,28 +12,48 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
     // the implementaions of the repository interfaces are decoupled & undepenable so that they are easily interchangeable & editable
     public class StudentRepository : IStudentRepository {
 
-        public StudentRepository() {
-            if (FakeDB.Students.Count < 1) {
+        readonly FakeDB _fakeDb;
+
+        public StudentRepository(FakeDB fakeDb) {
+            _fakeDb = fakeDb;
+            if (_fakeDb.Students.Count < 1) {
                 var student1 = new Student() {
                     Id = FakeDB.Id++,
                     Username = "student1"
                 };
-                FakeDB.Students.Add(student1);
+                _fakeDb.Students.Add(student1);
             }
         }
 
         public Student Create(Student student) {
             student.Id = FakeDB.Id++;
-            FakeDB.Students.Add(student);
+
+            if (student.Courses != null) {
+                // adding the reference between objects in the fake db
+                foreach (var item in student.Courses) {
+                    item.StudentId = student.Id;
+                    _fakeDb.StudentCourses.Add(item);
+                }
+            }
+            student.Courses = null;
+            _fakeDb.Students.Add(student);
+
+
             return student;
         }
 
         public Student Get(int id) {
-            return FakeDB.Students.FirstOrDefault(student => student.Id == id);
+            var student = _fakeDb.Students.FirstOrDefault(s => s.Id == id);
+            // include course ids. In EF we would use Include() method, but here we are using a fake db consisting of lists only,
+            // but we have to return the same properties that are returned in the other implementations of the infrastructure layer
+            if (student != null) {
+                student.Courses = _fakeDb.StudentCourses.Where(sc => sc.StudentId == id).ToList();
+            }
+            return student;
         }
 
         public IEnumerable<Student> GetAll() {
-            return FakeDB.Students;
+            return _fakeDb.Students;
         }
 
         public Student Update(Student student) {
@@ -47,12 +67,12 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
         public Student Delete(int id) {
             var studentFromDb = Get(id);
             if (studentFromDb == null) return null;
-            FakeDB.Students.Remove(studentFromDb);
+            _fakeDb.Students.Remove(studentFromDb);
             return studentFromDb;
         }
 
         public IEnumerable<Student> GetAllById(IEnumerable<int> ids) {
-            var students = FakeDB.Students.Where(s => ids.Contains(s.Id));
+            var students = _fakeDb.Students.Where(s => ids.Contains(s.Id));
             return students;
         }
     }
