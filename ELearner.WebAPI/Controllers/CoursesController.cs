@@ -10,8 +10,8 @@ namespace Elearner.API.Controllers {
     public class CoursesController : Controller {
         private readonly ICourseService _courseService;
 
-        public CoursesController(ICourseService scourseService) {
-            _courseService = scourseService;
+        public CoursesController(ICourseService courseService) {
+            _courseService = courseService;
         }
 
         // GET: api/<controller>
