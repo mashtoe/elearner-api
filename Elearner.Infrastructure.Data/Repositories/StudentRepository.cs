@@ -12,6 +12,8 @@ namespace Elearner.Infrastructure.Data.Repositories
     {
         readonly ElearnerAppContext _context;
 
+        // cant use dependancy injection here since we neewd to call saveChanges on the context from the unitofwork
+        // so we need to parse the context from the unitofwork
         public StudentRepository(ElearnerAppContext context)
         {
             _context = context;

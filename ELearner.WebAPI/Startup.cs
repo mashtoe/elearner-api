@@ -1,15 +1,12 @@
 ﻿using Elearner.Infrastructure.Data;
-using Elearner.Infrastructure.Data.Repositories;
 using Elearner.Infrastructure.Data.UOW;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.ApplicationService.Services;
 using ELearner.Core.ApplicationService.ServicesFacade;
 using ELearner.Core.DomainService;
-using ELearner.Core.DomainService.Facade;
 using ELearner.Core.DomainService.UOW;
-using ELearner.Core.Entity;
-using ELearner.Infrastructure.Static.Data;
 using ELearner.Infrastructure.Static.Data.Repositories;
+using ELearner.Infrastructure.Static.Data.UOW;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -34,9 +31,14 @@ namespace Elearner.API {
             
             services.AddScoped<IServicesFacade, ServicesFacade>();
 
-            services.AddScoped<IDataAccessFacade, DataAccessFacade>();
+            services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IStudentRepository, Infrastructure.Data.Repositories.StudentRepository>();
+            services.AddScoped<ICourseRepository, Infrastructure.Data.Repositories.CourseRepository>();
+
             // use following line instead for static "db"
-            //services.AddScoped<IDataAccessFacade, DataAccessFacadeStatic>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWorkStatic>();
 
             // Here Cross-Origin Resource Sharing is added
             // Important that this line is before AddMvc
@@ -76,8 +78,4 @@ namespace Elearner.API {
 
 // here we define which implementation of the repositories we want to use, when we use interfaces for dependancyinjectection
 // in the constructor of the StudentsController class we dependancy inject the studentservice etc
-//services.AddScoped<IStudentRepository, Infrastructure.Data.Repositories.StudentRepository>();
-//services.AddScoped<IStudentService, StudentService>();
-//services.AddScoped<ICourseService, CourseService>();
-//services.AddScoped<ICourseRepository, Infrastructure.Data.Repositories.CourseRepository>();
-//services.AddScoped<IUnitOfWork, UnitOfWork>();
+

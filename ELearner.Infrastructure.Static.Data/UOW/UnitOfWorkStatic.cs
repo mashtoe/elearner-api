@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ELearner.Infrastructure.Static.Data.UOW {
-    class UnitOfWorkStatic : IUnitOfWork {
+    public class UnitOfWorkStatic : IUnitOfWork {
 
         public IStudentRepository StudentRepo { get; }
         public ICourseRepository CourseRepo { get; }
