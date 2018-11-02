@@ -9,7 +9,7 @@ using System.Text;
 namespace ELearner.Infrastructure.Static.Data.UOW {
     public class UnitOfWorkStatic : IUnitOfWork {
 
-        public IStudentRepository StudentRepo { get; }
+        public IUserRepository UserRepo { get; }
         public ICourseRepository CourseRepo { get; }
 
         private bool saveChanges;
@@ -20,7 +20,7 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
             _db = FakeDB.GetInstance();
             _rollbackDb = new StaticDbRollback(_db);
 
-            StudentRepo = new StudentRepository(_db);
+            UserRepo = new UserRepository(_db);
             CourseRepo = new CourseRepository(_db);
         }
 
@@ -38,21 +38,21 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
 
         private class StaticDbRollback {
             private List<Course> courses;
-            private List<Student> students;
-            private List<StudentCourse> studentCourses;
+            private List<User> students;
+            private List<UserCourse> studentCourses;
 
 
             public StaticDbRollback(FakeDB db) {
 
-                students = new List<Student>(db.Students);
+                students = new List<User>(db.Users);
                 courses = new List<Course>(db.Courses);
-                studentCourses = new List<StudentCourse>(db.StudentCourses);
+                studentCourses = new List<UserCourse>(db.UserCourses);
             }
 
             public void Rollback(FakeDB db) {
-                db.Students = students;
+                db.Users = students;
                 db.Courses = courses;
-                db.StudentCourses = studentCourses;
+                db.UserCourses = studentCourses;
             }
         }
     }

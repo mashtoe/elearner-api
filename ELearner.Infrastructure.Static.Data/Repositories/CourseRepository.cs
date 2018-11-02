@@ -14,26 +14,26 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
 
         public CourseRepository(FakeDB fakeDB) {
             _fakeDb = fakeDB;
-            if (_fakeDb.Students.Count < 1) {
-                var student1 = new Student() {
+            if (_fakeDb.Courses.Count < 1) {
+                var course = new Course() {
                     Id = FakeDB.Id++,
-                    Username = "student1"
+                    Name = "TheBestCourse"
                 };
-                _fakeDb.Students.Add(student1);
+                _fakeDb.Courses.Add(course);
             }
         }
 
         public Course Create(Course course) {
             course.Id = FakeDB.Id++;
 
-            if (course.Students != null) {
+            if (course.Users != null) {
                 // adding the reference between objects in the fake db
-                foreach (var item in course.Students) {
+                foreach (var item in course.Users) {
                     item.CourseId = course.Id;
-                    _fakeDb.StudentCourses.Add(item);
+                    _fakeDb.UserCourses.Add(item);
                 }
             }
-            course.Students = null;
+            course.Users = null;
             _fakeDb.Courses.Add(course);
 
             return course;
@@ -42,7 +42,7 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
         public Course Get(int id) {
             var course =  _fakeDb.Courses.FirstOrDefault(c => c.Id == id);
             if (course != null) {
-                course.Students = _fakeDb.StudentCourses.Where(sc => sc.CourseId == id).ToList();
+                course.Users = _fakeDb.UserCourses.Where(sc => sc.CourseId == id).ToList();
             }
             return course;
         }

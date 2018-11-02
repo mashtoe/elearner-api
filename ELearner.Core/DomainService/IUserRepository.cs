@@ -9,18 +9,18 @@ namespace ELearner.Core.DomainService {
     // Since there might be multiple implementations of the interfaces & the implementations are subject to change, they are undependable 
     // and not a part of the core
 
-    public interface IStudentRepository {
+    public interface IUserRepository {
         //Create Data
         //No Id on enter, but Id on exit
-        Student Create(Student student);
+        User Create(User user);
         //Read Data
-        // Should return student with all courses
-        Student Get(int id);
-        IEnumerable<Student> GetAll();
+        // Should return user with all enrolled courses
+        User Get(int id);
+        IEnumerable<User> GetAll();
         //Update Data
-        Student Update(Student student);
+        User Update(User user);
         //Delete Data
-        Student Delete(int id);
-        IEnumerable<Student> GetAllById(IEnumerable<int> ids);
+        User Delete(int id);
+        IEnumerable<User> GetAllById(IEnumerable<int> ids);
     }
 }

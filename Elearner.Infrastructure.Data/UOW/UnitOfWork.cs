@@ -9,7 +9,7 @@ namespace Elearner.Infrastructure.Data.UOW
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public IStudentRepository StudentRepo { get; }
+        public IUserRepository UserRepo { get; }
         public ICourseRepository CourseRepo { get; }
 
         readonly ElearnerAppContext _context;
@@ -17,7 +17,7 @@ namespace Elearner.Infrastructure.Data.UOW
         public UnitOfWork(ElearnerAppContext context)
         {
             _context = context;
-            StudentRepo = new StudentRepository(context);
+            UserRepo = new UserRepository(context);
             CourseRepo = new CourseRepository(context);
         }
 

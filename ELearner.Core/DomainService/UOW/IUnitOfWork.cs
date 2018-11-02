@@ -7,7 +7,7 @@ namespace ELearner.Core.DomainService.UOW
     public interface IUnitOfWork: IDisposable
     {
         // access to all repos, like a facade
-        IStudentRepository StudentRepo { get; }
+        IUserRepository UserRepo { get; }
         ICourseRepository CourseRepo { get; }
         int Complete();
     }

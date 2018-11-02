@@ -23,33 +23,33 @@ namespace Elearner.API.Controllers {
 
         // GET: api/<controller>
         [HttpGet]
-        public ActionResult<IEnumerable<StudentBO>> Get() {
-            return Ok(_servicesFacade.StudentService.GetAll());
+        public ActionResult<IEnumerable<UserBO>> Get() {
+            return Ok(_servicesFacade.UserService.GetAll());
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public ActionResult<StudentBO> Get(int id) {
-            return Ok(_servicesFacade.StudentService.Get(id));
+        public ActionResult<UserBO> Get(int id) {
+            return Ok(_servicesFacade.UserService.Get(id));
         }
 
         // POST api/<controller>
         [HttpPost]
-        public ActionResult<StudentBO> Post([FromBody]StudentBO student) {
-            return Ok(_servicesFacade.StudentService.Create(student));
+        public ActionResult<UserBO> Post([FromBody]UserBO student) {
+            return Ok(_servicesFacade.UserService.Create(student));
         }
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public ActionResult<StudentBO> Put(int id, [FromBody]StudentBO student) {
+        public ActionResult<UserBO> Put(int id, [FromBody]UserBO student) {
             student.Id = id;
-            return Ok(_servicesFacade.StudentService.Update(student));
+            return Ok(_servicesFacade.UserService.Update(student));
         }
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
-        public ActionResult<StudentBO> Delete(int id) {
-            return Ok(_servicesFacade.StudentService.Delete(id));
+        public ActionResult<UserBO> Delete(int id) {
+            return Ok(_servicesFacade.UserService.Delete(id));
         }
     }
 }
