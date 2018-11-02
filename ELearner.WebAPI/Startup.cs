@@ -2,7 +2,6 @@
 using Elearner.Infrastructure.Data.UOW;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.ApplicationService.Services;
-using ELearner.Core.ApplicationService.ServicesFacade;
 using ELearner.Core.DomainService;
 using ELearner.Core.DomainService.UOW;
 using ELearner.Infrastructure.Static.Data.Repositories;
@@ -28,8 +27,6 @@ namespace Elearner.API {
         public void ConfigureServices(IServiceCollection services) {
             services.AddDbContext<ElearnerAppContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContext<ElearnerAppContext>(option => option.UseInMemoryDatabase("TheDB"));
-            
-            services.AddScoped<IServicesFacade, ServicesFacade>();
 
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IUserService, UserService>();
