@@ -12,14 +12,14 @@ namespace Elearner.Infrastructure.Data.Repositories
     {
         readonly ElearnerAppContext _context;
 
+        // cant use dependancy injection here since we neewd to call saveChanges on the context from the unitofwork
+        // so we need to parse the context from the unitofwork
         public StudentRepository(ElearnerAppContext context)
         {
             _context = context;
         }
         public Student Create(Student entity) {
-            //_context.AttachRange(entity.Courses);
             _context.Students.Add(entity);
-            _context.SaveChanges();
             return entity;
         }
 
@@ -38,7 +38,6 @@ namespace Elearner.Infrastructure.Data.Repositories
             //var stud = _context.Students.Update(entity).Entity;
             var stud = Get(entity.Id);
             stud.Username = entity.Username;
-            _context.SaveChanges();
             return stud;
         }
         //Delete Data
@@ -46,7 +45,6 @@ namespace Elearner.Infrastructure.Data.Repositories
         {
             var studRemoved = Get(id);
             _context.Remove(studRemoved);
-            _context.SaveChanges();
             return studRemoved;
         }
 

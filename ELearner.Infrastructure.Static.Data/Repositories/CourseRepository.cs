@@ -7,29 +7,48 @@ using System.Linq;
 using System.Text;
 
 namespace ELearner.Infrastructure.Static.Data.Repositories {
+
     public class CourseRepository : ICourseRepository {
-        public CourseRepository() {
-            if (FakeDB.Students.Count < 1) {
+
+        readonly FakeDB _fakeDb;
+
+        public CourseRepository(FakeDB fakeDB) {
+            _fakeDb = fakeDB;
+            if (_fakeDb.Students.Count < 1) {
                 var student1 = new Student() {
                     Id = FakeDB.Id++,
                     Username = "student1"
                 };
-                FakeDB.Students.Add(student1);
+                _fakeDb.Students.Add(student1);
             }
         }
 
         public Course Create(Course course) {
             course.Id = FakeDB.Id++;
-            FakeDB.Courses.Add(course);
+
+            if (course.Students != null) {
+                // adding the reference between objects in the fake db
+                foreach (var item in course.Students) {
+                    item.CourseId = course.Id;
+                    _fakeDb.StudentCourses.Add(item);
+                }
+            }
+            course.Students = null;
+            _fakeDb.Courses.Add(course);
+
             return course;
         }
 
         public Course Get(int id) {
-            return FakeDB.Courses.FirstOrDefault(course => course.Id == id);
+            var course =  _fakeDb.Courses.FirstOrDefault(c => c.Id == id);
+            if (course != null) {
+                course.Students = _fakeDb.StudentCourses.Where(sc => sc.CourseId == id).ToList();
+            }
+            return course;
         }
 
         public IEnumerable<Course> GetAll() {
-            return FakeDB.Courses;
+            return _fakeDb.Courses;
         }
 
         public Course Update(Course course) {
@@ -43,12 +62,12 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
         public Course Delete(int id) {
             var entityFromDb = Get(id);
             if (entityFromDb == null) return null;
-            FakeDB.Courses.Remove(entityFromDb);
+            _fakeDb.Courses.Remove(entityFromDb);
             return entityFromDb;
         }
 
         public IEnumerable<Course> GetAllById(IEnumerable<int> ids) {
-            var courses = FakeDB.Courses.Where(c => ids.Contains(c.Id));
+            var courses = _fakeDb.Courses.Where(c => ids.Contains(c.Id));
             return courses;
         }
     }
