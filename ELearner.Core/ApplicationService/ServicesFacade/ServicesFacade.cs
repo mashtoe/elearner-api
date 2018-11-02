@@ -1,13 +1,13 @@
 ﻿namespace ELearner.Core.ApplicationService.ServicesFacade {
     public class ServicesFacade : IServicesFacade {
 
-        public IStudentService StudentService { get; }
+        public IUserService UserService { get; }
         public ICourseService CourseService { get; }
 
 
-        public ServicesFacade(IStudentService studentService,
+        public ServicesFacade(IUserService userService,
             ICourseService courseService) {
-            StudentService = studentService;
+            UserService = userService;
             CourseService = courseService;
         }
     }

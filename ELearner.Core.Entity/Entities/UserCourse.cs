@@ -1,9 +1,9 @@
 ﻿namespace ELearner.Core.Entity.Entities {
-    public class StudentCourse {
+    public class UserCourse {
 
-        public Student Student { get; set; }
+        public User User { get; set; }
         //[ForeignKey("StudentId")]
-        public int StudentId { get; set; }
+        public int UserID { get; set; }
 
         public Course Course { get; set; }
         //[ForeignKey("CourseId")]

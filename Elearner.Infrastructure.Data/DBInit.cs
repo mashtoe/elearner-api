@@ -7,12 +7,12 @@ namespace Elearner.Infrastructure.Data
         public static void SeedDB(ElearnerAppContext context) {
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
-            var stud1 = context.Students.Add(new Student()
+            var stud1 = context.Users.Add(new User()
             {
                 Username = "BoringMan"
             }).Entity;
 
-            context.Students.Add(new Student()
+            context.Users.Add(new User()
             {
                 Username = "FunnyMan"
             });

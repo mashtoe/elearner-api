@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ELearner.Core.ApplicationService.ServicesFacade {
     public interface IServicesFacade {
-        IStudentService StudentService { get; }
+        IUserService UserService { get; }
         ICourseService CourseService { get; }
     }
 }

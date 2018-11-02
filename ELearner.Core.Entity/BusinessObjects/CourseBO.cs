@@ -7,7 +7,7 @@ namespace ELearner.Core.Entity.BusinessObjects {
         public string Name { get; set; }
         public int Id { get; set; }
 
-        public List<int> StudentIds { get; set; }
-        public List<StudentBO> Students { get; set; }
+        public List<int> UserIds { get; set; }
+        public List<UserBO> Users { get; set; }
     }
 }

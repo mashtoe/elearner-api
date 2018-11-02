@@ -8,49 +8,49 @@ using System.Linq;
 
 namespace Elearner.Infrastructure.Data.Repositories
 {
-    public class StudentRepository : IStudentRepository
+    public class UserRepository : IUserRepository
     {
         readonly ElearnerAppContext _context;
 
-        // cant use dependancy injection here since we neewd to call saveChanges on the context from the unitofwork
+        // cant use dependancy injection here since we neewd to call saveChanges on the context frsom the unitofwork
         // so we need to parse the context from the unitofwork
-        public StudentRepository(ElearnerAppContext context)
+        public UserRepository(ElearnerAppContext context)
         {
             _context = context;
         }
-        public Student Create(Student entity) {
-            _context.Students.Add(entity);
+        public User Create(User entity) {
+            _context.Users.Add(entity);
             return entity;
         }
 
-        public Student Get(int id)
+        public User Get(int id)
         {
-            var student = _context.Students.Include(s => s.Courses).FirstOrDefault(stud => stud.Id == id);
-            return student;
+            var user = _context.Users.Include(s => s.Courses).FirstOrDefault(u => u.Id == id);
+            return user;
         }
-        public IEnumerable<Student> GetAll()
+        public IEnumerable<User> GetAll()
         {
-            return _context.Students;
+            return _context.Users;
         }
         //Update Data
-        public Student Update(Student entity)
+        public User Update(User entity)
         {
             //var stud = _context.Students.Update(entity).Entity;
-            var stud = Get(entity.Id);
-            stud.Username = entity.Username;
-            return stud;
+            var user = Get(entity.Id);
+            user.Username = entity.Username;
+            return user;
         }
         //Delete Data
-        public Student Delete(int id)
+        public User Delete(int id)
         {
-            var studRemoved = Get(id);
-            _context.Remove(studRemoved);
-            return studRemoved;
+            var userRemoved = Get(id);
+            _context.Remove(userRemoved);
+            return userRemoved;
         }
 
-        public IEnumerable<Student> GetAllById(IEnumerable<int> ids) {
-            var students = _context.Students.Where(e => ids.Contains(e.Id));
-            return students;
+        public IEnumerable<User> GetAllById(IEnumerable<int> ids) {
+            var users = _context.Users.Where(e => ids.Contains(e.Id));
+            return users;
         }
     }
 }

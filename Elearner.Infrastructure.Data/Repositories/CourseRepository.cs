@@ -20,7 +20,7 @@ namespace Elearner.Infrastructure.Data.Repositories {
             return courseFromDb;
         }
         public Course Get(int id) {
-            return _context.Courses.Include(c => c.Students).FirstOrDefault(course => course.Id == id);
+            return _context.Courses.Include(c => c.Users).FirstOrDefault(course => course.Id == id);
         }
         public IEnumerable<Course> GetAll() {
             return _context.Courses;

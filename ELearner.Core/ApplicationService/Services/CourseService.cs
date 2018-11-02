@@ -10,12 +10,12 @@ namespace ELearner.Core.ApplicationService.Services {
     public class CourseService : ICourseService {
 
         readonly CourseConverter _crsConv;
-        readonly StudentConverter _studConv;
+        readonly UserConverter _userConv;
         readonly IUnitOfWork _uow;
 
         public CourseService(IUnitOfWork uow) {
             _crsConv = new CourseConverter();
-            _studConv = new StudentConverter();
+            _userConv = new UserConverter();
             _uow = uow;
         }
         public CourseBO New() {
@@ -44,7 +44,7 @@ namespace ELearner.Core.ApplicationService.Services {
             using (_uow) {
                 var course = _crsConv.Convert(_uow.CourseRepo.Get(id));
                 if (course != null) {
-                    course.Students = _uow.StudentRepo.GetAllById(course.StudentIds).Select(s => _studConv.Convert(s)).ToList();
+                    course.Users = _uow.UserRepo.GetAllById(course.UserIds).Select(s => _userConv.Convert(s)).ToList();
                 }
                 return course;
             }

@@ -9,24 +9,24 @@ namespace Elearner.Infrastructure.Data {
 
         }
 
-        public DbSet<Student> Students { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
-        public DbSet<StudentCourse> StudentCourses { get; set; }
+        public DbSet<UserCourse> UserCourses { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            #region Many-Many Student Course
-            modelBuilder.Entity<StudentCourse>()
-                .HasKey(t => new { t.StudentId, t.CourseId });
+            #region Many-Many User Course
+            modelBuilder.Entity<UserCourse>()
+                .HasKey(t => new { t.UserID, t.CourseId });
 
-            modelBuilder.Entity<StudentCourse>()
-                .HasOne(sc => sc.Student)
-                .WithMany(stud => stud.Courses)
-                .HasForeignKey(sc => sc.StudentId);
+            modelBuilder.Entity<UserCourse>()
+                .HasOne(sc => sc.User)
+                .WithMany(user => user.Courses)
+                .HasForeignKey(sc => sc.UserID);
 
-            modelBuilder.Entity<StudentCourse>()
+            modelBuilder.Entity<UserCourse>()
                 .HasOne(sc => sc.Course)
-                .WithMany(crs => crs.Students)
+                .WithMany(crs => crs.Users)
                 .HasForeignKey(sc => sc.CourseId);
             #endregion  
         }
