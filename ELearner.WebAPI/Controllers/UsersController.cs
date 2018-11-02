@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ELearner.Core.ApplicationService;
-using ELearner.Core.ApplicationService.ServicesFacade;
-using ELearner.Core.Entity;
 using ELearner.Core.Entity.BusinessObjects;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,43 +10,44 @@ using Microsoft.AspNetCore.Mvc;
 namespace Elearner.API.Controllers {
     [Route("api/[controller]")]
 
-    public class StudentsController : Controller {
-        private readonly IServicesFacade _servicesFacade;
-        // We get the servicesfacade class via dependancy injection. The service classes inside the facade are part of the Core of the Onion architecture
+    public class UsersController : Controller {
+
+        private readonly IUserService _userService;
+        // We get the service class via dependancy injection. The service classes are part of the Core of the Onion architecture
         // The call hierarchy goes roughly: Controller --> Service --> Repository --> DB 
-        public StudentsController(IServicesFacade facade) {
-            _servicesFacade = facade;
+        public UsersController(IUserService userService) {
+            _userService = userService;
         }
 
         // GET: api/<controller>
         [HttpGet]
         public ActionResult<IEnumerable<UserBO>> Get() {
-            return Ok(_servicesFacade.UserService.GetAll());
+            return Ok(_userService.GetAll());
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
         public ActionResult<UserBO> Get(int id) {
-            return Ok(_servicesFacade.UserService.Get(id));
+            return Ok(_userService.Get(id));
         }
 
         // POST api/<controller>
         [HttpPost]
         public ActionResult<UserBO> Post([FromBody]UserBO student) {
-            return Ok(_servicesFacade.UserService.Create(student));
+            return Ok(_userService.Create(student));
         }
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         public ActionResult<UserBO> Put(int id, [FromBody]UserBO student) {
             student.Id = id;
-            return Ok(_servicesFacade.UserService.Update(student));
+            return Ok(_userService.Update(student));
         }
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         public ActionResult<UserBO> Delete(int id) {
-            return Ok(_servicesFacade.UserService.Delete(id));
+            return Ok(_userService.Delete(id));
         }
     }
 }
