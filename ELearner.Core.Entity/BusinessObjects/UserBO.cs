@@ -11,9 +11,8 @@ namespace ELearner.Core.Entity.BusinessObjects
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
-        
+        //public byte[] PasswordHash { get; set; }
+        //public byte[] PasswordSalt { get; set; }
 
         public List<int> CourseIds { get; set; }
         public List<CourseBO> Courses { get; set; }

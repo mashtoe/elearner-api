@@ -1,5 +1,6 @@
 using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
+using ELearner.Core.Entity.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ELearner.API.Controllers
@@ -16,20 +17,16 @@ namespace ELearner.API.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult<UserBO> Register([FromBody]UserBO user, string password)
+        public ActionResult<UserBO> Register([FromBody]UserRegisterDto userDto)
         {
-            user.Username = user.Username.ToLower();
+            //userDto.Username = userDto.Username.ToLower();
 
-           /* if (_authService.UserExists(user.Username))
+            /* if (_authService.UserExists(user.Username))
             {
                 return BadRequest("Username already exists");
             }*/
 
-            var userToCreate = new UserBO {
-                Username = user.Username
-            };
-
-            var createdUser = _authService.Register(userToCreate, password);
+            var createdUser = _authService.Register(userDto);
 
             return StatusCode(201);
         }

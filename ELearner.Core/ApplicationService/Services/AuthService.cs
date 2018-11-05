@@ -2,6 +2,8 @@ using System;
 using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
+using ELearner.Core.Entity.Dtos;
+using ELearner.Core.Entity.Entities;
 
 namespace ELearner.Core.ApplicationService.Services
 {
@@ -19,22 +21,23 @@ namespace ELearner.Core.ApplicationService.Services
             throw new System.NotImplementedException();
         }
 
-        public UserBO Register(UserBO user, string password)
+        public UserBO Register(UserRegisterDto userDto)
         {
             using (_uow)
             {
                 byte[] passwordHash, passwordSalt;
-                CreatePasswordHash(password, out passwordHash, out passwordSalt);
+                CreatePasswordHash(userDto.Password, out passwordHash, out passwordSalt);
 
-                user.PasswordHash = passwordHash;
-                user.PasswordSalt = passwordSalt;
-
-                var userRegistered = _uow.UserRepo.Create(_userConv.Convert(user));
+                var userEntity = new User() {
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt,
+                    Username = userDto.Username
+                };
+                var userRegistered = _uow.UserRepo.Create(userEntity);
 
                 _uow.Complete();
                 return _userConv.Convert(userRegistered);
             }
-
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
