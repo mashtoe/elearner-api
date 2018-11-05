@@ -17,9 +17,41 @@ namespace ELearner.Core.ApplicationService.Services
             _userConv = new UserConverter();
             _uow = uow;
         }
-        public UserBO Login(string username, string password)
+        public UserBO Login(UserLoginDto userDto)
         {
-            throw new System.NotImplementedException();
+            using (_uow) 
+            {
+                var userFromDB = _uow.UserRepo.GetAll().FirstOrDefault(
+                    user => user.Username.ToLower() == userDto.Username.ToLower()
+                );
+
+                if (userFromDB == null)
+                {
+                    return null;
+                }
+
+                if (!VerifyPasswordHash(userDto.Password, userFromDB.PasswordHash, userFromDB.PasswordSalt ))
+                {
+                    return null;
+                }
+                return _userConv.Convert(userFromDB);
+            }
+        }
+
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != passwordHash[i])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
 
         public UserBO Register(UserRegisterDto userDto)

@@ -27,5 +27,16 @@ namespace ELearner.API.Controllers
             }
             return StatusCode(201);
         }
+
+        [HttpPost("login")]
+        public ActionResult<UserBO> Login([FromBody]UserLoginDto userDto ) {
+
+            var userToLogin = _authService.Login(userDto);
+            if (userToLogin == null)
+            {
+                return Unauthorized();
+            }
+            return userToLogin;
+        }
     }
 }
