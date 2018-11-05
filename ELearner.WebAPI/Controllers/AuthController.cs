@@ -20,14 +20,11 @@ namespace ELearner.API.Controllers
         public ActionResult<UserBO> Register([FromBody]UserRegisterDto userDto)
         {
             //userDto.Username = userDto.Username.ToLower();
-
-            /* if (_authService.UserExists(userDto.Username))
+            var createdUser = _authService.Register(userDto);
+            if (createdUser == null)
             {
                 return BadRequest("Username already exists");
-            }*/
-
-            var createdUser = _authService.Register(userDto);
-
+            }
             return StatusCode(201);
         }
     }

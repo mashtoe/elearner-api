@@ -26,19 +26,29 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (_uow)
             {
-                byte[] passwordHash, passwordSalt;
-                CreatePasswordHash(userDto.Password, out passwordHash, out passwordSalt);
-
-                var userEntity = new User() {
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt,
-                    Username = userDto.Username
-                };
-                var userRegistered = _uow.UserRepo.Create(userEntity);
-
-                _uow.Complete();
-                return _userConv.Convert(userRegistered);
+                if (UserExists(userDto.Username))
+                {
+                    return null;
+                }
+                return CreateNewUser(userDto);
             }
+        }
+
+        private UserBO CreateNewUser(UserRegisterDto userDto)
+        {
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHash(userDto.Password, out passwordHash, out passwordSalt);
+
+            var userEntity = new User()
+            {
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Username = userDto.Username
+            };
+            var userRegistered = _uow.UserRepo.Create(userEntity);
+
+            _uow.Complete();
+            return _userConv.Convert(userRegistered);
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -53,12 +63,9 @@ namespace ELearner.Core.ApplicationService.Services
 
         public bool UserExists(string username)
         {
-            using (_uow)
-            {
-                var userExists = _uow.UserRepo.GetAll().Any(
-                    user => user.Username == username);
-                    return userExists;  
-            }
+                    var userExists = _uow.UserRepo.GetAll().Any(
+                    user => user.Username.ToLower() == username.ToLower());
+                    return userExists;     
         }
     }
 }
