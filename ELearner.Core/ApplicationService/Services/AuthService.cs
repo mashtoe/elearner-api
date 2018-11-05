@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
@@ -52,7 +53,12 @@ namespace ELearner.Core.ApplicationService.Services
 
         public bool UserExists(string username)
         {
-            throw new System.NotImplementedException();
+            using (_uow)
+            {
+                var userExists = _uow.UserRepo.GetAll().Any(
+                    user => user.Username == username);
+                    return userExists;  
+            }
         }
     }
 }

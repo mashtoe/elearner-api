@@ -21,7 +21,7 @@ namespace ELearner.API.Controllers
         {
             //userDto.Username = userDto.Username.ToLower();
 
-            /* if (_authService.UserExists(user.Username))
+            /* if (_authService.UserExists(userDto.Username))
             {
                 return BadRequest("Username already exists");
             }*/
