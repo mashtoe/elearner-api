@@ -1,11 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\ELearner.Core.Entity\ELearner.Core.Entity.csproj" />
+    <ProjectReference Include="..\ELearner.Core.Entity\ELearner.Core.Entity.csproj"/>
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.3.0"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.0"/>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.3.0"/>
+  </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@ using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
 using ELearner.Core.Entity.Dtos;
 using ELearner.Core.Entity.Entities;
+using ELearner.Core.Utilities;
 
 namespace ELearner.Core.ApplicationService.Services
 {
@@ -12,12 +13,14 @@ namespace ELearner.Core.ApplicationService.Services
     {
         readonly UserConverter _userConv;
         readonly IUnitOfWork _uow;
-        public AuthService(IUnitOfWork uow)
+        private readonly ITokenGenerator _tokenGenerator;
+        public AuthService(IUnitOfWork uow, ITokenGenerator tokenGenerator)
         {
             _userConv = new UserConverter();
             _uow = uow;
+            _tokenGenerator = tokenGenerator;
         }
-        public UserBO Login(UserLoginDto userDto)
+        public string Login(UserLoginDto userDto)
         {
             using (_uow) 
             {
@@ -27,14 +30,14 @@ namespace ELearner.Core.ApplicationService.Services
 
                 if (userFromDB == null)
                 {
-                    return null;
+                    return "";
                 }
 
                 if (!VerifyPasswordHash(userDto.Password, userFromDB.PasswordHash, userFromDB.PasswordSalt ))
                 {
-                    return null;
+                    return "";
                 }
-                return _userConv.Convert(userFromDB);
+                return _tokenGenerator.GenerateToken(_userConv.Convert(userFromDB));
             }
         }
 
