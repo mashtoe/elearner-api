@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ELearner.Core.DomainService.Facade;
 using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
@@ -13,12 +14,12 @@ namespace ELearner.Core.ApplicationService.Services {
 
         readonly UserConverter _userConv;
         readonly CourseConverter _crsConv;
-        readonly IUnitOfWork _uow;
+        readonly IDataFacade _facade;
 
-        public UserService(IUnitOfWork uow) {
+        public UserService(IDataFacade facade) {
             _userConv = new UserConverter();
             _crsConv = new CourseConverter();
-            _uow = uow;
+            _facade = facade;
         }
         public UserBO New() {
             return new UserBO();
@@ -26,49 +27,49 @@ namespace ELearner.Core.ApplicationService.Services {
 
         public UserBO Create(UserBO user) {
             // TODO check if entity is valid, and throw errors if not
-            using (_uow)
+            using (var uow = _facade.UnitOfWork)
             {
                 //var studentCreated = uow.StudentRepo.Create(_studConv.Convert(student));
                 //student.Username += "1";
                 //if (studentCreated != null) {
                 //    throw new InvalidOperationException();
                 //}
-                var userCreated = _uow.UserRepo.Create(_userConv.Convert(user));
+                var userCreated = uow.UserRepo.Create(_userConv.Convert(user));
 
-                _uow.Complete();
+                uow.Complete();
                 return _userConv.Convert(userCreated);
             }
         }
 
         public UserBO Delete(int id) {
-            using (_uow) {
-                var userDeleted = _uow.UserRepo.Delete(id);
-                _uow.Complete();
+            using (var uow = _facade.UnitOfWork) {
+                var userDeleted = uow.UserRepo.Delete(id);
+                uow.Complete();
                 return _userConv.Convert(userDeleted);
             }
         }
 
         public UserBO Get(int id) {
-            using (_uow) {
-                var user = _userConv.Convert(_uow.UserRepo.Get(id));
+            using (var uow = _facade.UnitOfWork) {
+                var user = _userConv.Convert(uow.UserRepo.Get(id));
                 if (user != null) {
-                    user.Courses = _uow.CourseRepo.GetAllById(user.CourseIds).Select(c => _crsConv.Convert(c)).ToList();
+                    user.Courses = uow.CourseRepo.GetAllById(user.CourseIds).Select(c => _crsConv.Convert(c)).ToList();
                 }
                 return user;
             }
         }
 
         public List<UserBO> GetAll() {
-            using (_uow) {
-                var users = _uow.UserRepo.GetAll();
+            using (var uow = _facade.UnitOfWork) {
+                var users = uow.UserRepo.GetAll();
                 return users.Select(s => _userConv.Convert(s)).ToList();
             }
         }
 
         public UserBO Update(UserBO user) {
-            using (_uow) {
-                var updatedUser = _uow.UserRepo.Update(_userConv.Convert(user));
-                _uow.Complete();
+            using (var uow = _facade.UnitOfWork) {
+                var updatedUser = uow.UserRepo.Update(_userConv.Convert(user));
+                uow.Complete();
                 return _userConv.Convert(updatedUser);
             }
         }

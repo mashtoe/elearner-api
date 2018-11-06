@@ -1,8 +1,10 @@
 ﻿using Elearner.Infrastructure.Data;
+using Elearner.Infrastructure.Data.Facade;
 using Elearner.Infrastructure.Data.UOW;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.ApplicationService.Services;
 using ELearner.Core.DomainService;
+using ELearner.Core.DomainService.Facade;
 using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Utilities;
 using ELearner.Infrastructure.Static.Data.Repositories;
@@ -28,11 +30,12 @@ namespace Elearner.API {
         public void ConfigureServices(IServiceCollection services) {
             services.AddDbContext<ElearnerAppContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContext<ElearnerAppContext>(option => option.UseInMemoryDatabase("TheDB"));
-
+            services.AddScoped<IDataFacade, DataFacade>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<IDataSeeder, DataSeeder>();
 
             //services.AddScoped<IUserRepository, Infrastructure.Data.Repositories.UserRepository>();
             //services.AddScoped<ICourseRepository, Infrastructure.Data.Repositories.CourseRepository>();
@@ -59,8 +62,10 @@ namespace Elearner.API {
                 app.UseDeveloperExceptionPage();
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    var _context = scope.ServiceProvider.GetService<ElearnerAppContext>();
-                    DBInit.SeedDB(_context);
+                    //var _context = scope.ServiceProvider.GetService<ElearnerAppContext>();
+                    //DBInit.SeedDB(_context);
+                    var service = scope.ServiceProvider.GetService<IDataSeeder>();
+                    service.SeedData();
                 }
             } else {
                 app.UseHsts();
