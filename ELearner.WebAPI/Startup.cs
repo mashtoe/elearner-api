@@ -4,6 +4,7 @@ using ELearner.Core.ApplicationService;
 using ELearner.Core.ApplicationService.Services;
 using ELearner.Core.DomainService;
 using ELearner.Core.DomainService.UOW;
+using ELearner.Core.Utilities;
 using ELearner.Infrastructure.Static.Data.Repositories;
 using ELearner.Infrastructure.Static.Data.UOW;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +32,7 @@ namespace Elearner.API {
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
 
             //services.AddScoped<IUserRepository, Infrastructure.Data.Repositories.UserRepository>();
             //services.AddScoped<ICourseRepository, Infrastructure.Data.Repositories.CourseRepository>();

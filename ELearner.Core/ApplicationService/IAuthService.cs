@@ -6,7 +6,8 @@ namespace ELearner.Core.ApplicationService
     public interface IAuthService
     {
         UserBO Register(UserRegisterDto userDto);
-        UserBO Login(UserLoginDto userDto);
+        //String to return is a Jwt
+        string Login(UserLoginDto userDto);
         bool UserExists(string username);
     }
 }

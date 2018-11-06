@@ -29,14 +29,16 @@ namespace ELearner.API.Controllers
         }
 
         [HttpPost("login")]
-        public ActionResult<UserBO> Login([FromBody]UserLoginDto userDto ) {
+        public IActionResult Login([FromBody]UserLoginDto userDto ) {
 
-            var userToLogin = _authService.Login(userDto);
-            if (userToLogin == null)
+            var jwtToken = _authService.Login(userDto);
+            if (jwtToken == "")
             {
                 return Unauthorized();
             }
-            return userToLogin;
+            return Ok(new {
+                token = jwtToken
+            });
         }
     }
 }
