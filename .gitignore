@@ -331,3 +331,4 @@ ASALocalRun/
 
 # Sqlite db file
 ElearnerApp.db
+*.DS_Store
