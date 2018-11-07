@@ -10,7 +10,7 @@ namespace Elearner.Infrastructure.Data.Facade {
         public DataFacade(IConfiguration conf) {
 
             var options = new DbContextOptionsBuilder<ElearnerAppContext>()
-                .UseSqlServer(conf.GetConnectionString("DefaultConnection"))
+                .UseSqlite(conf.GetConnectionString("DefaultConnection"))
                     .Options;
             _options = options;
         }

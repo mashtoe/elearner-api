@@ -28,7 +28,7 @@ namespace Elearner.API {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            services.AddDbContext<ElearnerAppContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<ElearnerAppContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContext<ElearnerAppContext>(option => option.UseInMemoryDatabase("TheDB"));
             services.AddScoped<IDataFacade, DataFacade>();
             services.AddScoped<ICourseService, CourseService>();
@@ -37,11 +37,8 @@ namespace Elearner.API {
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IDataSeeder, DataSeeder>();
 
-            //services.AddScoped<IUserRepository, Infrastructure.Data.Repositories.UserRepository>();
-            //services.AddScoped<ICourseRepository, Infrastructure.Data.Repositories.CourseRepository>();
-
             // use following line instead for static "db"
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //services.AddScoped<IUnitOfWork, UnitOfWorkStatic>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Here Cross-Origin Resource Sharing is added
@@ -62,8 +59,8 @@ namespace Elearner.API {
                 app.UseDeveloperExceptionPage();
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    //var _context = scope.ServiceProvider.GetService<ElearnerAppContext>();
-                    //DBInit.SeedDB(_context);
+                    // since datseeder is located in the core, the dataseeder dont know anything about 
+                    // what kind of data persistance or database we use
                     var service = scope.ServiceProvider.GetService<IDataSeeder>();
                     service.SeedData();
                 }

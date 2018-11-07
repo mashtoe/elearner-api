@@ -5,14 +5,20 @@ using ELearner.Core.Entity.Entities;
 
 namespace Elearner.Infrastructure.Data {
     public class ElearnerAppContext : DbContext {
-        public ElearnerAppContext(DbContextOptions<ElearnerAppContext> options) : base(options) {
 
+        private static bool firstInstance = true;
+
+        public ElearnerAppContext(DbContextOptions<ElearnerAppContext> options) : base(options) {
+            if (firstInstance) {
+                firstInstance = false;
+                Database.EnsureDeleted();
+                Database.EnsureCreated();
+            }
         }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<UserCourse> UserCourses { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             #region Many-Many User Course

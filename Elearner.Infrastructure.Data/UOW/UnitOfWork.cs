@@ -12,15 +12,9 @@ namespace Elearner.Infrastructure.Data.UOW
         public ICourseRepository CourseRepo { get; }
 
         private ElearnerAppContext _context;
-        //readonly IConfiguration _conf;
 
         public UnitOfWork(DbContextOptions<ElearnerAppContext> optionsBuilder)
         {
-            /*var options = new DbContextOptionsBuilder<ElearnerAppContext>()
-                .UseSqlite(conf.GetConnectionString("DefaultConnection"))
-                    .Options;*/
-            //_conf = conf;
-
             _context = new ElearnerAppContext(optionsBuilder);
             UserRepo = new UserRepository(_context);
             CourseRepo = new CourseRepository(_context);
