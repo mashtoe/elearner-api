@@ -1,10 +1,8 @@
 ﻿using ELearner.Core.DomainService;
-using ELearner.Core.Entity;
 using ELearner.Core.Entity.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ELearner.Infrastructure.Static.Data.Repositories {
 
