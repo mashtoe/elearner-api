@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ELearner.Infrastructure.Static.Data.UOW {
-    public class UnitOfWorkStatic : IUnitOfWork {
+    public class UnitOfWorkFakeDB : IUnitOfWork {
 
         public IUserRepository UserRepo { get; }
         public ICourseRepository CourseRepo { get; }
@@ -16,7 +16,7 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
         readonly FakeDB _db;
         readonly StaticDbRollback _rollbackDb;
 
-        public UnitOfWorkStatic() {
+        public UnitOfWorkFakeDB() {
             _db = FakeDB.GetInstance();
             _rollbackDb = new StaticDbRollback(_db);
 

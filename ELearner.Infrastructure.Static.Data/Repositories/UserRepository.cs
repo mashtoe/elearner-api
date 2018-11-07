@@ -16,13 +16,6 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
 
         public UserRepository(FakeDB fakeDb) {
             _fakeDb = fakeDb;
-            if (_fakeDb.Users.Count < 1) {
-                var user1 = new User() {
-                    Id = FakeDB.Id++,
-                    Username = "student1"
-                };
-                _fakeDb.Users.Add(user1);
-            }
         }
 
         public User Create(User user) {
@@ -37,8 +30,6 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             }
             user.Courses = null;
             _fakeDb.Users.Add(user);
-
-
             return user;
         }
 
@@ -46,10 +37,16 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             var user = _fakeDb.Users.FirstOrDefault(s => s.Id == id);
             // include course ids. In EF we would use Include() method, but here we are using a fake db consisting of lists only,
             // but we have to return the same properties that are returned in the other implementations of the infrastructure layer
+
+            List<UserCourse> courses = null;
             if (user != null) {
-                user.Courses = _fakeDb.UserCourses.Where(sc => sc.UserID == id).ToList();
+                courses = _fakeDb.UserCourses.Where(sc => sc.UserID == id).ToList();
             }
-            return user;
+            //return new object to avoid messing with the objects in the fake db
+            return new User() {
+                Username = user.Username,
+                Courses = courses
+            };
         }
 
         public IEnumerable<User> GetAll() {

@@ -10,6 +10,7 @@ namespace ELearner.Infrastructure.Static.Data {
         private static FakeDB _instance;
 
         public static int Id = 1;
+
         public List<User> Users = new List<User>();
         public List<Course> Courses = new List<Course>();
         public List<UserCourse> UserCourses = new List<UserCourse>();

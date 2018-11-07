@@ -7,6 +7,7 @@ using ELearner.Core.DomainService;
 using ELearner.Core.DomainService.Facade;
 using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Utilities;
+using ELearner.Infrastructure.Static.Data.Facade;
 using ELearner.Infrastructure.Static.Data.Repositories;
 using ELearner.Infrastructure.Static.Data.UOW;
 using Microsoft.AspNetCore.Builder;
@@ -30,7 +31,6 @@ namespace Elearner.API {
         public void ConfigureServices(IServiceCollection services) {
             //services.AddDbContext<ElearnerAppContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContext<ElearnerAppContext>(option => option.UseInMemoryDatabase("TheDB"));
-            services.AddScoped<IDataFacade, DataFacade>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
@@ -38,8 +38,8 @@ namespace Elearner.API {
             services.AddScoped<IDataSeeder, DataSeeder>();
 
             // use following line instead for static "db"
-            //services.AddScoped<IUnitOfWork, UnitOfWorkStatic>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDataFacade, DataFacadeFakeDB>();
+            //services.AddScoped<IDataFacade, DataFacade>();
 
             // Here Cross-Origin Resource Sharing is added
             // Important that this line is before AddMvc
