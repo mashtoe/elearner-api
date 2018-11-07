@@ -19,7 +19,6 @@ namespace Elearner.API.Controllers {
         // GET: api/<controller>
         [HttpGet]
         public ActionResult<IEnumerable<CourseBO>> Get([FromQuery]Filter filter) {
-            //return Ok(_courseService.GetAll(filter));
             try {
                 return Ok(_courseService.GetFilteredOrders(filter));
             } catch (Exception ex) {

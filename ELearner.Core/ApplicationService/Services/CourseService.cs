@@ -8,6 +8,7 @@ using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
 using ELearner.Core.Entity.Dtos;
+using ELearner.Core.Utilities.FilterStrategy;
 
 namespace ELearner.Core.ApplicationService.Services {
     public class CourseService : ICourseService {
@@ -63,12 +64,20 @@ namespace ELearner.Core.ApplicationService.Services {
 
         public List<CourseBO> GetFilteredOrders(Filter filter) {
             using (var uow = _facade.UnitOfWork) {
+                var filterStrats = new List<IFilterStrategy>();
                 if (filter != null) {
-                    if (filter.CurrentPage < 0 || filter.PageSize < 1) {
-                        throw new InvalidDataException("Current page must be larger than 0 and pagesize must be larger than 1");
+
+                    if (filter.FilterQuery != null) {
+                        filterStrats.Add(new FilterSearchStrategy() { Query = filter.FilterQuery });
+                    }
+                    if (filter.OrderBy != null) {
+                        filterStrats.Add(new FilterOrderByNameStategy() { OrderBy = filter.OrderBy });
+                    }
+                    if (filter.CurrentPage > -1 && filter.PageSize > 0) {
+                        filterStrats.Add(new FilterPaginateStrategy() { CurrentPage = filter.CurrentPage, PageSize = filter.PageSize });
                     }
                 }
-                var courses = uow.CourseRepo.GetAll(filter);
+                var courses = uow.CourseRepo.GetAll(filterStrats);
                 return courses.Select(c => _crsConv.Convert(c)).ToList();
             }
         }

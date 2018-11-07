@@ -2,6 +2,7 @@
 using ELearner.Core.Entity;
 using ELearner.Core.Entity.Dtos;
 using ELearner.Core.Entity.Entities;
+using ELearner.Core.Utilities.FilterStrategy;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,13 +24,15 @@ namespace Elearner.Infrastructure.Data.Repositories {
         public Course Get(int id) {
             return _context.Courses.Include(c => c.Users).FirstOrDefault(course => course.Id == id);
         }
-        public IEnumerable<Course> GetAll(Filter filter) {
-            if (filter == null) {
+        public IEnumerable<Course> GetAll(List<IFilterStrategy> filters) {
+            if (filters == null) {
                 return _context.Courses;
             }
-            return _context.Courses
-                .Skip((filter.CurrentPage - 1) * filter.PageSize)
-                .Take(filter.PageSize);
+            IEnumerable<Course> courses = _context.Courses;
+            for (int i = 0; i < filters.Count; i++) {
+                courses = filters[i].Filter(courses);
+            }
+            return courses;
         }
         //Update Data
         public Course Update(Course course) {

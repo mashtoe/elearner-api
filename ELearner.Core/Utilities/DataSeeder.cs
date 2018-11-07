@@ -39,6 +39,12 @@ namespace ELearner.Core.Utilities {
             _courseService.Create(course);
 
             for (int i = 0; i < 100; i++) {
+                if (i % 10 == 0) {
+                    var crs2 = new CourseBO() {
+                        Name = " A Course" + i,
+                    };
+                    _courseService.Create(crs2);
+                }
                 var crs = new CourseBO() {
                     Name = " Course" + i,
                 };
