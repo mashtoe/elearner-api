@@ -1,5 +1,6 @@
 ﻿using ELearner.Core.DomainService;
 using ELearner.Core.Entity;
+using ELearner.Core.Entity.Dtos;
 using ELearner.Core.Entity.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,8 +23,13 @@ namespace Elearner.Infrastructure.Data.Repositories {
         public Course Get(int id) {
             return _context.Courses.Include(c => c.Users).FirstOrDefault(course => course.Id == id);
         }
-        public IEnumerable<Course> GetAll() {
-            return _context.Courses;
+        public IEnumerable<Course> GetAll(Filter filter) {
+            if (filter == null) {
+                return _context.Courses;
+            }
+            return _context.Courses
+                .Skip((filter.CurrentPage - 1) * filter.PageSize)
+                .Take(filter.PageSize);
         }
         //Update Data
         public Course Update(Course course) {

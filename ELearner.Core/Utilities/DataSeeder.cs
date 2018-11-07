@@ -19,7 +19,7 @@ namespace ELearner.Core.Utilities {
 
         public void SeedData() {
             var user1 = new UserRegisterDto() {
-               Username = "BoringMan2",
+               Username = "BoringManOG",
                Password = "secretpassword"
             };
             _authService.Register(user1);
@@ -37,6 +37,13 @@ namespace ELearner.Core.Utilities {
                 UserIds = userIds
             };
             _courseService.Create(course);
+
+            for (int i = 0; i < 100; i++) {
+                var crs = new CourseBO() {
+                    Name = " Course" + i,
+                };
+                _courseService.Create(crs);
+            }
         }
     }
 }

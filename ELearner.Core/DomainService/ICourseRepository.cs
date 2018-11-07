@@ -1,4 +1,5 @@
 ﻿using ELearner.Core.Entity;
+using ELearner.Core.Entity.Dtos;
 using ELearner.Core.Entity.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,8 @@ namespace ELearner.Core.DomainService {
         Course Create(Course course);
         //Read Data
         Course Get(int id);
-        IEnumerable<Course> GetAll();
+        // filter can be null
+        IEnumerable<Course> GetAll(Filter filer = null);
         //Update Data
         Course Update(Course course);
         //Delete Data
