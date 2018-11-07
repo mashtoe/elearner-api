@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using ELearner.Core.DomainService.Facade;
 using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
@@ -12,19 +13,19 @@ namespace ELearner.Core.ApplicationService.Services
     public class AuthService : IAuthService
     {
         readonly UserConverter _userConv;
-        readonly IUnitOfWork _uow;
+        readonly IDataFacade _facade;
         private readonly ITokenGenerator _tokenGenerator;
-        public AuthService(IUnitOfWork uow, ITokenGenerator tokenGenerator)
+        public AuthService(IDataFacade facade, ITokenGenerator tokenGenerator)
         {
             _userConv = new UserConverter();
-            _uow = uow;
             _tokenGenerator = tokenGenerator;
+            _facade = facade;
         }
         public string Login(UserLoginDto userDto)
         {
-            using (_uow) 
+            using (var uow = _facade.UnitOfWork) 
             {
-                var userFromDB = _uow.UserRepo.GetAll().FirstOrDefault(
+                var userFromDB = uow.UserRepo.GetAll().FirstOrDefault(
                     user => user.Username.ToLower() == userDto.Username.ToLower()
                 );
 
@@ -59,17 +60,17 @@ namespace ELearner.Core.ApplicationService.Services
 
         public UserBO Register(UserRegisterDto userDto)
         {
-            using (_uow)
+            using (var uow = _facade.UnitOfWork)
             {
                 if (UserExists(userDto.Username))
                 {
                     return null;
                 }
-                return CreateNewUser(userDto);
+                return CreateNewUser(userDto, uow);
             }
         }
 
-        private UserBO CreateNewUser(UserRegisterDto userDto)
+        private UserBO CreateNewUser(UserRegisterDto userDto, IUnitOfWork uow)
         {
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(userDto.Password, out passwordHash, out passwordSalt);
@@ -80,9 +81,9 @@ namespace ELearner.Core.ApplicationService.Services
                 PasswordSalt = passwordSalt,
                 Username = userDto.Username
             };
-            var userRegistered = _uow.UserRepo.Create(userEntity);
+            var userRegistered = uow.UserRepo.Create(userEntity);
 
-            _uow.Complete();
+            uow.Complete();
             return _userConv.Convert(userRegistered);
         }
 
@@ -98,9 +99,11 @@ namespace ELearner.Core.ApplicationService.Services
 
         public bool UserExists(string username)
         {
-                    var userExists = _uow.UserRepo.GetAll().Any(
-                    user => user.Username.ToLower() == username.ToLower());
-                    return userExists;     
+            using (var uow = _facade.UnitOfWork) {
+                var userExists = uow.UserRepo.GetAll().Any(
+                user => user.Username.ToLower() == username.ToLower());
+                return userExists;
+            }
         }
     }
 }

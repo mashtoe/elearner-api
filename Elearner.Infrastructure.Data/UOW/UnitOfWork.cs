@@ -1,9 +1,8 @@
 ﻿using Elearner.Infrastructure.Data.Repositories;
 using ELearner.Core.DomainService;
 using ELearner.Core.DomainService.UOW;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace Elearner.Infrastructure.Data.UOW
 {
@@ -12,13 +11,13 @@ namespace Elearner.Infrastructure.Data.UOW
         public IUserRepository UserRepo { get; }
         public ICourseRepository CourseRepo { get; }
 
-        readonly ElearnerAppContext _context;
+        private ElearnerAppContext _context;
 
-        public UnitOfWork(ElearnerAppContext context)
+        public UnitOfWork(DbContextOptions<ElearnerAppContext> optionsBuilder)
         {
-            _context = context;
-            UserRepo = new UserRepository(context);
-            CourseRepo = new CourseRepository(context);
+            _context = new ElearnerAppContext(optionsBuilder);
+            UserRepo = new UserRepository(_context);
+            CourseRepo = new CourseRepository(_context);
         }
 
         /// <summary>

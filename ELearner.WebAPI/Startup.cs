@@ -1,10 +1,13 @@
 ﻿using Elearner.Infrastructure.Data;
+using Elearner.Infrastructure.Data.Facade;
 using Elearner.Infrastructure.Data.UOW;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.ApplicationService.Services;
 using ELearner.Core.DomainService;
+using ELearner.Core.DomainService.Facade;
 using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Utilities;
+using ELearner.Infrastructure.Static.Data.Facade;
 using ELearner.Infrastructure.Static.Data.Repositories;
 using ELearner.Infrastructure.Static.Data.UOW;
 using Microsoft.AspNetCore.Builder;
@@ -26,20 +29,17 @@ namespace Elearner.API {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            services.AddDbContext<ElearnerAppContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<ElearnerAppContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContext<ElearnerAppContext>(option => option.UseInMemoryDatabase("TheDB"));
-
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
-
-            //services.AddScoped<IUserRepository, Infrastructure.Data.Repositories.UserRepository>();
-            //services.AddScoped<ICourseRepository, Infrastructure.Data.Repositories.CourseRepository>();
+            services.AddScoped<IDataSeeder, DataSeeder>();
 
             // use following line instead for static "db"
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDataFacade, DataFacadeFakeDB>();
+            //services.AddScoped<IDataFacade, DataFacade>();
 
             // Here Cross-Origin Resource Sharing is added
             // Important that this line is before AddMvc
@@ -59,8 +59,10 @@ namespace Elearner.API {
                 app.UseDeveloperExceptionPage();
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    var _context = scope.ServiceProvider.GetService<ElearnerAppContext>();
-                    DBInit.SeedDB(_context);
+                    // since datseeder is located in the core, the dataseeder dont know anything about 
+                    // what kind of data persistance or database we use
+                    var service = scope.ServiceProvider.GetService<IDataSeeder>();
+                    service.SeedData();
                 }
             } else {
                 app.UseHsts();
