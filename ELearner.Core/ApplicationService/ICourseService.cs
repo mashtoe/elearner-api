@@ -1,5 +1,6 @@
 ﻿using ELearner.Core.Entity;
 using ELearner.Core.Entity.BusinessObjects;
+using ELearner.Core.Entity.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,5 +19,6 @@ namespace ELearner.Core.ApplicationService {
         CourseBO Update(CourseBO course);
         //Delete one course with id (CRUD: Delete)
         CourseBO Delete(int id);
+        List<CourseBO> GetFilteredOrders(Filter filter);
     }
 }

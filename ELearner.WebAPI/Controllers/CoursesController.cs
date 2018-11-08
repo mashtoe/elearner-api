@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
+using ELearner.Core.Entity.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,8 +18,12 @@ namespace Elearner.API.Controllers {
 
         // GET: api/<controller>
         [HttpGet]
-        public ActionResult<IEnumerable<CourseBO>> Get() {
-            return Ok(_courseService.GetAll());
+        public ActionResult<IEnumerable<CourseBO>> Get([FromQuery]Filter filter) {
+            try {
+                return Ok(_courseService.GetFilteredOrders(filter));
+            } catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET api/<controller>/5

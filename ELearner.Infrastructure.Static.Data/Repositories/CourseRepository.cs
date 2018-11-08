@@ -1,5 +1,7 @@
 ﻿using ELearner.Core.DomainService;
+using ELearner.Core.Entity.Dtos;
 using ELearner.Core.Entity.Entities;
+using ELearner.Core.Utilities.FilterStrategy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,8 +45,15 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             };
         }
 
-        public IEnumerable<Course> GetAll() {
-            return _fakeDb.Courses;
+        public IEnumerable<Course> GetAll(List<IFilterStrategy> filters) {
+            if (filters == null) {
+                return _fakeDb.Courses;
+            }
+            IEnumerable<Course> courses = _fakeDb.Courses;
+            for (int i = 0; i < filters.Count; i++) {
+                courses = filters[i].Filter(courses);
+            }
+            return courses;
         }
 
         public Course Update(Course course) {
