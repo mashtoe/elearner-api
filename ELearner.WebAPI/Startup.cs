@@ -1,4 +1,5 @@
-﻿using Elearner.Infrastructure.Data;
+﻿using System.Net;
+using Elearner.Infrastructure.Data;
 using Elearner.Infrastructure.Data.Facade;
 using Elearner.Infrastructure.Data.UOW;
 using ELearner.Core.ApplicationService;
@@ -11,7 +12,9 @@ using ELearner.Infrastructure.Static.Data.Facade;
 using ELearner.Infrastructure.Static.Data.Repositories;
 using ELearner.Infrastructure.Static.Data.UOW;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -65,7 +68,18 @@ namespace Elearner.API {
                     service.SeedData();
                 }
             } else {
-                app.UseHsts();
+                app.UseExceptionHandler(builder => {
+                    builder.Run(async context => {
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
+                        if (error != null)
+                        {
+                            await context.Response.WriteAsync(error.Error.Message);
+                        }
+                    });
+                });
+                //app.UseHsts();
             }
             // Origins who are allowed to request data from this api is listed here. We allow all http methods and all headers atm
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
