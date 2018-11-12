@@ -32,19 +32,11 @@ namespace Elearner.Infrastructure.Data.Repositories
         {
             return _context.Users;
         }
-        //Update Data
-        public User Update(User entity)
-        {
-            //var stud = _context.Students.Update(entity).Entity;
-            var user = Get(entity.Id);
-            user.Username = entity.Username;
-            user.Role = entity.Role;
-            return user;
-        }
+
         //Delete Data
-        public User Delete(int id)
-        {
+        public User Delete(int id) {
             var userRemoved = Get(id);
+            if (userRemoved == null) return null;
             _context.Remove(userRemoved);
             return userRemoved;
         }

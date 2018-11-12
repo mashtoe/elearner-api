@@ -25,25 +25,12 @@ namespace ELearner.Core.ApplicationService.Services {
             return new UserBO();
         }
 
-        public UserBO Create(UserBO user) {
-            // TODO check if entity is valid, and throw errors if not
-            using (var uow = _facade.UnitOfWork)
-            {
-                //var studentCreated = uow.StudentRepo.Create(_studConv.Convert(student));
-                //student.Username += "1";
-                //if (studentCreated != null) {
-                //    throw new InvalidOperationException();
-                //}
-                var userCreated = uow.UserRepo.Create(_userConv.Convert(user));
-
-                uow.Complete();
-                return _userConv.Convert(userCreated);
-            }
-        }
-
         public UserBO Delete(int id) {
             using (var uow = _facade.UnitOfWork) {
                 var userDeleted = uow.UserRepo.Delete(id);
+                if (userDeleted == null) {
+                    return null;
+                }
                 uow.Complete();
                 return _userConv.Convert(userDeleted);
             }
@@ -68,9 +55,13 @@ namespace ELearner.Core.ApplicationService.Services {
 
         public UserBO Update(UserBO user) {
             using (var uow = _facade.UnitOfWork) {
-                var updatedUser = uow.UserRepo.Update(_userConv.Convert(user));
+                var userFromDb = uow.UserRepo.Get(user.Id);
+                if (userFromDb == null) {
+                    return null;
+                }
+                userFromDb.Username = user.Username;
                 uow.Complete();
-                return _userConv.Convert(updatedUser);
+                return _userConv.Convert(userFromDb);
             }
         }
 

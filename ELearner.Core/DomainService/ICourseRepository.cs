@@ -16,8 +16,6 @@ namespace ELearner.Core.DomainService {
         // (List<IFilterStrategy> filters = null) means filters can be null
         IEnumerable<Course> GetAll(List<IFilterStrategy> filters = null);
         //Update Data
-        Course Update(Course course);
-        //Delete Data
         Course Delete(int id);
         IEnumerable<Course> GetAllById(IEnumerable<int> ids);
     }

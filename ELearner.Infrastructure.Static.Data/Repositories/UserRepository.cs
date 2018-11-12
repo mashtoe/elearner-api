@@ -53,15 +53,6 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             return _fakeDb.Users;
         }
 
-        public User Update(User user) {
-            var userFromDb = Get(user.Id);
-            if (userFromDb == null) return null;
-
-            userFromDb.Username = user.Username;
-            userFromDb.Role = user.Role;
-            return userFromDb;
-        }
-
         public User Delete(int id) {
             var userFromDb = Get(id);
             if (userFromDb == null) return null;

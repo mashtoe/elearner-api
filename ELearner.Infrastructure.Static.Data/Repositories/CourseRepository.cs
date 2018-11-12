@@ -56,14 +56,6 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             return courses;
         }
 
-        public Course Update(Course course) {
-            var entityFromDb = Get(course.Id);
-            if (entityFromDb == null) return null;
-
-            entityFromDb.Name = course.Name;
-            return entityFromDb;
-        }
-
         public Course Delete(int id) {
             var entityFromDb = Get(id);
             if (entityFromDb == null) return null;

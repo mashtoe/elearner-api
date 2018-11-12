@@ -17,8 +17,6 @@ namespace ELearner.Core.DomainService {
         // Should return user with all enrolled courses
         User Get(int id);
         IEnumerable<User> GetAll();
-        //Update Data
-        User Update(User user);
         //Delete Data
         User Delete(int id);
         IEnumerable<User> GetAllById(IEnumerable<int> ids);
