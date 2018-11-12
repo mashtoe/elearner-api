@@ -13,6 +13,12 @@ namespace ELearner.Core.Utilities
     {
         private readonly IConfiguration _config;
 
+        public SymmetricSecurityKey Key {
+            get {
+                return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
+            }
+        }
+
         public TokenGenerator(IConfiguration config)
         {
             _config = config;
@@ -23,12 +29,10 @@ namespace ELearner.Core.Utilities
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username)
+                //new Claim("role", "User")
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8
-            .GetBytes(_config.GetSection("AppSettings:Token").Value));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var creds = new SigningCredentials(Key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor {
                 Subject = new ClaimsIdentity(claims),

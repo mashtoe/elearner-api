@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Elearner.API.Controllers {
+    [Authorize]
     [Route("api/[controller]")]
     public class CoursesController : Controller {
         private readonly ICourseService _courseService;
