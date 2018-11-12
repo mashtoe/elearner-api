@@ -9,5 +9,6 @@ namespace ELearner.Core.Entity.Entities {
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public List<UserCourse> Courses { get; set; }
+        public Role UserRole { get; set; }
     }
 }
