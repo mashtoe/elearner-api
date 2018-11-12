@@ -11,10 +11,13 @@ namespace ELearner.Core.Utilities {
 
         readonly IAuthService _authService;
         readonly ICourseService _courseService;
+        readonly IUserService _userService;
 
-        public DataSeeder(IAuthService authService, ICourseService courseService) {
+
+        public DataSeeder(IAuthService authService, ICourseService courseService, IUserService userService) {
             _authService = authService;
             _courseService = courseService;
+            _userService = userService;
         }
 
         public void SeedData() {
@@ -28,14 +31,14 @@ namespace ELearner.Core.Utilities {
                 Username = "EducatorMan",
                 Password = "secretpassword"
             };
-            _authService.Register(educator);
+            _userService.Promote(_authService.Register(educator).Id);
 
             var admin = new UserRegisterDto() {
                 Username = "AdminMan",
                 Password = "secretpassword"
             };
-            _authService.Register(admin);
-
+            ;
+            _userService.Promote(_userService.Promote(_userService.Promote(_authService.Register(admin).Id).Id).Id);
             List<int> userIds = new List<int>();
             userIds.Add(userCreated.Id);
             var course = new CourseBO() {

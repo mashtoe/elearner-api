@@ -38,6 +38,7 @@ namespace Elearner.Infrastructure.Data.Repositories
             //var stud = _context.Students.Update(entity).Entity;
             var user = Get(entity.Id);
             user.Username = entity.Username;
+            user.UserRole = entity.UserRole;
             return user;
         }
         //Delete Data

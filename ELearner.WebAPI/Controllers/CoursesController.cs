@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Elearner.API.Controllers {
-    [Authorize]
+    //[Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     public class CoursesController : Controller {
         private readonly ICourseService _courseService;

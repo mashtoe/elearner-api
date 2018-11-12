@@ -42,8 +42,8 @@ namespace Elearner.API {
             services.AddScoped<IDataSeeder, DataSeeder>();
 
             // use following line instead for static "db"
-            services.AddScoped<IDataFacade, DataFacadeFakeDB>();
-            //services.AddScoped<IDataFacade, DataFacade>();
+            //services.AddScoped<IDataFacade, DataFacadeFakeDB>();
+            services.AddScoped<IDataFacade, DataFacade>();
             /*
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
@@ -57,9 +57,7 @@ namespace Elearner.API {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
                 options.TokenValidationParameters = new TokenValidationParameters {
                     ValidateAudience = false,
-
                     ValidateIssuer = false,
-
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new TokenGenerator(Configuration).Key,
                     ValidateLifetime = true, //validate the expiration and not before values in the token

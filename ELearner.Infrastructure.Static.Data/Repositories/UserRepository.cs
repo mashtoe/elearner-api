@@ -58,6 +58,7 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             if (userFromDb == null) return null;
 
             userFromDb.Username = user.Username;
+            userFromDb.UserRole = user.UserRole;
             return userFromDb;
         }
 
