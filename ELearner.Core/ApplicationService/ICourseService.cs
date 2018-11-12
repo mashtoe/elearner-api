@@ -7,8 +7,6 @@ using System.Text;
 
 namespace ELearner.Core.ApplicationService {
     public interface ICourseService {
-        //returns new course
-        CourseBO New();
         //save one course (CRUD: Create)
         CourseBO Create(CourseBO course);
         //get one course by id (CRUD: Read)

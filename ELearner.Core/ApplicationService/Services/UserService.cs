@@ -18,9 +18,6 @@ namespace ELearner.Core.ApplicationService.Services {
             _crsConv = new CourseConverter();
             _facade = facade;
         }
-        public UserBO New() {
-            return new UserBO();
-        }
 
         public UserBO Delete(int id) {
             using (var uow = _facade.UnitOfWork) {

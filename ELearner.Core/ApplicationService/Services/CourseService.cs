@@ -19,9 +19,6 @@ namespace ELearner.Core.ApplicationService.Services {
             _userConv = new UserConverter();
             _facade = facade;
         }
-        public CourseBO New() {
-            return new CourseBO();
-        }
 
         public CourseBO Create(CourseBO course) {
             using (var uow = _facade.UnitOfWork) {
