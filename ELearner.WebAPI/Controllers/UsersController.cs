@@ -31,15 +31,12 @@ namespace Elearner.API.Controllers {
             return Ok(_userService.Get(id));
         }
 
-        // POST api/<controller>
-        [HttpPost]
-        public ActionResult<UserBO> Post([FromBody]UserBO student) {
-            return Ok(_userService.Create(student));
-        }
-
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         public ActionResult<UserBO> Put(int id, [FromBody]UserBO student) {
+            if (student == null) {
+                return BadRequest();
+            }
             student.Id = id;
             return Ok(_userService.Update(student));
         }

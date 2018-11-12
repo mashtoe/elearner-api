@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ELearner.Core.DomainService.Facade;
-using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
 using ELearner.Core.Entity.Dtos;
+using ELearner.Core.Entity.Entities;
 using ELearner.Core.Utilities.FilterStrategy;
 
 namespace ELearner.Core.ApplicationService.Services {
@@ -15,16 +12,12 @@ namespace ELearner.Core.ApplicationService.Services {
 
         readonly CourseConverter _crsConv;
         readonly UserConverter _userConv;
-        //readonly IUnitOfWork _uow;
         readonly IDataFacade _facade;
 
         public CourseService(IDataFacade facade) {
             _crsConv = new CourseConverter();
             _userConv = new UserConverter();
             _facade = facade;
-        }
-        public CourseBO New() {
-            return new CourseBO();
         }
 
         public CourseBO Create(CourseBO course) {
@@ -34,12 +27,14 @@ namespace ELearner.Core.ApplicationService.Services {
                 uow.Complete();
                 return _crsConv.Convert(courseCreated);
             }
-                
         }
 
         public CourseBO Delete(int id) {
             using (var uow = _facade.UnitOfWork) {
                 var courseDeleted = uow.CourseRepo.Delete(id);
+                if (courseDeleted == null) {
+                    return null;
+                }
                 uow.Complete();
                 return _crsConv.Convert(courseDeleted);
             }
@@ -49,7 +44,9 @@ namespace ELearner.Core.ApplicationService.Services {
             using (var uow = _facade.UnitOfWork) {
                 var course = _crsConv.Convert(uow.CourseRepo.Get(id));
                 if (course != null) {
-                    course.Users = uow.UserRepo.GetAllById(course.UserIds).Select(s => _userConv.Convert(s)).ToList();
+                    if (course.UserIds != null) {
+                        course.Users = uow.UserRepo.GetAllById(course.UserIds).Select(s => _userConv.Convert(s)).ToList();
+                    }
                 }
                 return course;
             }
@@ -66,7 +63,6 @@ namespace ELearner.Core.ApplicationService.Services {
             using (var uow = _facade.UnitOfWork) {
                 var filterStrats = new List<IFilterStrategy>();
                 if (filter != null) {
-
                     if (filter.FilterQuery != null) {
                         filterStrats.Add(new FilterSearchStrategy() { Query = filter.FilterQuery });
                     }
@@ -77,19 +73,27 @@ namespace ELearner.Core.ApplicationService.Services {
                         filterStrats.Add(new FilterPaginateStrategy() { CurrentPage = filter.CurrentPage, PageSize = filter.PageSize });
                     }
                 }
-                var courses = uow.CourseRepo.GetAll(filterStrats);
+                IEnumerable<Course> courses;
+                if (filterStrats.Count > 0) {
+                    courses = uow.CourseRepo.GetAll(filterStrats);
+                } else {
+                    // if there are no filters return all courses
+                    courses = uow.CourseRepo.GetAll();
+                }
                 return courses.Select(c => _crsConv.Convert(c)).ToList();
             }
         }
 
         public CourseBO Update(CourseBO course) {
             using (var uow = _facade.UnitOfWork) {
-                var updatedCourse = uow.CourseRepo.Update(_crsConv.Convert(course));
+                var courseFromDb = uow.CourseRepo.Get(course.Id);
+                if (courseFromDb == null) {
+                    return null;
+                }
+                courseFromDb.Name = course.Name;
                 uow.Complete();
-                return _crsConv.Convert(updatedCourse);
+                return _crsConv.Convert(courseFromDb);
             }
         }
-
-        
     }
 }

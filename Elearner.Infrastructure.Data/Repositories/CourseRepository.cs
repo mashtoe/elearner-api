@@ -34,15 +34,11 @@ namespace Elearner.Infrastructure.Data.Repositories {
             }
             return courses;
         }
-        //Update Data
-        public Course Update(Course course) {
-            var courseFromDb = Get(course.Id);
-            courseFromDb.Name = course.Name;
-            return courseFromDb;
-        }
+        
         //Delete Data
         public Course Delete(int id) {
             var courseFromDb = Get(id);
+            if (courseFromDb == null) return null;
             _context.Remove(courseFromDb);
             return courseFromDb;
         }

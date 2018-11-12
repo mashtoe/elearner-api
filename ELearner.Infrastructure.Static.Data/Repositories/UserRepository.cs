@@ -25,52 +25,50 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
                 // adding the reference between objects in the fake db
                 foreach (var item in user.Courses) {
                     item.UserID = user.Id;
-                    _fakeDb.UserCourses.Add(item);
+                    _fakeDb.UserCoursesNotSaved.Add(item);
                 }
             }
             user.Courses = null;
-            _fakeDb.Users.Add(user);
+            _fakeDb.UsersNotSaved.Add(user);
             return user;
         }
 
         public User Get(int id) {
-            var user = _fakeDb.Users.FirstOrDefault(s => s.Id == id);
+            var user = _fakeDb.UsersNotSaved.FirstOrDefault(s => s.Id == id);
             // include course ids. In EF we would use Include() method, but here we are using a fake db consisting of lists only,
             // but we have to return the same properties that are returned in the other implementations of the infrastructure layer
 
             List<UserCourse> courses = null;
             if (user != null) {
-                courses = _fakeDb.UserCourses.Where(sc => sc.UserID == id).ToList();
+                courses = _fakeDb.UserCoursesNotSaved.Where(sc => sc.UserID == id).ToList();
+                user.Courses = courses;
             }
             //return new object to avoid messing with the objects in the fake db
-            return new User() {
+            return user;
+            /*return new User() {
                 Username = user.Username,
                 Courses = courses
-            };
+            };*/
         }
 
         public IEnumerable<User> GetAll() {
-            return _fakeDb.Users;
-        }
-
-        public User Update(User user) {
-            var userFromDb = Get(user.Id);
-            if (userFromDb == null) return null;
-
-            userFromDb.Username = user.Username;
-            userFromDb.Role = user.Role;
-            return userFromDb;
+            return _fakeDb.UsersNotSaved;
         }
 
         public User Delete(int id) {
             var userFromDb = Get(id);
             if (userFromDb == null) return null;
-            _fakeDb.Users.Remove(userFromDb);
+            var referencesToRemove = _fakeDb.UserCoursesNotSaved.Where(uc => uc.UserID == id).ToList();
+            int count = referencesToRemove.Count();
+            for (int i = 0; i < count; i++) {
+                _fakeDb.UserCoursesNotSaved.Remove(referencesToRemove[i]);
+            }
+            _fakeDb.UsersNotSaved.Remove(userFromDb);
             return userFromDb;
         }
 
         public IEnumerable<User> GetAllById(IEnumerable<int> ids) {
-            var users = _fakeDb.Users.Where(s => ids.Contains(s.Id));
+            var users = _fakeDb.UsersNotSaved.Where(s => ids.Contains(s.Id));
             return users;
         }
     }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ELearner.Core.DomainService.Facade;
-using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
 
@@ -21,29 +18,13 @@ namespace ELearner.Core.ApplicationService.Services {
             _crsConv = new CourseConverter();
             _facade = facade;
         }
-        public UserBO New() {
-            return new UserBO();
-        }
-
-        public UserBO Create(UserBO user) {
-            // TODO check if entity is valid, and throw errors if not
-            using (var uow = _facade.UnitOfWork)
-            {
-                //var studentCreated = uow.StudentRepo.Create(_studConv.Convert(student));
-                //student.Username += "1";
-                //if (studentCreated != null) {
-                //    throw new InvalidOperationException();
-                //}
-                var userCreated = uow.UserRepo.Create(_userConv.Convert(user));
-
-                uow.Complete();
-                return _userConv.Convert(userCreated);
-            }
-        }
 
         public UserBO Delete(int id) {
             using (var uow = _facade.UnitOfWork) {
                 var userDeleted = uow.UserRepo.Delete(id);
+                if (userDeleted == null) {
+                    return null;
+                }
                 uow.Complete();
                 return _userConv.Convert(userDeleted);
             }
@@ -53,7 +34,9 @@ namespace ELearner.Core.ApplicationService.Services {
             using (var uow = _facade.UnitOfWork) {
                 var user = _userConv.Convert(uow.UserRepo.Get(id));
                 if (user != null) {
-                    user.Courses = uow.CourseRepo.GetAllById(user.CourseIds).Select(c => _crsConv.Convert(c)).ToList();
+                    if (user.CourseIds != null) {
+                        user.Courses = uow.CourseRepo.GetAllById(user.CourseIds).Select(c => _crsConv.Convert(c)).ToList();
+                    }
                 }
                 return user;
             }
@@ -68,9 +51,13 @@ namespace ELearner.Core.ApplicationService.Services {
 
         public UserBO Update(UserBO user) {
             using (var uow = _facade.UnitOfWork) {
-                var updatedUser = uow.UserRepo.Update(_userConv.Convert(user));
+                var userFromDb = uow.UserRepo.Get(user.Id);
+                if (userFromDb == null) {
+                    return null;
+                }
+                userFromDb.Username = user.Username;
                 uow.Complete();
-                return _userConv.Convert(updatedUser);
+                return _userConv.Convert(userFromDb);
             }
         }
 

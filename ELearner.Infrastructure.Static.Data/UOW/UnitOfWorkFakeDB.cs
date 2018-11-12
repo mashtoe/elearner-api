@@ -12,7 +12,6 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
         public IUserRepository UserRepo { get; }
         public ICourseRepository CourseRepo { get; }
 
-        private bool saveChanges;
         readonly FakeDB _db;
         readonly StaticDbRollback _rollbackDb;
 
@@ -25,34 +24,39 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
         }
 
         public int Complete() {
-            saveChanges = true;
+            _rollbackDb.Save(_db);
             return 0;
         }
 
         public void Dispose() {
-            if (saveChanges == false) {
-                // rollback
-                _rollbackDb.Rollback(_db);
-            }
+            //_rollbackDb.Rollback(_db);
         }
 
         private class StaticDbRollback {
+            /*
             private List<Course> courses;
             private List<User> students;
             private List<UserCourse> studentCourses;
-
+            */
 
             public StaticDbRollback(FakeDB db) {
-
+                db.UsersNotSaved = new List<User>(db.Users);
+                db.CoursesNotSaved = new List<Course>(db.Courses);
+                db.UserCoursesNotSaved = new List<UserCourse>(db.UserCourses);
+                /*
                 students = new List<User>(db.Users);
                 courses = new List<Course>(db.Courses);
-                studentCourses = new List<UserCourse>(db.UserCourses);
+                studentCourses = new List<UserCourse>(db.UserCourses);*/
             }
 
-            public void Rollback(FakeDB db) {
+            public void Save(FakeDB db) {
+                db.Users = db.UsersNotSaved;
+                db.Courses = db.CoursesNotSaved;
+                db.UserCourses = db.UserCoursesNotSaved;
+                /*
                 db.Users = students;
                 db.Courses = courses;
-                db.UserCourses = studentCourses;
+                db.UserCourses = studentCourses;*/
             }
         }
     }

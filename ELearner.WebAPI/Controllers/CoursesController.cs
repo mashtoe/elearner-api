@@ -37,12 +37,18 @@ namespace Elearner.API.Controllers {
         // POST api/<controller>
         [HttpPost]
         public ActionResult<CourseBO> Post([FromBody]CourseBO course) {
+            if (course == null) {
+                return BadRequest();
+            }
             return Ok(_courseService.Create(course));
         }
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         public ActionResult<CourseBO> Put(int id, [FromBody]CourseBO course) {
+            if (course == null) {
+                return BadRequest();
+            }
             course.Id = id;
             return Ok(_courseService.Update(course));
         }
