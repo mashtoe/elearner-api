@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ELearner.Core.DomainService.Facade;
-using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
 
@@ -40,7 +37,9 @@ namespace ELearner.Core.ApplicationService.Services {
             using (var uow = _facade.UnitOfWork) {
                 var user = _userConv.Convert(uow.UserRepo.Get(id));
                 if (user != null) {
-                    user.Courses = uow.CourseRepo.GetAllById(user.CourseIds).Select(c => _crsConv.Convert(c)).ToList();
+                    if (user.CourseIds != null) {
+                        user.Courses = uow.CourseRepo.GetAllById(user.CourseIds).Select(c => _crsConv.Convert(c)).ToList();
+                    }
                 }
                 return user;
             }

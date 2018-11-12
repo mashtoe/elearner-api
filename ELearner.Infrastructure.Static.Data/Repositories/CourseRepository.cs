@@ -23,33 +23,31 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
                 // adding the reference between objects in the fake db
                 foreach (var item in course.Users) {
                     item.CourseId = course.Id;
-                    _fakeDb.UserCourses.Add(item);
+                    _fakeDb.UserCoursesNotSaved.Add(item);
                 }
             }
             course.Users = null;
-            _fakeDb.Courses.Add(course);
+            _fakeDb.CoursesNotSaved.Add(course);
 
             return course;
         }
 
         public Course Get(int id) {
-            var course =  _fakeDb.Courses.FirstOrDefault(c => c.Id == id);
+            var course =  _fakeDb.CoursesNotSaved.FirstOrDefault(c => c.Id == id);
             List<UserCourse> users = null;
             if (course != null) {
-                users = _fakeDb.UserCourses.Where(sc => sc.CourseId == id).ToList();
+                users = _fakeDb.UserCoursesNotSaved.Where(sc => sc.CourseId == id).ToList();
+                course.Users = users;
             }
             //return new object to avoid messing with the objects in the fake db
-            return new Course() {
-                Name = course.Name,
-                Users = users
-            };
+            return course;
         }
 
         public IEnumerable<Course> GetAll(List<IFilterStrategy> filters) {
             if (filters == null) {
-                return _fakeDb.Courses;
+                return _fakeDb.CoursesNotSaved;
             }
-            IEnumerable<Course> courses = _fakeDb.Courses;
+            IEnumerable<Course> courses = _fakeDb.CoursesNotSaved;
             for (int i = 0; i < filters.Count; i++) {
                 courses = filters[i].Filter(courses);
             }
@@ -59,12 +57,17 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
         public Course Delete(int id) {
             var entityFromDb = Get(id);
             if (entityFromDb == null) return null;
-            _fakeDb.Courses.Remove(entityFromDb);
+            var referencesToRemove = _fakeDb.UserCoursesNotSaved.Where(uc => uc.CourseId == id).ToList();
+            int count = referencesToRemove.Count();
+            for (int i = 0; i < count; i++) {
+                _fakeDb.UserCoursesNotSaved.Remove(referencesToRemove[i]);
+            }
+            _fakeDb.CoursesNotSaved.Remove(entityFromDb);
             return entityFromDb;
         }
 
         public IEnumerable<Course> GetAllById(IEnumerable<int> ids) {
-            var courses = _fakeDb.Courses.Where(c => ids.Contains(c.Id));
+            var courses = _fakeDb.CoursesNotSaved.Where(c => ids.Contains(c.Id));
             return courses;
         }
     }

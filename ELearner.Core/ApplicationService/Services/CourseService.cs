@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ELearner.Core.DomainService.Facade;
-using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
 using ELearner.Core.Entity.Dtos;
@@ -16,7 +12,6 @@ namespace ELearner.Core.ApplicationService.Services {
 
         readonly CourseConverter _crsConv;
         readonly UserConverter _userConv;
-        //readonly IUnitOfWork _uow;
         readonly IDataFacade _facade;
 
         public CourseService(IDataFacade facade) {
@@ -35,7 +30,6 @@ namespace ELearner.Core.ApplicationService.Services {
                 uow.Complete();
                 return _crsConv.Convert(courseCreated);
             }
-                
         }
 
         public CourseBO Delete(int id) {
@@ -53,7 +47,9 @@ namespace ELearner.Core.ApplicationService.Services {
             using (var uow = _facade.UnitOfWork) {
                 var course = _crsConv.Convert(uow.CourseRepo.Get(id));
                 if (course != null) {
-                    course.Users = uow.UserRepo.GetAllById(course.UserIds).Select(s => _userConv.Convert(s)).ToList();
+                    if (course.UserIds != null) {
+                        course.Users = uow.UserRepo.GetAllById(course.UserIds).Select(s => _userConv.Convert(s)).ToList();
+                    }
                 }
                 return course;
             }
@@ -102,7 +98,5 @@ namespace ELearner.Core.ApplicationService.Services {
                 return _crsConv.Convert(courseFromDb);
             }
         }
-
-        
     }
 }

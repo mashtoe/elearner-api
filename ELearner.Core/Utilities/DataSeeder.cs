@@ -58,6 +58,7 @@ namespace ELearner.Core.Utilities {
                 */
                 var crs = new CourseBO() {
                     Name = " Course" + i,
+                    UserIds = userIds
                 };
                 _courseService.Create(crs);
             }
