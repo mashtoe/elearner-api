@@ -4,6 +4,6 @@ using System.Text;
 
 namespace ELearner.Core.Entity {
     public enum Role {
-       User, Educator, Admin
+       Student, Educator, Admin
     }
 }
