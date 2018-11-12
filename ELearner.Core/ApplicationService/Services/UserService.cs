@@ -73,5 +73,16 @@ namespace ELearner.Core.ApplicationService.Services {
                 return _userConv.Convert(updatedUser);
             }
         }
+
+        public UserBO Promote(int id) {
+            using (var uow = _facade.UnitOfWork) {
+                var userFromDb = uow.UserRepo.Get(id);
+                if ((int)userFromDb.Role < 2) {
+                    userFromDb.Role++;
+                }
+                uow.Complete();
+                return _userConv.Convert(userFromDb);
+            }
+        }
     }
 }

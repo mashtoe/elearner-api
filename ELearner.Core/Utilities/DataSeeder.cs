@@ -11,25 +11,34 @@ namespace ELearner.Core.Utilities {
 
         readonly IAuthService _authService;
         readonly ICourseService _courseService;
+        readonly IUserService _userService;
 
-        public DataSeeder(IAuthService authService, ICourseService courseService) {
+
+        public DataSeeder(IAuthService authService, ICourseService courseService, IUserService userService) {
             _authService = authService;
             _courseService = courseService;
+            _userService = userService;
         }
 
         public void SeedData() {
-            var user1 = new UserRegisterDto() {
-               Username = "BoringManOG",
+            var user = new UserRegisterDto() {
+               Username = "UserMan",
                Password = "secretpassword"
             };
-            _authService.Register(user1);
+            var userCreated = _authService.Register(user);
 
-            var user2 = new UserRegisterDto() {
-                Username = "FunnyMan2",
-                Password = "verysecret"
+            var educator = new UserRegisterDto() {
+                Username = "EducatorMan",
+                Password = "secretpassword"
             };
-            var userCreated = _authService.Register(user2);
+            _userService.Promote(_authService.Register(educator).Id);
 
+            var admin = new UserRegisterDto() {
+                Username = "AdminMan",
+                Password = "secretpassword"
+            };
+            ;
+            _userService.Promote(_userService.Promote(_userService.Promote(_authService.Register(admin).Id).Id).Id);
             List<int> userIds = new List<int>();
             userIds.Add(userCreated.Id);
             var course = new CourseBO() {
@@ -38,13 +47,15 @@ namespace ELearner.Core.Utilities {
             };
             _courseService.Create(course);
 
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 5; i++) {
+                /*
                 if (i % 10 == 0) {
                     var crs2 = new CourseBO() {
                         Name = " A Course" + i,
                     };
                     _courseService.Create(crs2);
                 }
+                */
                 var crs = new CourseBO() {
                     Name = " Course" + i,
                 };

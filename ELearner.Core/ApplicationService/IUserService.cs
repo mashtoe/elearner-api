@@ -20,6 +20,8 @@ namespace ELearner.Core.ApplicationService
         UserBO Update(UserBO user);
         //Delete one user with id (CRUD: Delete)
         UserBO Delete(int id);
+        // Upgrades the users UserRole. (User => Educator) (Educator => Admin)
+        UserBO Promote(int id);
 
     }
 }

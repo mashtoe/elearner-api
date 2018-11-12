@@ -11,6 +11,7 @@ using ELearner.Core.Utilities;
 using ELearner.Infrastructure.Static.Data.Facade;
 using ELearner.Infrastructure.Static.Data.Repositories;
 using ELearner.Infrastructure.Static.Data.UOW;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -19,7 +20,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using System;
+using System.Text;
 //using ELearner.Infrastructure.Data.Repositories;
 
 namespace Elearner.API {
@@ -41,8 +45,28 @@ namespace Elearner.API {
             services.AddScoped<IDataSeeder, DataSeeder>();
 
             // use following line instead for static "db"
-            services.AddScoped<IDataFacade, DataFacadeFakeDB>();
-            //services.AddScoped<IDataFacade, DataFacade>();
+            //services.AddScoped<IDataFacade, DataFacadeFakeDB>();
+            services.AddScoped<IDataFacade, DataFacade>();
+            /*
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => {
+                    options.TokenValidationParameters = new TokenValidationParameters {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });*/
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters {
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new TokenGenerator(Configuration).Key,
+                    ValidateLifetime = true, //validate the expiration and not before values in the token
+                    ClockSkew = TimeSpan.FromMinutes(5) //5 minute tolerance for the expiration date
+                };
+            });
 
             // Here Cross-Origin Resource Sharing is added
             // Important that this line is before AddMvc
@@ -84,7 +108,7 @@ namespace Elearner.API {
             }
             // Origins who are allowed to request data from this api is listed here. We allow all http methods and all headers atm
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
-
+            app.UseAuthentication();
             //Lars outcommented the line below in his Clean Architecture RestAPI setup guide. will figure out why when i watch the next series
             // --means we can go to localhost witohut using https
             //app.UseHttpsRedirection();
