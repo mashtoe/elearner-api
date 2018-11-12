@@ -18,7 +18,7 @@ namespace ELearner.Core.Entity.Converters {
                     CourseId = cId,
                     UserID = user.Id
                 }).ToList(),
-                UserRole = user.UserRole
+                Role = user.Role
             };
             return converted;
         }
@@ -31,7 +31,7 @@ namespace ELearner.Core.Entity.Converters {
                 Id = user.Id,
                 Username = user.Username,
                 CourseIds = user.Courses?.Select(c => c.CourseId).ToList(),
-                UserRole = user.UserRole
+                Role = user.Role
             };
         }
 

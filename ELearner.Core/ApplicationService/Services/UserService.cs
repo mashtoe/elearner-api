@@ -77,8 +77,8 @@ namespace ELearner.Core.ApplicationService.Services {
         public UserBO Promote(int id) {
             using (var uow = _facade.UnitOfWork) {
                 var userFromDb = uow.UserRepo.Get(id);
-                if ((int)userFromDb.UserRole < 2) {
-                    userFromDb.UserRole++;
+                if ((int)userFromDb.Role < 2) {
+                    userFromDb.Role++;
                 }
                 uow.Complete();
                 return _userConv.Convert(userFromDb);

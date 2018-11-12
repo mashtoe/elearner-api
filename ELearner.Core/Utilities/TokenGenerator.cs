@@ -29,7 +29,7 @@ namespace ELearner.Core.Utilities
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim("role", user.UserRole.ToString())
+                new Claim("role", user.Role.ToString())
             };
 
             var creds = new SigningCredentials(Key, SecurityAlgorithms.HmacSha512Signature);
