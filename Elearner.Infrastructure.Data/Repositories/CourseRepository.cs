@@ -25,16 +25,15 @@ namespace Elearner.Infrastructure.Data.Repositories {
             return _context.Courses.Include(c => c.Users).FirstOrDefault(course => course.Id == id);
         }
         public IEnumerable<Course> GetAll(List<IFilterStrategy> filters) {
-            if (filters == null) {
-                return _context.Courses;
-            }
             IEnumerable<Course> courses = _context.Courses;
-            for (int i = 0; i < filters.Count; i++) {
-                courses = filters[i].Filter(courses);
+            if (filters != null) {
+                for (int i = 0; i < filters.Count; i++) {
+                    courses = filters[i].Filter(courses);
+                }
             }
             return courses;
         }
-        
+
         //Delete Data
         public Course Delete(int id) {
             var courseFromDb = Get(id);
@@ -47,5 +46,7 @@ namespace Elearner.Infrastructure.Data.Repositories {
             var courses = _context.Courses.Where(c => ids.Contains(c.Id));
             return courses;
         }
+
+        
     }
 }

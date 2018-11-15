@@ -20,7 +20,7 @@ namespace Elearner.API.Controllers {
 
         // GET: api/<controller>
         [HttpGet]
-        public ActionResult<IEnumerable<CourseBO>> Get([FromQuery]Filter filter) {
+        public ActionResult<CoursePaginateDto> Get([FromQuery]Filter filter) {
             try {
                 return Ok(_courseService.GetFilteredOrders(filter));
             } catch (Exception ex) {
