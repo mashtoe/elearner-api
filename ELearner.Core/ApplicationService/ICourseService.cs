@@ -17,6 +17,6 @@ namespace ELearner.Core.ApplicationService {
         CourseBO Update(CourseBO course);
         //Delete one course with id (CRUD: Delete)
         CourseBO Delete(int id);
-        List<CourseBO> GetFilteredOrders(Filter filter);
+        CoursePaginateDto GetFilteredOrders(Filter filter);
     }
 }

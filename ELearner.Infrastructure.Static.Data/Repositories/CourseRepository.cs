@@ -44,12 +44,11 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
         }
 
         public IEnumerable<Course> GetAll(List<IFilterStrategy> filters) {
-            if (filters == null) {
-                return _fakeDb.CoursesNotSaved;
-            }
             IEnumerable<Course> courses = _fakeDb.CoursesNotSaved;
-            for (int i = 0; i < filters.Count; i++) {
-                courses = filters[i].Filter(courses);
+            if (filters != null) {
+                for (int i = 0; i < filters.Count; i++) {
+                    courses = filters[i].Filter(courses);
+                }
             }
             return courses;
         }

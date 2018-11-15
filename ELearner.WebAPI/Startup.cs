@@ -45,8 +45,8 @@ namespace Elearner.API {
             services.AddScoped<IDataSeeder, DataSeeder>();
 
             // use following line instead for static "db"
-            //services.AddScoped<IDataFacade, DataFacadeFakeDB>();
-            services.AddScoped<IDataFacade, DataFacade>();
+            services.AddScoped<IDataFacade, DataFacadeFakeDB>();
+            //services.AddScoped<IDataFacade, DataFacade>();
             /*
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {

@@ -59,9 +59,10 @@ namespace ELearner.Core.ApplicationService.Services {
             }
         }
 
-        public List<CourseBO> GetFilteredOrders(Filter filter) {
+        public CoursePaginateDto GetFilteredOrders(Filter filter) {
             using (var uow = _facade.UnitOfWork) {
                 var filterStrats = new List<IFilterStrategy>();
+                IFilterStrategy paginateStrat = null;
                 if (filter != null) {
                     if (filter.FilterQuery != null) {
                         filterStrats.Add(new FilterSearchStrategy() { Query = filter.FilterQuery });
@@ -70,17 +71,23 @@ namespace ELearner.Core.ApplicationService.Services {
                         filterStrats.Add(new FilterOrderByNameStategy() { OrderBy = filter.OrderBy });
                     }
                     if (filter.CurrentPage > -1 && filter.PageSize > 0) {
-                        filterStrats.Add(new FilterPaginateStrategy() { CurrentPage = filter.CurrentPage, PageSize = filter.PageSize });
+                        paginateStrat =  new FilterPaginateStrategy() { CurrentPage = filter.CurrentPage, PageSize = filter.PageSize };
                     }
                 }
                 IEnumerable<Course> courses;
-                if (filterStrats.Count > 0) {
+                var count = 0;
+                if (filterStrats.Count > 0 || paginateStrat != null) {
+                    count = uow.CourseRepo.GetAll(filterStrats).Count();
+                    if (paginateStrat != null) filterStrats.Add(paginateStrat);
                     courses = uow.CourseRepo.GetAll(filterStrats);
                 } else {
                     // if there are no filters return all courses
+                    count = uow.CourseRepo.GetAll().Count();
                     courses = uow.CourseRepo.GetAll();
                 }
-                return courses.Select(c => _crsConv.Convert(c)).ToList();
+                var coursesConvereted = courses.Select(c => _crsConv.Convert(c)).ToList();
+
+                return new CoursePaginateDto() { Total = count, Courses = coursesConvereted};
             }
         }
 
