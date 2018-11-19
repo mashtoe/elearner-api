@@ -20,8 +20,9 @@ namespace Elearner.Infrastructure.Data {
         public DbSet<Course> Courses { get; set; }
         public DbSet<UserCourse> UserCourses { get; set; }
         public DbSet<Section> Sections {get; set;}
-
         public DbSet<Lesson> Lessons {get; set;}
+
+        public DbSet<Category> Categories {get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             #region Many-Many User Course

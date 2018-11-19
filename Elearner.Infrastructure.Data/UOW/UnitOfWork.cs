@@ -14,6 +14,7 @@ namespace Elearner.Infrastructure.Data.UOW
         public ISectionRepository SectionRepo {get; }
 
         public ILessonRepository LessonRepo {get;}
+        public ICategoryRepository CategoryRepo {get;}
 
         private ElearnerAppContext _context;
 
@@ -24,6 +25,7 @@ namespace Elearner.Infrastructure.Data.UOW
             CourseRepo = new CourseRepository(_context);
             SectionRepo = new SectionRepository(_context);
             LessonRepo = new LessonRepository(_context);
+            CategoryRepo = new CategoryRepository(_context);
         }
 
         /// <summary>
