@@ -12,8 +12,8 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
         public IUserRepository UserRepo { get; }
         public ICourseRepository CourseRepo { get; }
         public ISectionRepository SectionRepo{get;}
-
         public ILessonRepository LessonRepo{get;}
+        public ICategoryRepository CategoryRepo {get;}
 
         readonly FakeDB _db;
         readonly StaticDbRollback _rollbackDb;
@@ -26,6 +26,7 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
             CourseRepo = new CourseRepository(_db);
             SectionRepo = new SectionRepository(_db);
             LessonRepo = new LessonRepository(_db);
+            CategoryRepo = new CategoryRepository(_db);
         }
 
         public int Complete() {
