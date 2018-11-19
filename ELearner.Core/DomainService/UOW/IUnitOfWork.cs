@@ -9,6 +9,7 @@ namespace ELearner.Core.DomainService.UOW
         // access to all repos, like a facade
         IUserRepository UserRepo { get; }
         ICourseRepository CourseRepo { get; }
+        ISectionRepository SectionRepo{get;}
         int Complete();
     }
 }
