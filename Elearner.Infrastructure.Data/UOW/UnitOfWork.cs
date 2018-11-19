@@ -11,6 +11,8 @@ namespace Elearner.Infrastructure.Data.UOW
         public IUserRepository UserRepo { get; }
         public ICourseRepository CourseRepo { get; }
 
+        public ISectionRepository SectionRepo {get; }
+
         private ElearnerAppContext _context;
 
         public UnitOfWork(DbContextOptions<ElearnerAppContext> optionsBuilder)
@@ -18,6 +20,7 @@ namespace Elearner.Infrastructure.Data.UOW
             _context = new ElearnerAppContext(optionsBuilder);
             UserRepo = new UserRepository(_context);
             CourseRepo = new CourseRepository(_context);
+            SectionRepo = new SectionRepository(_context);
         }
 
         /// <summary>
