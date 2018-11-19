@@ -11,6 +11,7 @@ namespace ELearner.Core.DomainService.UOW
         ICourseRepository CourseRepo { get; }
         ISectionRepository SectionRepo{get;}
         ILessonRepository LessonRepo {get;}
+        ICategoryRepository CategoryRepo {get;}
         int Complete();
     }
 }
