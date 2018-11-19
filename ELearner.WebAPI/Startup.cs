@@ -41,6 +41,7 @@ namespace Elearner.API {
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ISectionService, SectionService>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IDataSeeder, DataSeeder>();
 
