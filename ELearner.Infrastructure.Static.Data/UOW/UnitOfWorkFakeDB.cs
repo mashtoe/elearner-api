@@ -11,8 +11,7 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
 
         public IUserRepository UserRepo { get; }
         public ICourseRepository CourseRepo { get; }
-
-        public ISectionRepository SectionRepo => throw new NotImplementedException();
+        public ISectionRepository SectionRepo{get;}
 
         readonly FakeDB _db;
         readonly StaticDbRollback _rollbackDb;
@@ -23,6 +22,7 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
 
             UserRepo = new UserRepository(_db);
             CourseRepo = new CourseRepository(_db);
+            SectionRepo = new SectionRepository(_db);
         }
 
         public int Complete() {
@@ -45,6 +45,7 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
                 db.UsersNotSaved = new List<User>(db.Users);
                 db.CoursesNotSaved = new List<Course>(db.Courses);
                 db.UserCoursesNotSaved = new List<UserCourse>(db.UserCourses);
+                db.SectionsNotSaved = new List<Section>(db.Sections);
                 /*
                 students = new List<User>(db.Users);
                 courses = new List<Course>(db.Courses);
@@ -55,6 +56,7 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
                 db.Users = db.UsersNotSaved;
                 db.Courses = db.CoursesNotSaved;
                 db.UserCourses = db.UserCoursesNotSaved;
+                db.Sections = db.SectionsNotSaved;
                 /*
                 db.Users = students;
                 db.Courses = courses;
