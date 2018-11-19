@@ -7,11 +7,11 @@ namespace ELearner.Core.ApplicationService
     {
         SectionBO Create(SectionBO section);
         SectionBO Get(int id);
-        //returns all users (CRUD: Read)
+        //returns all sections (CRUD: Read)
         List<SectionBO> GetAll();
         //Update  (CRUD: Update)
         SectionBO Update(SectionBO section);
-        //Delete one user with id (CRUD: Delete)
+        //Delete one section with id (CRUD: Delete)
         SectionBO Delete(int id);
     }
 }

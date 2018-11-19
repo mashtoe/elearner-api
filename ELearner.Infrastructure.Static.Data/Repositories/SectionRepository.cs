@@ -11,7 +11,6 @@ namespace ELearner.Infrastructure.Static.Data.Repositories
         public SectionRepository(FakeDB fakeDB)
         {
             _fakeDB = fakeDB;
-
         }
         public Section Create(Section section)
         {

@@ -16,10 +16,14 @@ namespace ELearner.Infrastructure.Static.Data {
         public List<UserCourse> UserCourses = new List<UserCourse>();
         public List<Section> Sections = new List<Section>();
 
+        public List<Lesson> Lessons = new List<Lesson>();
+
         public List<User> UsersNotSaved = new List<User>();
         public List<Course> CoursesNotSaved = new List<Course>();
         public List<UserCourse> UserCoursesNotSaved = new List<UserCourse>();
         public List<Section> SectionsNotSaved = new List<Section>();
+
+        public List<Lesson> LessonsNotSaved = new List<Lesson>();
 
         private FakeDB() {
 
