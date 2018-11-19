@@ -8,7 +8,7 @@ namespace ELearner.Core.DomainService
     {
         //Create Data
         //No Id on Enter, but Id on exit
-        Section Create(Section segment);
+        Section Create(Section section);
         //Read Data
          Section Get(int id);
         IEnumerable<Section> GetAll();

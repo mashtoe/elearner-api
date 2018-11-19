@@ -12,6 +12,8 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
         public IUserRepository UserRepo { get; }
         public ICourseRepository CourseRepo { get; }
 
+        public ISectionRepository SectionRepo => throw new NotImplementedException();
+
         readonly FakeDB _db;
         readonly StaticDbRollback _rollbackDb;
 
