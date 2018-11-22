@@ -13,7 +13,8 @@ namespace ELearner.Core.Entity.Converters
             return new Section()
             {
                 Id = section.Id,
-                Title = section.Title
+                Title = section.Title,
+                CourseId = section.CourseId
             };
         }
 
@@ -25,7 +26,10 @@ namespace ELearner.Core.Entity.Converters
             return new SectionBO()
             {
                 Id = section.Id,
-                Title = section.Title
+                Title = section.Title,
+                CourseId = section.CourseId,
+
+                Course = new CourseConverter().Convert(section.Course)
             };
         }
     }
