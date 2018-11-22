@@ -9,10 +9,12 @@ namespace ELearner.Core.ApplicationService.Services
     public class SectionService : ISectionService
     {
         readonly SectionConverter _sectionConv;
+        readonly CourseConverter _crsConv;
         readonly IDataFacade _facade;
         public SectionService(IDataFacade facade)
         {
             _sectionConv = new SectionConverter();
+            _crsConv = new CourseConverter();
             _facade = facade;
         }
 
@@ -31,6 +33,11 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork)
             {
                 var section = _sectionConv.Convert(uow.SectionRepo.Get(id));
+                if (section != null)
+                {
+                    section.Course = _crsConv.Convert(uow.CourseRepo.Get(section.CourseId));
+                }
+                uow.Complete();
                
                 return section;
             }
@@ -52,7 +59,9 @@ namespace ELearner.Core.ApplicationService.Services
                 {
                     return null;
                 }
+
                 sectionFromDb.Title = section.Title;
+                sectionFromDb.CourseId = section.CourseId;
                 uow.Complete();
                 return _sectionConv.Convert(sectionFromDb);
             }

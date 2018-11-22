@@ -12,11 +12,13 @@ namespace ELearner.Core.ApplicationService.Services {
 
         readonly CourseConverter _crsConv;
         readonly UserConverter _userConv;
+        readonly SectionConverter _secConverter;
         readonly IDataFacade _facade;
 
         public CourseService(IDataFacade facade) {
             _crsConv = new CourseConverter();
             _userConv = new UserConverter();
+            _secConverter = new SectionConverter();
             _facade = facade;
         }
 
@@ -31,12 +33,20 @@ namespace ELearner.Core.ApplicationService.Services {
 
         public CourseBO Delete(int id) {
             using (var uow = _facade.UnitOfWork) {
-                var courseDeleted = uow.CourseRepo.Delete(id);
-                if (courseDeleted == null) {
+                var courseToDelete = Get(id);
+                if (courseToDelete == null) {
                     return null;
                 }
+                if (courseToDelete.SectionIds != null)
+                {
+                    foreach (var Id in courseToDelete?.SectionIds)
+                    {
+                        uow.SectionRepo.Delete(Id);
+                    }
+                }
+                courseToDelete = _crsConv.Convert(uow.CourseRepo.Delete(id));
                 uow.Complete();
-                return _crsConv.Convert(courseDeleted);
+                return courseToDelete;
             }
         }
 
@@ -46,6 +56,10 @@ namespace ELearner.Core.ApplicationService.Services {
                 if (course != null) {
                     if (course.UserIds != null) {
                         course.Users = uow.UserRepo.GetAllById(course.UserIds).Select(s => _userConv.Convert(s)).ToList();
+                    }
+                    if(course.SectionIds != null) {
+                        course.Sections = uow.SectionRepo.GetAllById(course.SectionIds)
+                        .Select(s => _secConverter.Convert(s)).ToList();
                     }
                 }
                 return course;
@@ -58,7 +72,6 @@ namespace ELearner.Core.ApplicationService.Services {
                 return courses.Select(c => _crsConv.Convert(c)).ToList();
             }
         }
-
         public CoursePaginateDto GetFilteredOrders(Filter filter) {
             using (var uow = _facade.UnitOfWork) {
                 var filterStrats = new List<IFilterStrategy>();
