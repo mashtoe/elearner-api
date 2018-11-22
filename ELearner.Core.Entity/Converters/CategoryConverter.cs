@@ -14,7 +14,8 @@ namespace ELearner.Core.Entity.Converters
             return new Category()
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                CourseId = category.CourseId
             };
         }
 
@@ -27,7 +28,9 @@ namespace ELearner.Core.Entity.Converters
             return new CategoryBO()
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                CourseId = category.CourseId,
+                Course = new CourseConverter().Convert(category.Course)
             };
         }
     }
