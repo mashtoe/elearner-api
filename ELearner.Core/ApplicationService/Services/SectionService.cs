@@ -10,11 +10,13 @@ namespace ELearner.Core.ApplicationService.Services
     {
         readonly SectionConverter _sectionConv;
         readonly CourseConverter _crsConv;
+        readonly LessonConverter _lesConv;
         readonly IDataFacade _facade;
         public SectionService(IDataFacade facade)
         {
             _sectionConv = new SectionConverter();
             _crsConv = new CourseConverter();
+            _lesConv = new LessonConverter();
             _facade = facade;
         }
 
@@ -36,6 +38,10 @@ namespace ELearner.Core.ApplicationService.Services
                 if (section != null)
                 {
                     section.Course = _crsConv.Convert(uow.CourseRepo.Get(section.CourseId));
+
+                    section.Lessons = uow.LessonRepo.GetAllById(section.LessonIds)
+                    .Select(l => _lesConv.Convert(l))
+                    .ToList();
                 }
                 uow.Complete();
                
@@ -70,13 +76,21 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                var sectionDeleted = uow.SectionRepo.Delete(id);
-                if (sectionDeleted == null)
+                var sectionToDelete = Get(id);
+                if (sectionToDelete == null)
                 {
                     return null;
                 }
+                if (sectionToDelete.LessonIds != null)
+                {
+                    foreach (var Id in sectionToDelete?.LessonIds)
+                    {
+                        uow.LessonRepo.Delete(Id);
+                    }
+                }
+                sectionToDelete = _sectionConv.Convert(uow.SectionRepo.Delete(id));
                 uow.Complete();
-                return _sectionConv.Convert(sectionDeleted);
+                return sectionToDelete;
             }
         }
     }

@@ -9,10 +9,12 @@ namespace ELearner.Core.ApplicationService.Services
     public class LessonService : ILessonService
     {
         readonly LessonConverter _lessonConv;
+        readonly SectionConverter _secConv;
         readonly IDataFacade _facade;
         public LessonService(IDataFacade facade)
         {
             _lessonConv = new LessonConverter();
+            _secConv = new SectionConverter();
             _facade = facade;
         }
 
@@ -32,6 +34,10 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork)
             {
                 var lesson = _lessonConv.Convert(uow.LessonRepo.Get(id));
+                if (lesson != null)
+                {
+                    lesson.Section = _secConv.Convert(uow.SectionRepo.Get(lesson.SectionId));
+                }
 
                 return lesson;
             }
@@ -56,6 +62,7 @@ namespace ELearner.Core.ApplicationService.Services
                     return null;
                 }
                 lessonFromDb.Title = lesson.Title;
+                lessonFromDb.SectionId = lesson.SectionId;
                 uow.Complete();
                 return _lessonConv.Convert(lessonFromDb);
             }
