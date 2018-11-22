@@ -64,8 +64,11 @@ namespace ELearner.Core.ApplicationService.Services {
                 var filterStrats = new List<IFilterStrategy>();
                 IFilterStrategy paginateStrat = null;
                 if (filter != null) {
-                    if (filter.FilterQuery != null) {
-                        filterStrats.Add(new FilterSearchStrategy() { Query = filter.FilterQuery });
+                    if (filter.FilterQueries != null) {
+                        foreach (var item in filter.FilterQueries)
+                        {
+                            filterStrats.Add(new FilterSearchStrategy() { Query = item });
+                        }
                     }
                     if (filter.OrderBy != null) {
                         filterStrats.Add(new FilterOrderByNameStategy() { OrderBy = filter.OrderBy });

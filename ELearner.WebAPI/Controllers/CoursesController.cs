@@ -18,11 +18,40 @@ namespace Elearner.API.Controllers {
             _courseService = courseService;
         }
 
+
+        //// GET: api/<controller>
+        //[HttpGet]
+        //public ActionResult<CoursePaginateDto> Get([FromQuery]Filter filter)
+        //{
+        //    try
+        //    {
+        //        return Ok(_courseService.GetFilteredOrders(filter));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
         // GET: api/<controller>
-        [HttpGet]
-        public ActionResult<CoursePaginateDto> Get([FromQuery]Filter filter) {
-            try {
+
+        [HttpPost("filter")]
+        public ActionResult<CoursePaginateDto> GetAllFiltered([FromBody]Filter filter)
+        {
+            try
+            {
                 return Ok(_courseService.GetFilteredOrders(filter));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<CoursePaginateDto> Get() {
+            try {
+                return Ok(_courseService.GetAll());
             } catch (Exception ex) {
                 return BadRequest(ex.Message);
             }
