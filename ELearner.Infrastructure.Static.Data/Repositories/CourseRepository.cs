@@ -35,9 +35,12 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
         public Course Get(int id) {
             var course =  _fakeDb.CoursesNotSaved.FirstOrDefault(c => c.Id == id);
             List<UserCourse> users = null;
+            List<Section> sections = null;
             if (course != null) {
                 users = _fakeDb.UserCoursesNotSaved.Where(sc => sc.CourseId == id).ToList();
                 course.Users = users;
+                sections = _fakeDb.SectionsNotSaved.Where(s => s.CourseId == id).ToList();
+                course.Sections = sections;
             }
             //return new object to avoid messing with the objects in the fake db
             return course;
@@ -61,6 +64,14 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             for (int i = 0; i < count; i++) {
                 _fakeDb.UserCoursesNotSaved.Remove(referencesToRemove[i]);
             }
+            var referencesTwoToRemove = _fakeDb.SectionsNotSaved.Where(s => s.CourseId == id).ToList();
+            int countTwo = referencesTwoToRemove.Count();
+            for (int i = 0; i < countTwo; i++)
+            {
+                _fakeDb.SectionsNotSaved.Remove(referencesTwoToRemove[i]);
+            }
+
+
             _fakeDb.CoursesNotSaved.Remove(entityFromDb);
             return entityFromDb;
         }

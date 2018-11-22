@@ -31,7 +31,8 @@ namespace ELearner.Infrastructure.Static.Data.Repositories
         }
         public IEnumerable<Section> GetAllById(IEnumerable<int> ids)
         {
-            throw new System.NotImplementedException();
+            var sections = _fakeDB.SectionsNotSaved.Where(s => ids.Contains(s.Id));
+            return sections;
         }
         public Section Delete(int id)
         {
