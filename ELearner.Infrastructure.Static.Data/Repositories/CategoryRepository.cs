@@ -33,7 +33,8 @@ namespace ELearner.Infrastructure.Static.Data.Repositories
 
         public IEnumerable<Category> GetAllById(IEnumerable<int> ids)
         {
-            throw new System.NotImplementedException();
+            var categories = _fakeDB.CategoriesNotSaved.Where(c => ids.Contains(c.Id));
+            return categories;
         }
         public Category Delete(int id)
         {

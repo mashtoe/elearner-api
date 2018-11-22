@@ -25,6 +25,7 @@ namespace Elearner.Infrastructure.Data.Repositories {
             return _context.Courses
             .Include(c => c.Users)
             .Include(c => c.Sections)
+            .Include(c => c.Categories)
             .FirstOrDefault(course => course.Id == id);
         }
         public IEnumerable<Course> GetAll(List<IFilterStrategy> filters) {
