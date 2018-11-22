@@ -31,7 +31,8 @@ namespace ELearner.Infrastructure.Static.Data.Repositories
         }
         public IEnumerable<Lesson> GetAllById(IEnumerable<int> ids)
         {
-            throw new System.NotImplementedException();
+            var lessons = _fakeDB.LessonsNotSaved.Where(l => ids.Contains(l.Id));
+            return lessons;
         }
 
         Lesson ILessonRepository.Delete(int id)

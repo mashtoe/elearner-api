@@ -22,6 +22,13 @@ namespace ELearner.Infrastructure.Static.Data.Repositories
         public Section Get(int id)
         {
             var section = _fakeDB.SectionsNotSaved.FirstOrDefault(s => s.Id == id);
+            
+            List<Lesson> lessons = null;
+            if (section != null)
+            {
+                lessons = _fakeDB.LessonsNotSaved.Where(l => l.SectionId == id).ToList();
+                section.Lessons = lessons;
+            }
             return section;
         }
 
@@ -38,6 +45,13 @@ namespace ELearner.Infrastructure.Static.Data.Repositories
         {
             var sectionFromDb = Get(id);
             if (sectionFromDb == null) return null;
+
+            var referencesToRemove = _fakeDB.LessonsNotSaved.Where(l => l.SectionId == id).ToList();
+            int count = referencesToRemove.Count();
+            for (int i = 0; i < count; i++)
+            {
+                _fakeDB.LessonsNotSaved.Remove(referencesToRemove[i]);
+            }
             
             _fakeDB.SectionsNotSaved.Remove(sectionFromDb);
             return sectionFromDb;

@@ -22,6 +22,7 @@ namespace Elearner.Infrastructure.Data.Repositories
         {
             return _context.Sections
             .Include(s => s.Course)
+            .Include(s => s.Lessons)
             .FirstOrDefault(s => s.Id == id);
         }
 
@@ -29,6 +30,7 @@ namespace Elearner.Infrastructure.Data.Repositories
         {
             return _context.Sections
             .Include(s => s.Course)
+            .Include(s => s.Lessons)
             .ToList();
         }
 
