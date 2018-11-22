@@ -9,10 +9,12 @@ namespace ELearner.Core.ApplicationService.Services
     public class CategoryService : ICategoryService
     {
         readonly CategoryConverter _categoryConv;
+        readonly CourseConverter _crsConv;
         readonly IDataFacade _facade;
         public CategoryService(IDataFacade facade)
         {
             _categoryConv = new CategoryConverter();
+            _crsConv = new CourseConverter();
             _facade = facade;
         }
 
@@ -31,7 +33,11 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork)
             {
                 var category = _categoryConv.Convert(uow.CategoryRepo.Get(id));
-
+                if (category != null)
+                {
+                    category.Course = _crsConv.Convert(uow.CourseRepo.Get(category.CourseId));
+                }
+                uow.Complete();
                 return category;
             }
         }
@@ -54,6 +60,7 @@ namespace ELearner.Core.ApplicationService.Services
                     return null;
                 }
                 categoryFromDb.Name = category.Name;
+                categoryFromDb.CourseId = category.CourseId;
                 uow.Complete();
                 return _categoryConv.Convert(categoryFromDb);
             }
@@ -64,13 +71,14 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                var categoryDeleted = uow.CategoryRepo.Delete(id);
-                if (categoryDeleted == null)
+                var categoryToDelete = Get(id);
+                if (categoryToDelete == null)
                 {
                     return null;
                 }
+                categoryToDelete = _categoryConv.Convert(uow.CategoryRepo.Delete(id));
                 uow.Complete();
-                return _categoryConv.Convert(categoryDeleted);
+                return categoryToDelete;
             }
         }
     }
