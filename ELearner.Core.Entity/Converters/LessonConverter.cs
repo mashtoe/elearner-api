@@ -14,7 +14,8 @@ namespace ELearner.Core.Entity.Converters
             return new Lesson()
             {
                 Id = lesson.Id,
-                Title = lesson.Title
+                Title = lesson.Title,
+                SectionId = lesson.SectionId
             };
         }
 
@@ -27,7 +28,9 @@ namespace ELearner.Core.Entity.Converters
             return new LessonBO()
             {
                 Id = lesson.Id,
-                Title = lesson.Title
+                Title = lesson.Title,
+
+                Section = new SectionConverter().Convert(lesson.Section)
             };
         }
     }
