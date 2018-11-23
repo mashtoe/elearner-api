@@ -21,13 +21,13 @@ namespace Elearner.Infrastructure.Data.Repositories
         public Category Get(int id)
         {
             return _context.Categories
-            .Include(c => c.Course)
+            .Include(c => c.Courses)
             .FirstOrDefault(c => c.Id == id);
         }
         public IEnumerable<Category> GetAll()
         {
             return _context.Categories
-            .Include(c => c.Course)
+            .Include(c => c.Courses)
             .ToList();
         }
         public IEnumerable<Category> GetAllById(IEnumerable<int> ids)
