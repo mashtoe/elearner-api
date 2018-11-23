@@ -13,11 +13,14 @@ namespace ELearner.Core.Utilities {
         readonly ICourseService _courseService;
         readonly IUserService _userService;
 
+        readonly ICategoryService _catService;
 
-        public DataSeeder(IAuthService authService, ICourseService courseService, IUserService userService) {
+
+        public DataSeeder(IAuthService authService, ICourseService courseService, IUserService userService, ICategoryService categoryService) {
             _authService = authService;
             _courseService = courseService;
             _userService = userService;
+            _catService = categoryService;
         }
 
         public void SeedData() {
@@ -37,13 +40,20 @@ namespace ELearner.Core.Utilities {
                 Username = "AdminMan",
                 Password = "secretpassword"
             };
-            ;
+
             _userService.Promote(_userService.Promote(_userService.Promote(_authService.Register(admin).Id).Id).Id);
             List<int> userIds = new List<int>();
             userIds.Add(userCreated.Id);
+
+            var category = new CategoryBO(){
+                Name = "Math"
+            };
+            var favCategory = _catService.Create(category);
+
             var course = new CourseBO() {
                 Name = " Building Course",
-                UserIds = userIds
+                UserIds = userIds,
+                CategoryId = favCategory.Id
             };
             _courseService.Create(course);
 
@@ -58,7 +68,8 @@ namespace ELearner.Core.Utilities {
                 */
                 var crs = new CourseBO() {
                     Name = " Course" + i,
-                    UserIds = userIds
+                    UserIds = userIds,
+                    CategoryId = favCategory.Id
                 };
                 _courseService.Create(crs);
             }
