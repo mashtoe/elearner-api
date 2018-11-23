@@ -9,8 +9,8 @@ namespace ELearner.Core.Entity.BusinessObjects {
         public List<int> UserIds { get; set; }
         public List<UserBO> Users { get; set; }
         public List<int> SectionIds {get; set; }
-        public List<int> CategoryIds {get; set;}
         public List<SectionBO> Sections {get; set;}
-        public List <CategoryBO> Categories {get; set; }
+        public int CategoryId { get; set; }
+        public CategoryBO Category { get; set; }
     }
 }

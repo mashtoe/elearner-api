@@ -1,3 +1,4 @@
+using System.Linq;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Entities;
 
@@ -15,7 +16,12 @@ namespace ELearner.Core.Entity.Converters
             {
                 Id = category.Id,
                 Name = category.Name,
-                CourseId = category.CourseId
+                Courses = category.CourseIds?.Select(cId => new Course()
+                {
+                    CategoryId = category.Id
+                }).ToList()
+
+                
             };
         }
 
@@ -29,8 +35,7 @@ namespace ELearner.Core.Entity.Converters
             {
                 Id = category.Id,
                 Name = category.Name,
-                CourseId = category.CourseId,
-                Course = new CourseConverter().Convert(category.Course)
+                CourseIds = category.Courses?.Select(c => c.Id).ToList()
             };
         }
     }

@@ -9,6 +9,7 @@ namespace ELearner.Core.Entity.Entities {
 
         public List<UserCourse> Users { get; set; }
         public List<Section> Sections {get; set;}
-        public List <Category> Categories {get; set;}
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }
