@@ -54,16 +54,20 @@ namespace ELearner.Core.ApplicationService.Services {
 
         public CourseBO Get(int id) {
             using (var uow = _facade.UnitOfWork) {
-                var course = _crsConv.Convert(uow.CourseRepo.Get(id));
-                if (course != null) {
+                CourseBO course =null;
+                var courseFromDb = uow.CourseRepo.Get(id);
+                if (courseFromDb != null){
+                var convCat = _catConv.Convert(courseFromDb.Category);
+                course = _crsConv.Convert(courseFromDb);
+                course.Category = convCat;
                     //course.Category = _catConv.Convert(uow.CategoryRepo.Get(course.CategoryId));
                     if (course.UserIds != null) {
                         course.Users = uow.UserRepo.GetAllById(course.UserIds).Select(s => _userConv.Convert(s)).ToList();
                     }
-                    if(course.SectionIds != null) {
+                    /*if(course.SectionIds != null) {
                         course.Sections = uow.SectionRepo.GetAllById(course.SectionIds)
                         .Select(s => _secConverter.Convert(s)).ToList();
-                    }
+                    }*/
                 }
                 return course;
             }

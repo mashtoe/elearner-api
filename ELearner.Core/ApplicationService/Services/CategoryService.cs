@@ -32,7 +32,13 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                var category = _categoryConv.Convert(uow.CategoryRepo.Get(id));
+                var catFromDb = uow.CategoryRepo.Get(id);
+
+                var convCourses =  catFromDb.Courses?.Select(c =>_crsConv.Convert(c)).ToList();
+
+                var category = _categoryConv.Convert(catFromDb);
+
+                category.Courses = convCourses;
                 /*if (category != null) {
                     if (category.CourseIds != null)
                     {

@@ -12,15 +12,18 @@ namespace ELearner.Core.Utilities {
         readonly IAuthService _authService;
         readonly ICourseService _courseService;
         readonly IUserService _userService;
-
+        readonly ISectionService _secService;
         readonly ICategoryService _catService;
+        readonly ILessonService _lesService;
 
 
-        public DataSeeder(IAuthService authService, ICourseService courseService, IUserService userService, ICategoryService categoryService) {
+        public DataSeeder(IAuthService authService, ICourseService courseService, IUserService userService, ICategoryService categoryService, ISectionService sectionService, ILessonService lessonService) {
             _authService = authService;
             _courseService = courseService;
             _userService = userService;
             _catService = categoryService;
+            _secService = sectionService;
+            _lesService = lessonService;
         }
 
         public void SeedData() {
@@ -48,6 +51,8 @@ namespace ELearner.Core.Utilities {
             var category = new CategoryBO(){
                 Name = "Math"
             };
+            
+
             var favCategory = _catService.Create(category);
 
             var course = new CourseBO() {
@@ -56,6 +61,21 @@ namespace ELearner.Core.Utilities {
                 CategoryId = favCategory.Id
             };
             _courseService.Create(course);
+
+            var section = new SectionBO()
+            {
+                Title = "Hard stuff",
+                CourseId = 1
+            };
+            var hardSection = _secService.Create(section);
+
+            var lesson = new LessonBO()
+            {
+                Title = "Introduction to learning all the cool stuff",
+                SectionId = 1
+            };
+
+            var firstLesson = _lesService.Create(lesson);
 
             for (int i = 0; i < 50; i++) {
                 /*
