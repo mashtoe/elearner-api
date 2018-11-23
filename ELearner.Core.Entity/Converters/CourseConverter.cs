@@ -14,10 +14,15 @@ namespace ELearner.Core.Entity.Converters {
             return new Course() {
                 Id = course.Id,
                 Name = course.Name,
+                CategoryId = course.CategoryId,
                 Users = course.UserIds?.Select(sId => new UserCourse() {
                     CourseId = course.Id,
                     UserID = sId
-                }).ToList()
+                }).ToList(),
+                Sections = course.SectionIds?.Select(sId => new Section(){
+                    CourseId = course.Id
+                }).ToList(),
+                
             };
         }
 
@@ -28,7 +33,13 @@ namespace ELearner.Core.Entity.Converters {
             return new CourseBO() {
                 Id = course.Id,
                 Name = course.Name,
-                UserIds = course.Users?.Select(s => s.UserID).ToList()
+                UserIds = course.Users?.Select(s => s.UserID).ToList(),
+                SectionIds = course.Sections?.Select(s => s.Id).ToList(),
+
+                CategoryId = course.CategoryId,
+                Category = new CategoryConverter().Convert(course.Category)
+
+                
             };
 
         }

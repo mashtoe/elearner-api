@@ -1,3 +1,4 @@
+using System.Linq;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Entities;
 
@@ -14,7 +15,13 @@ namespace ELearner.Core.Entity.Converters
             return new Category()
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                Courses = category.CourseIds?.Select(cId => new Course()
+                {
+                    CategoryId = category.Id
+                }).ToList()
+
+                
             };
         }
 
@@ -27,7 +34,8 @@ namespace ELearner.Core.Entity.Converters
             return new CategoryBO()
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                CourseIds = category.Courses?.Select(c => c.Id).ToList()
             };
         }
     }

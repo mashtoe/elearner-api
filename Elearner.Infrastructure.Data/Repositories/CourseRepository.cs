@@ -22,7 +22,11 @@ namespace Elearner.Infrastructure.Data.Repositories {
             return courseFromDb;
         }
         public Course Get(int id) {
-            return _context.Courses.Include(c => c.Users).FirstOrDefault(course => course.Id == id);
+            return _context.Courses
+            .Include(c => c.Users)
+            .Include(c => c.Sections)
+            .Include(c => c.Category)
+            .FirstOrDefault(course => course.Id == id);
         }
         public IEnumerable<Course> GetAll(List<IFilterStrategy> filters) {
             IEnumerable<Course> courses = _context.Courses;

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ELearner.Core.DomainService;
 using ELearner.Core.Entity.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Elearner.Infrastructure.Data.Repositories
 {
@@ -19,17 +20,26 @@ namespace Elearner.Infrastructure.Data.Repositories
         }
         public Section Get(int id)
         {
-            return _context.Sections.FirstOrDefault(s => s.Id == id);
+            return _context.Sections
+            .Include(s => s.Course)
+            .Include(s => s.Lessons)
+            .FirstOrDefault(s => s.Id == id);
         }
 
         public IEnumerable<Section> GetAll()
         {
-            return _context.Sections;
+            return _context.Sections
+            .Include(s => s.Course)
+            .Include(s => s.Lessons)
+            .ToList();
         }
 
         public IEnumerable<Section> GetAllById(IEnumerable<int> ids)
         {
-            throw new System.NotImplementedException();
+            if(ids == null)
+            return null;
+
+            return _context.Sections.Where(s => ids.Contains(s.Id));
         }
 
         public Section Delete(int id)

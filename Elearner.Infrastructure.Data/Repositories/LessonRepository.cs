@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ELearner.Core.DomainService.UOW;
 using ELearner.Core.Entity.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Elearner.Infrastructure.Data.Repositories
 {
@@ -20,17 +21,24 @@ namespace Elearner.Infrastructure.Data.Repositories
 
         public Lesson Get(int id)
         {
-            return _context.Lessons.FirstOrDefault(l => l.Id == id);
+            return _context.Lessons
+            .Include(l => l.Section)
+            .FirstOrDefault(l => l.Id == id);
         }
 
         public IEnumerable<Lesson> GetAll()
         {
-            return _context.Lessons;
+            return _context.Lessons
+            .Include(l => l.Section)
+            .ToList();
         }
 
         public IEnumerable<Lesson> GetAllById(IEnumerable<int> ids)
         {
-            throw new System.NotImplementedException();
+            if (ids == null)
+                return null;
+
+            return _context.Lessons.Where(l => ids.Contains(l.Id));
         }
 
 

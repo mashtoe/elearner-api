@@ -9,10 +9,12 @@ namespace ELearner.Core.ApplicationService.Services
     public class CategoryService : ICategoryService
     {
         readonly CategoryConverter _categoryConv;
+        readonly CourseConverter _crsConv;
         readonly IDataFacade _facade;
         public CategoryService(IDataFacade facade)
         {
             _categoryConv = new CategoryConverter();
+            _crsConv = new CourseConverter();
             _facade = facade;
         }
 
@@ -31,7 +33,14 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork)
             {
                 var category = _categoryConv.Convert(uow.CategoryRepo.Get(id));
-
+                if (category != null) {
+                    if (category.CourseIds != null)
+                    {
+                        category.Courses = uow.CourseRepo.GetAllById(category.CourseIds)
+                        .Select(c => _crsConv.Convert(c)).ToList();
+                    }
+                }
+                uow.Complete();
                 return category;
             }
         }
@@ -64,13 +73,20 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                var categoryDeleted = uow.CategoryRepo.Delete(id);
-                if (categoryDeleted == null)
-                {
+                var categoryToDelete = Get(id);
+                if (categoryToDelete == null){
                     return null;
                 }
+                if (categoryToDelete.CourseIds != null)
+                {
+                    foreach (var Id in categoryToDelete?.CourseIds)
+                    {
+                        uow.CourseRepo.Delete(Id);
+                    }
+                }
+                categoryToDelete = _categoryConv.Convert(uow.CategoryRepo.Delete(id));
                 uow.Complete();
-                return _categoryConv.Convert(categoryDeleted);
+                return categoryToDelete;
             }
         }
     }
