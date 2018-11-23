@@ -6,6 +6,7 @@ namespace ELearner.Core.Entity.Converters
 {
     public class CategoryConverter
     {
+
         public Category Convert(CategoryBO category)
         {
             if (category == null)
@@ -27,15 +28,16 @@ namespace ELearner.Core.Entity.Converters
 
         public CategoryBO Convert(Category category)
         {
+            var crsConv = new CourseConverter();
             if (category == null)
             {
                 return null;
             }
-            return new CategoryBO()
-            {
+            return new CategoryBO(){
                 Id = category.Id,
                 Name = category.Name,
-                CourseIds = category.Courses?.Select(c => c.Id).ToList()
+                Courses = category.Courses.Select(c => crsConv.Convert(c)).ToList()
+                //CourseIds = category.Courses?.Select(c => c.Id).ToList()
             };
         }
     }

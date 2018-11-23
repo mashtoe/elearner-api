@@ -33,13 +33,13 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork)
             {
                 var category = _categoryConv.Convert(uow.CategoryRepo.Get(id));
-                if (category != null) {
+                /*if (category != null) {
                     if (category.CourseIds != null)
                     {
                         category.Courses = uow.CourseRepo.GetAllById(category.CourseIds)
                         .Select(c => _crsConv.Convert(c)).ToList();
                     }
-                }
+            }*/
                 uow.Complete();
                 return category;
             }
