@@ -18,10 +18,7 @@ namespace ELearner.Core.Entity.Converters {
                 Users = course.UserIds?.Select(sId => new UserCourse() {
                     CourseId = course.Id,
                     UserID = sId
-                }).ToList(),
-                Sections = course.SectionIds?.Select(sId => new Section(){
-                    CourseId = course.Id
-                }).ToList(),
+                }).ToList()
                 
             };
         }

@@ -33,11 +33,11 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                var lesson = _lessonConv.Convert(uow.LessonRepo.Get(id));
-                if (lesson != null)
-                {
-                    lesson.Section = _secConv.Convert(uow.SectionRepo.Get(lesson.SectionId));
-                }
+                var lesFromDb = uow.LessonRepo.Get(id);
+                var convSection = _secConv.Convert(lesFromDb.Section);
+
+                var lesson = _lessonConv.Convert(lesFromDb);
+                lesson.Section = convSection;
 
                 return lesson;
             }

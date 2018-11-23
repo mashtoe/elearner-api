@@ -43,6 +43,10 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork)
             {
                 var courseDeleted = uow.CourseRepo.Delete(id);
+                if (courseDeleted == null)
+                {
+                    return null;
+                }
                 uow.Complete();
                 return _crsConv.Convert(courseDeleted);
             }

@@ -39,11 +39,13 @@ namespace ELearner.Core.ApplicationService.Services
                 if (secFromDb != null)
                 {
                     var convCourse = _crsConv.Convert(secFromDb.Course);
+                    var convLessons = secFromDb.Lessons?.Select(l => _lesConv.Convert(l)).ToList();
                     section =   _sectionConv.Convert(secFromDb); 
                     section.Course = convCourse;
-                    section.Lessons = uow.LessonRepo.GetAllById(section.LessonIds)
+                    section.Lessons = convLessons;
+                    /*section.Lessons = uow.LessonRepo.GetAllById(section.LessonIds)
                     .Select(l => _lesConv.Convert(l))
-                    .ToList();
+                    .ToList();*/
                 }
                 uow.Complete();
                
@@ -78,8 +80,11 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                
                 var sectionDeleted = uow.SectionRepo.Delete(id);
+                if (sectionDeleted == null)
+                {
+                    return null;
+                }
                 uow.Complete();
                 return _sectionConv.Convert(sectionDeleted);
             }
