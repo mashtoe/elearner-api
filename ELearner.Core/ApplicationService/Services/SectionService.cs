@@ -34,14 +34,18 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                var section = _sectionConv.Convert(uow.SectionRepo.Get(id));
-                if (section != null)
+                SectionBO section = null;
+                var secFromDb = uow.SectionRepo.Get(id);
+                if (secFromDb != null)
                 {
-                    section.Course = _crsConv.Convert(uow.CourseRepo.Get(section.CourseId));
-
-                    section.Lessons = uow.LessonRepo.GetAllById(section.LessonIds)
+                    var convCourse = _crsConv.Convert(secFromDb.Course);
+                    var convLessons = secFromDb.Lessons?.Select(l => _lesConv.Convert(l)).ToList();
+                    section =   _sectionConv.Convert(secFromDb); 
+                    section.Course = convCourse;
+                    section.Lessons = convLessons;
+                    /*section.Lessons = uow.LessonRepo.GetAllById(section.LessonIds)
                     .Select(l => _lesConv.Convert(l))
-                    .ToList();
+                    .ToList();*/
                 }
                 uow.Complete();
                
@@ -76,21 +80,13 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                var sectionToDelete = Get(id);
-                if (sectionToDelete == null)
+                var sectionDeleted = uow.SectionRepo.Delete(id);
+                if (sectionDeleted == null)
                 {
                     return null;
                 }
-                if (sectionToDelete.LessonIds != null)
-                {
-                    foreach (var Id in sectionToDelete?.LessonIds)
-                    {
-                        uow.LessonRepo.Delete(Id);
-                    }
-                }
-                sectionToDelete = _sectionConv.Convert(uow.SectionRepo.Delete(id));
                 uow.Complete();
-                return sectionToDelete;
+                return _sectionConv.Convert(sectionDeleted);
             }
         }
     }

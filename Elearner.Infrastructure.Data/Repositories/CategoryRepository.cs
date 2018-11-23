@@ -26,9 +26,7 @@ namespace Elearner.Infrastructure.Data.Repositories
         }
         public IEnumerable<Category> GetAll()
         {
-            return _context.Categories
-            .Include(c => c.Courses)
-            .ToList();
+            return _context.Categories;
         }
         public IEnumerable<Category> GetAllById(IEnumerable<int> ids)
         {

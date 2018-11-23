@@ -29,8 +29,7 @@ namespace ELearner.Core.Entity.Converters
             {
                 Id = lesson.Id,
                 Title = lesson.Title,
-
-                Section = new SectionConverter().Convert(lesson.Section)
+                SectionId = lesson.SectionId
             };
         }
     }

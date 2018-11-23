@@ -28,10 +28,7 @@ namespace Elearner.Infrastructure.Data.Repositories
 
         public IEnumerable<Section> GetAll()
         {
-            return _context.Sections
-            .Include(s => s.Course)
-            .Include(s => s.Lessons)
-            .ToList();
+            return _context.Sections;
         }
 
         public IEnumerable<Section> GetAllById(IEnumerable<int> ids)
