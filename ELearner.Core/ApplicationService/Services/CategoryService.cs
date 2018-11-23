@@ -33,9 +33,12 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork)
             {
                 var category = _categoryConv.Convert(uow.CategoryRepo.Get(id));
-                if (category != null)
-                {
-                    category.Course = _crsConv.Convert(uow.CourseRepo.Get(category.CourseId));
+                if (category != null) {
+                    if (category.CourseIds != null)
+                    {
+                        category.Courses = uow.CourseRepo.GetAllById(category.CourseIds)
+                        .Select(c => _crsConv.Convert(c)).ToList();
+                    }
                 }
                 uow.Complete();
                 return category;
@@ -60,7 +63,6 @@ namespace ELearner.Core.ApplicationService.Services
                     return null;
                 }
                 categoryFromDb.Name = category.Name;
-                categoryFromDb.CourseId = category.CourseId;
                 uow.Complete();
                 return _categoryConv.Convert(categoryFromDb);
             }
@@ -72,9 +74,15 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork)
             {
                 var categoryToDelete = Get(id);
-                if (categoryToDelete == null)
-                {
+                if (categoryToDelete == null){
                     return null;
+                }
+                if (categoryToDelete.CourseIds != null)
+                {
+                    foreach (var Id in categoryToDelete?.CourseIds)
+                    {
+                        uow.CourseRepo.Delete(Id);
+                    }
                 }
                 categoryToDelete = _categoryConv.Convert(uow.CategoryRepo.Delete(id));
                 uow.Complete();

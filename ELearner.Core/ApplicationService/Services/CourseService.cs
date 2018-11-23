@@ -46,13 +46,6 @@ namespace ELearner.Core.ApplicationService.Services {
                         uow.SectionRepo.Delete(Id);
                     }
                 }
-                if (courseToDelete.CategoryIds != null)
-                {
-                    foreach (var Id in courseToDelete?.CategoryIds)
-                    {
-                        uow.CategoryRepo.Delete(Id);
-                    }
-                }
                 courseToDelete = _crsConv.Convert(uow.CourseRepo.Delete(id));
                 uow.Complete();
                 return courseToDelete;
@@ -63,17 +56,13 @@ namespace ELearner.Core.ApplicationService.Services {
             using (var uow = _facade.UnitOfWork) {
                 var course = _crsConv.Convert(uow.CourseRepo.Get(id));
                 if (course != null) {
+                    course.Category = _catConv.Convert(uow.CategoryRepo.Get(course.CategoryId));
                     if (course.UserIds != null) {
                         course.Users = uow.UserRepo.GetAllById(course.UserIds).Select(s => _userConv.Convert(s)).ToList();
                     }
                     if(course.SectionIds != null) {
                         course.Sections = uow.SectionRepo.GetAllById(course.SectionIds)
                         .Select(s => _secConverter.Convert(s)).ToList();
-                    }
-                    if (course.CategoryIds != null)
-                    {
-                        course.Categories = uow.CategoryRepo.GetAllById(course.CategoryIds)
-                        .Select(c => _catConv.Convert(c)).ToList();
                     }
                 }
                 return course;
@@ -125,6 +114,7 @@ namespace ELearner.Core.ApplicationService.Services {
                     return null;
                 }
                 courseFromDb.Name = course.Name;
+                courseFromDb.CategoryId = course.CategoryId;
                 uow.Complete();
                 return _crsConv.Convert(courseFromDb);
             }
