@@ -56,7 +56,7 @@ namespace ELearner.Core.ApplicationService.Services {
             using (var uow = _facade.UnitOfWork) {
                 var course = _crsConv.Convert(uow.CourseRepo.Get(id));
                 if (course != null) {
-                    course.Category = _catConv.Convert(uow.CategoryRepo.Get(course.CategoryId));
+                    //course.Category = _catConv.Convert(uow.CategoryRepo.Get(course.CategoryId));
                     if (course.UserIds != null) {
                         course.Users = uow.UserRepo.GetAllById(course.UserIds).Select(s => _userConv.Convert(s)).ToList();
                     }
