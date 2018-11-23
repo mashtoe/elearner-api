@@ -35,7 +35,7 @@ namespace ELearner.Core.Entity.Converters
                 CourseId = section.CourseId,
                 LessonIds = section.Lessons?.Select(l => l.Id).ToList(),
 
-                Course = new CourseConverter().Convert(section.Course)
+                //Course = new CourseConverter().Convert(section.Course)
             };
         }
     }

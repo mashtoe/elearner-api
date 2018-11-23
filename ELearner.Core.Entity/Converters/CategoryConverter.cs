@@ -17,7 +17,6 @@ namespace ELearner.Core.Entity.Converters
             {
                 Id = category.Id,
                 Name = category.Name,
-                CourseIds = category.CourseIds
                 /*Courses = category.CourseIds?.Select(cId => new Course()
                 {
                     CategoryId = category.Id
@@ -35,9 +34,8 @@ namespace ELearner.Core.Entity.Converters
             return new CategoryBO(){
                 Id = category.Id,
                 Name = category.Name,
-                CourseIds = category.CourseIds
                 //Courses = category.Courses?.Select(c => crsConv.Convert(c)).ToList()
-                //CourseIds = category.Courses?.Select(c => c.Id).ToList()
+                CourseIds = category.Courses?.Select(c => c.Id).ToList()
             };
         }
     }
