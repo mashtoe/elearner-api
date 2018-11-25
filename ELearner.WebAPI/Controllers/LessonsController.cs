@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +51,13 @@ namespace ELearner.WebAPI.Controllers
         public ActionResult<LessonBO> Delete(int id)
         {
             return Ok(_lessonService.Delete(id));
+        }
+
+        [HttpGet("stream")]
+        public async Task<FileStreamResult> GetVideo() {
+            // var stream = await _streamingService.GetVideoByName(name);
+            var stream = await _lessonService.GetVideoStream();
+            return new FileStreamResult(stream, "video/mp4");
         }
     }
 }

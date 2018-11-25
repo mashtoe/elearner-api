@@ -24,6 +24,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.Text;
+using ELearner.Infrastructure.FileAccess;
 //using ELearner.Infrastructure.Data.Repositories;
 
 namespace Elearner.API {
@@ -80,6 +81,7 @@ namespace Elearner.API {
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddScoped<IFileAccess, LocalFileAccess>();
 
         }
 

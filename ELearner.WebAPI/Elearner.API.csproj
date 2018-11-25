@@ -5,34 +5,35 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
-    <TypeScriptModuleKind/>
+    <TypeScriptModuleKind />
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
-    <TypeScriptOutFile/>
-    <TypeScriptOutDir/>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
-    <TypeScriptMapRoot/>
-    <TypeScriptSourceRoot/>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\"/>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App"/>
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All"/>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="2.1.4"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design" Version="1.1.6"/>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design" Version="1.1.6" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ELearner.Core.Entity\ELearner.Core.Entity.csproj"/>
-    <ProjectReference Include="..\Elearner.Infrastructure.Data\Elearner.Infrastructure.Data.csproj"/>
-    <ProjectReference Include="..\ELearner.Core\ELearner.Core.csproj"/>
-    <ProjectReference Include="..\ELearner.Infrastructure.Static.Data\ELearner.Infrastructure.Static.Data.csproj"/>
+    <ProjectReference Include="..\ELearner.Core.Entity\ELearner.Core.Entity.csproj" />
+    <ProjectReference Include="..\Elearner.Infrastructure.Data\Elearner.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\ELearner.Core\ELearner.Core.csproj" />
+    <ProjectReference Include="..\ELearner.Infrastructure.FileAccess\ELearner.Infrastructure.FileAccess.csproj" />
+    <ProjectReference Include="..\ELearner.Infrastructure.Static.Data\ELearner.Infrastructure.Static.Data.csproj" />
   </ItemGroup>
 </Project>
