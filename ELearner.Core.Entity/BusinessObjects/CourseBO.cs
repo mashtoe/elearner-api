@@ -10,7 +10,8 @@ namespace ELearner.Core.Entity.BusinessObjects {
         public List<UserBO> Users { get; set; }
         public List<int> SectionIds {get; set; }
         public List<SectionBO> Sections {get; set;}
-        public int CategoryId { get; set; }
+        // ? means it can be null
+        public int? CategoryId { get; set; }
         public CategoryBO Category { get; set; }
     }
 }
