@@ -6,5 +6,6 @@ namespace ELearner.Core.Entity.Entities
         public string Title { get; set; }
         public int SectionId { get; set; }
         public Section Section { get; set; }
+        public string VideoId { get; set; }
     }
 }

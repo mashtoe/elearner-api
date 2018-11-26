@@ -15,7 +15,8 @@ namespace ELearner.Core.Entity.Converters
             {
                 Id = lesson.Id,
                 Title = lesson.Title,
-                SectionId = lesson.SectionId
+                SectionId = lesson.SectionId,
+                VideoId = lesson.VideoId
             };
         }
 
@@ -29,7 +30,8 @@ namespace ELearner.Core.Entity.Converters
             {
                 Id = lesson.Id,
                 Title = lesson.Title,
-                SectionId = lesson.SectionId
+                SectionId = lesson.SectionId,
+                VideoId = lesson.VideoId
             };
         }
     }

@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using Microsoft.AspNetCore.Mvc;
@@ -52,12 +55,12 @@ namespace ELearner.WebAPI.Controllers
         {
             return Ok(_lessonService.Delete(id));
         }
-
+        
         [HttpGet("stream")]
-        public async Task<FileStreamResult> GetVideo() {
-            // var stream = await _streamingService.GetVideoByName(name);
-            var stream = await _lessonService.GetVideoStream();
-            return new FileStreamResult(stream, "video/mp4");
+        public IActionResult GetVideo() {
+            var headers = Request.Headers;
+            var stream = new FileStream("pathUri", FileMode.Open, FileAccess.Read);
+            return new FileStreamResult(stream, new MediaTypeHeaderValue("video/mp4").MediaType);
         }
     }
 }

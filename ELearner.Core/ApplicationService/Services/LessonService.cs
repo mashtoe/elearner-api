@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using ELearner.Core.DomainService;
 using ELearner.Core.DomainService.Facade;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
@@ -14,13 +11,11 @@ namespace ELearner.Core.ApplicationService.Services
         readonly LessonConverter _lessonConv;
         readonly SectionConverter _secConv;
         readonly IDataFacade _facade;
-        readonly IFileAccess _fileAccess;
-        public LessonService(IDataFacade facade, IFileAccess fileAcces)
+        public LessonService(IDataFacade facade)
         {
             _lessonConv = new LessonConverter();
             _secConv = new SectionConverter();
             _facade = facade;
-            _fileAccess = fileAcces;
         }
 
 
@@ -85,10 +80,6 @@ namespace ELearner.Core.ApplicationService.Services
                 uow.Complete();
                 return _lessonConv.Convert(lessonDeleted);
             }
-        }
-
-        public async Task<Stream> GetVideoStream() {
-            return await _fileAccess.GetVideo();
         }
     }
 }

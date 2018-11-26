@@ -81,8 +81,6 @@ namespace Elearner.API {
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddScoped<IFileAccess, LocalFileAccess>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
