@@ -41,15 +41,7 @@ namespace ELearner.WebAPI.Controllers
                 return BadRequest();
             }
         }
-        public ActionResult<ApplicationBO> Put(int id, [FromBody]ApplicationBO application)
-        {
-            if (application == null)
-            {
-                return BadRequest();
-            }
-            application.Id = id;
-            return Ok(_applicationService.Update(application));
-        }
+        
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         public ActionResult<ApplicationBO> Delete(int id)
