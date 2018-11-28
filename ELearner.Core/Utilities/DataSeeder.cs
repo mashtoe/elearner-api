@@ -72,7 +72,8 @@ namespace ELearner.Core.Utilities {
             var lesson = new LessonBO()
             {
                 Title = "Introduction to learning all the cool stuff",
-                SectionId = 1
+                SectionId = 1,
+                VideoId = "dogs.mp4"
             };
 
             var firstLesson = _lesService.Create(lesson);

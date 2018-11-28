@@ -1,4 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +55,17 @@ namespace ELearner.WebAPI.Controllers
         public ActionResult<LessonBO> Delete(int id)
         {
             return Ok(_lessonService.Delete(id));
+        }
+        
+        [HttpGet("stream")]
+        public FileStreamResult GetVideo() {
+            var url = "http://elearning.vps.hartnet.dk/long.mp4";
+            // CTRL E -> V ev
+            //var url = "C:/ElearnerFiles/long.mp4";
+            //var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+
+            var stream = _lessonService.GetVideoStream(url);
+            return File(stream, new MediaTypeHeaderValue("video/mp4").MediaType, true);
         }
     }
 }

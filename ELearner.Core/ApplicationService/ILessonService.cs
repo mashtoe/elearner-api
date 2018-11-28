@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using ELearner.Core.Entity.BusinessObjects;
 
 namespace ELearner.Core.ApplicationService
@@ -13,5 +15,7 @@ namespace ELearner.Core.ApplicationService
         LessonBO Update(LessonBO lesson);
         //Delete one lesson with id (CRUD: Delete)
         LessonBO Delete(int id);
+        Stream GetVideoStream(string id);
+
     }
 }
