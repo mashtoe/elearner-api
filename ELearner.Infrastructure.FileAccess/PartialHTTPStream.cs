@@ -8,7 +8,7 @@ namespace ELearner.Infrastructure.FileAccess {
         Stream stream;
         WebResponse resp;
         int cacheRemaining = 0;
-        const int cachelen = 26624;  //26 * 1024 (originally 1024)
+        const int cachelen = 259072;  //253 * 1024 (originally 1024)
 
         public string Url { get; private set; }
         public override bool CanRead { get { return true; } }

@@ -15,7 +15,6 @@ namespace Elearner.API
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
-            AppContext.SetSwitch("Switch.Microsoft.AspNetCore.Mvc.EnableRangeProcessing", true);
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
