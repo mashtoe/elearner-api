@@ -14,6 +14,7 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
         public ISectionRepository SectionRepo{get;}
         public ILessonRepository LessonRepo{get;}
         public ICategoryRepository CategoryRepo {get;}
+        public IApplicationRepository ApplicationRepo {get;}
 
         readonly FakeDB _db;
         readonly StaticDbRollback _rollbackDb;
@@ -27,6 +28,7 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
             SectionRepo = new SectionRepository(_db);
             LessonRepo = new LessonRepository(_db);
             CategoryRepo = new CategoryRepository(_db);
+            ApplicationRepo = new ApplicationRepository(_db);
         }
 
         public int Complete() {
@@ -50,6 +52,9 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
                 db.CoursesNotSaved = new List<Course>(db.Courses);
                 db.UserCoursesNotSaved = new List<UserCourse>(db.UserCourses);
                 db.SectionsNotSaved = new List<Section>(db.Sections);
+                db.CategoriesNotSaved = new List<Category>(db.Categories);
+                db.LessonsNotSaved = new List<Lesson>(db.Lessons);
+                db.ApplicationsNotSaved = new List<Application>(db.Applications);
                 /*
                 students = new List<User>(db.Users);
                 courses = new List<Course>(db.Courses);
@@ -61,6 +66,9 @@ namespace ELearner.Infrastructure.Static.Data.UOW {
                 db.Courses = db.CoursesNotSaved;
                 db.UserCourses = db.UserCoursesNotSaved;
                 db.Sections = db.SectionsNotSaved;
+                db.Lessons = db.LessonsNotSaved;
+                db.Categories = db.CategoriesNotSaved;
+                db.Applications = db.ApplicationsNotSaved;
                 /*
                 db.Users = students;
                 db.Courses = courses;
