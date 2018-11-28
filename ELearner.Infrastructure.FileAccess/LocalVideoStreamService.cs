@@ -10,9 +10,6 @@ namespace ELearner.Infrastructure.FileAccess {
         public Stream GetVideoStream(string id) {
             var stream = (Stream) new FileStream(id, FileMode.Open, System.IO.FileAccess.Read);
             return stream;
-            //var stream = await new FileStream(id, FileMode.Open, FileAccess.Read);
-
-            //return new FileStreamResult(stream, new MediaTypeHeaderValue("video/mp4").MediaType);
         }
     }
 }

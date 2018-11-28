@@ -47,7 +47,7 @@ namespace Elearner.API {
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IDataSeeder, DataSeeder>();
-            services.AddScoped<IVideoStreamer, LocalVideoStreamService>();
+            services.AddScoped<IVideoStreamer, VideoStreamService>();
 
 
             // use following line instead for static "db"

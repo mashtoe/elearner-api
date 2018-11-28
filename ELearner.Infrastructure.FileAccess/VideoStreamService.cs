@@ -1,11 +1,6 @@
 ﻿using ELearner.Core.DomainService;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELearner.Infrastructure.FileAccess {
     public class VideoStreamService: IVideoStreamer {
@@ -17,16 +12,9 @@ namespace ELearner.Infrastructure.FileAccess {
         }
 
         public Stream GetVideoStream(string name) {
-            var stream = _client.GetStreamAsync(name).Result;
-
-            //var wc = new WebClient();
-            //var stream2 = wc.OpenRead(name);
-            
-            //var req = System.Net.WebRequest.Create(name);
-            //FileStream stream = (FileStream)req.GetResponse().GetResponseStream();
-            return stream;
+            return new PartialHTTPStream(name);
         }
-        
+
         ~VideoStreamService() {
             if (_client != null)
                 _client.Dispose();

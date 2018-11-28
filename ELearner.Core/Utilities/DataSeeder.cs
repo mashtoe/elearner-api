@@ -73,7 +73,7 @@ namespace ELearner.Core.Utilities {
             {
                 Title = "Introduction to learning all the cool stuff",
                 SectionId = 1,
-                VideoId = "http://elearning.vps.hartnet.dk/sample.mp4"
+                VideoId = "dogs.mp4"
             };
 
             var firstLesson = _lesService.Create(lesson);

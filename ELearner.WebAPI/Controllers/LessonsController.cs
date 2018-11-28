@@ -59,23 +59,13 @@ namespace ELearner.WebAPI.Controllers
         
         [HttpGet("stream")]
         public FileStreamResult GetVideo() {
-            // var url = "http://elearning.vps.hartnet.dk/sample.mp4";
+            var url = "http://elearning.vps.hartnet.dk/long.mp4";
             // CTRL E -> V ev
-            var url = "C:/ElearnerFiles/long.mp4";
+            //var url = "C:/ElearnerFiles/long.mp4";
             //var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
             var stream = _lessonService.GetVideoStream(url);
-            // stream.Seek(stream.Length / 2, SeekOrigin.Current);
             return File(stream, new MediaTypeHeaderValue("video/mp4").MediaType, true);
-            // return new FileStreamResult(stream, new MediaTypeHeaderValue("video/mp4").MediaType);
         }
-
-        //[HttpGet("stream")]
-        //public IActionResult GetVideo() {
-        //    //var url = "http://elearning.vps.hartnet.dk/sample.mp4";
-        //    //var stream = _lessonService.GetVideoStream(url);
-        //    var stream = new FileStream("pathUri", FileMode.Open, FileAccess.Read);
-        //    return new FileStreamResult(stream, new MediaTypeHeaderValue("video/mp4").MediaType);
-        //}
     }
 }
