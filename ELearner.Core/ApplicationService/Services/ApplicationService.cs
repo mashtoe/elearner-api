@@ -76,19 +76,6 @@ namespace ELearner.Core.ApplicationService.Services
                 // return applicationsFromDB.Select(a => _applicationConv.Convert(a)).ToList();
             }
         }
-        public ApplicationBO Update(ApplicationBO application)
-        {
-            using (var uow = _facade.UnitOfWork)
-            {
-                var applicationFromDb = uow.ApplicationRepo.Get(application.Id);
-                if (applicationFromDb == null)
-                {
-                    return null;
-                }
-                applicationFromDb.UserId = application.UserId;
-                uow.Complete();
-                return _applicationConv.Convert(applicationFromDb);
-            }
-        }
+        
     }
 }
