@@ -22,12 +22,19 @@ namespace Elearner.Infrastructure.Data.Repositories
         public Application Get(int id)
         {
             return _context.Applications
-            .Include(a => a.User)
-            .FirstOrDefault(application => application.Id == id);
+                .Include(a => a.User)
+                .FirstOrDefault(application => application.Id == id);
         }
+
+        public Application GetByUserId(int userId) {
+            return _context.Applications
+                .Include(a => a.User)
+                .FirstOrDefault(a => a.UserId == userId);
+        }
+
         public IEnumerable<Application> GetAll()
         {
-            return _context.Applications.Include(a => a.UserId);
+            return _context.Applications.Include(a => a.User);
         }
         public IEnumerable<Application> GetAllById(IEnumerable<int> ids)
         {

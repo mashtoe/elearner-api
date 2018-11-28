@@ -38,6 +38,12 @@ namespace ELearner.Infrastructure.Static.Data.Repositories
             return application;
         }
 
+        public Application GetByUserId(int userId) {
+            var application = _fakeDB.ApplicationsNotSaved.FirstOrDefault(a => a.UserId == userId);
+
+            return application;
+        }
+
         public IEnumerable<Application> GetAll()
         {
             return _fakeDB.ApplicationsNotSaved;
@@ -48,5 +54,7 @@ namespace ELearner.Infrastructure.Static.Data.Repositories
             var applications = _fakeDB.ApplicationsNotSaved.Where(a => ids.Contains(a.Id));
             return applications;
         }
+
+        
     }
 }

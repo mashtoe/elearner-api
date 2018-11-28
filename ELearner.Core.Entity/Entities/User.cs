@@ -11,7 +11,7 @@ namespace ELearner.Core.Entity.Entities {
         public List<UserCourse> Courses { get; set; }
         public Role Role { get; set; }
 
-        public int? ApplicationId { get; set; }
+        //public int? ApplicationId { get; set; }
         public Application Application { get; set; }
     }
 }

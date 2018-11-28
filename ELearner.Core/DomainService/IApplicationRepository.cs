@@ -14,5 +14,6 @@ namespace ELearner.Core.DomainService
         //Delete Data
         Application Delete(int id);
         IEnumerable<Application> GetAllById(IEnumerable<int> ids);
+        Application GetByUserId(int userId);
     }
 }

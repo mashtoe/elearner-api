@@ -21,6 +21,12 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
+                var appliactionFromDb = uow.ApplicationRepo.GetByUserId(application.UserId);
+
+                if (appliactionFromDb != null) {
+                    // if user already created an appliaction he shouldn't be able to create another one
+                    return null;
+                }
                 // TODO check if entity is valid, and throw errors if not
                 var applicationCreated = uow.ApplicationRepo.Create(_applicationConv.Convert(application));
                 uow.Complete();
@@ -57,8 +63,17 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                var applications = uow.ApplicationRepo.GetAll();
-                return applications.Select(a => _applicationConv.Convert(a)).ToList();
+                var returnList = new List<ApplicationBO>();
+
+                var applicationsFromDB = uow.ApplicationRepo.GetAll();
+                foreach (var entityFromDb in applicationsFromDB) {
+                    var userConv = _userConv.Convert(entityFromDb.User);
+                    var appConv = _applicationConv.Convert(entityFromDb);
+                    appConv.User = userConv;
+                    returnList.Add(appConv);
+                }
+                return returnList;
+                // return applicationsFromDB.Select(a => _applicationConv.Convert(a)).ToList();
             }
         }
         public ApplicationBO Update(ApplicationBO application)

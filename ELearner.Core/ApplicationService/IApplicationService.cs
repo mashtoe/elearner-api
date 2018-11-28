@@ -9,8 +9,7 @@ namespace ELearner.Core.ApplicationService
         ApplicationBO Get(int id);
         //returns all lessons (CRUD: Read)
         List<ApplicationBO> GetAll();
-        //Update  (CRUD: Update)
-        ApplicationBO Update(ApplicationBO application);
+        // we dont need update
         //Delete one lesson with id (CRUD: Delete)
         ApplicationBO Delete(int id);
     }

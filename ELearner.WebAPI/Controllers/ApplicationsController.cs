@@ -34,7 +34,12 @@ namespace ELearner.WebAPI.Controllers
             {
                 return BadRequest();
             }
-            return Ok(_applicationService.Create(application));
+            var applicationCreated = _applicationService.Create(application);
+            if (applicationCreated != null) {
+                return Ok(applicationCreated);
+            } else {
+                return BadRequest();
+            }
         }
         public ActionResult<ApplicationBO> Put(int id, [FromBody]ApplicationBO application)
         {

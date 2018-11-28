@@ -14,7 +14,6 @@ namespace ELearner.Core.Entity.BusinessObjects {
         public List<CourseBO> Courses { get; set; }
         public Role Role { get; set; }
 
-        public int? ApplicationId { get; set; }
         public ApplicationBO Application { get; set; }
     }
 }
