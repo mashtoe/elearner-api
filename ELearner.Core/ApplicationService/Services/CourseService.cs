@@ -16,6 +16,7 @@ namespace ELearner.Core.ApplicationService.Services
         readonly UserConverter _userConv;
         readonly SectionConverter _secConverter;
         readonly CategoryConverter _catConv;
+        readonly LessonConverter _lesConv;
         readonly IDataFacade _facade;
 
         public CourseService(IDataFacade facade)
@@ -24,6 +25,7 @@ namespace ELearner.Core.ApplicationService.Services
             _userConv = new UserConverter();
             _secConverter = new SectionConverter();
             _catConv = new CategoryConverter();
+            _lesConv = new LessonConverter();
             _facade = facade;
         }
 
@@ -32,7 +34,28 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork)
             {
                 // TODO check if entity is valid, and throw errors if not
-                var courseCreated = uow.CourseRepo.Create(_crsConv.Convert(course));
+                var listSectionsConverted = new List<Section>();
+                if (course.Sections != null) {
+                    foreach (var section in course.Sections) {
+                        //sections
+                        if (section.Lessons != null) {
+                            var listLessonsConverted = new List<Lesson>();
+                            foreach (var lesson in section.Lessons) {
+                                //lessons
+                                var lessonConverted = _lesConv.Convert(lesson);
+                                listLessonsConverted.Add(lessonConverted);
+                            }
+                            var convertedSection = _secConverter.Convert(section);
+                            convertedSection.Lessons = listLessonsConverted;
+                            listSectionsConverted.Add(convertedSection);
+                        }
+                    }
+                }
+
+                var courseEntity = _crsConv.Convert(course);
+                courseEntity.Sections = listSectionsConverted;
+
+                var courseCreated = uow.CourseRepo.Create(courseEntity);
                 uow.Complete();
                 return _crsConv.Convert(courseCreated);
             }
