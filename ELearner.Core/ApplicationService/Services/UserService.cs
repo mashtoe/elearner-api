@@ -66,7 +66,9 @@ namespace ELearner.Core.ApplicationService.Services {
                 var userFromDb = uow.UserRepo.Get(id);
                 if ((int)userFromDb.Role < 2) {
                     userFromDb.Role++;
-                }
+                } else {
+                    return null;
+                }   
                 uow.Complete();
                 return _userConv.Convert(userFromDb);
             }
