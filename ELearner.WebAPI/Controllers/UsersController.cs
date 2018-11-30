@@ -46,5 +46,19 @@ namespace Elearner.API.Controllers {
         public ActionResult<UserBO> Delete(int id) {
             return Ok(_userService.Delete(id));
         }
+
+        [HttpGet("promote/{id}")]
+        public ActionResult<UserBO>Promote(int id) {
+
+            var user = _userService.Promote(id);
+            if (user != null)
+            {
+                return Ok(user);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
     }
 }
