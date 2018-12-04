@@ -52,31 +52,60 @@ namespace ELearner.Core.Utilities {
                 Name = "Math"
             };
             
-
             var favCategory = _catService.Create(category);
 
+            var lessons = new List<LessonBO>();
+            for (int i = 0; i < 20; i++) {
+                var lesson = new LessonBO() {
+                    Title = "Hello" + i,
+                    VideoId = "dogs.mp4"
+                };
+                lessons.Add(lesson);
+
+            }
+
+            //var firstLesson = _lesService.Create(lesson);
+
+
+            var section = new SectionBO() {
+                Title = "Hard stuff",
+                Lessons = lessons
+            };
+
+            var lesson1ForSection2 = new LessonBO() {
+                Title = "Lesson 2 title",
+                VideoId = "long.mp4"
+            };
+            var otherlessons = new List<LessonBO>();
+            otherlessons.Add(lesson1ForSection2);
+            var section2 = new SectionBO() {
+                Title = "Easy stuff",
+                Lessons = otherlessons
+            };
+
+            var lesson1ForSection3 = new LessonBO() {
+                Title = "Lesson 1 title",
+                VideoId = "dogs.mp4"
+            };
+            var section3Lessons = new List<LessonBO>();
+            section3Lessons.Add(lesson1ForSection3);
+            var section3 = new SectionBO() {
+                Title = "AHHHHHHHH",
+                Lessons = section3Lessons
+            };
+
+            //var hardSection = _secService.Create(section);
+            var sections = new List<SectionBO>();
+            sections.Add(section);
+            sections.Add(section2);
+            sections.Add(section3);
             var course = new CourseBO() {
                 Name = " Building Course",
                 UserIds = userIds,
-                CategoryId = favCategory.Id
+                CategoryId = favCategory.Id,
+                Sections = sections
             };
             _courseService.Create(course);
-
-            var section = new SectionBO()
-            {
-                Title = "Hard stuff",
-                CourseId = 1
-            };
-            var hardSection = _secService.Create(section);
-
-            var lesson = new LessonBO()
-            {
-                Title = "Introduction to learning all the cool stuff",
-                SectionId = 1,
-                VideoId = "dogs.mp4"
-            };
-
-            var firstLesson = _lesService.Create(lesson);
 
             for (int i = 0; i < 50; i++) {
                 /*

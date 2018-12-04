@@ -88,8 +88,13 @@ namespace ELearner.Core.ApplicationService.Services
             }
         }
 
-        public Stream GetVideoStream(string id) {
-            return _videoStream.GetVideoStream(id);
+        public Stream GetVideoStream(string name) {
+            var url = "http://elearning.vps.hartnet.dk/lessonFiles/" + name;
+            // CTRL E -> V ev
+            //var url = "C:/ElearnerFiles/long.mp4";
+            //var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+
+            return _videoStream.GetVideoStream(url);
         }
     }
 }

@@ -57,14 +57,9 @@ namespace ELearner.WebAPI.Controllers
             return Ok(_lessonService.Delete(id));
         }
         
-        [HttpGet("stream")]
-        public FileStreamResult GetVideo() {
-            var url = "http://elearning.vps.hartnet.dk/long.mp4";
-            // CTRL E -> V ev
-            //var url = "C:/ElearnerFiles/long.mp4";
-            //var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-
-            var stream = _lessonService.GetVideoStream(url);
+        [HttpGet("stream/{name}")]
+        public FileStreamResult GetVideo(string name) {
+            var stream = _lessonService.GetVideoStream(name);
             return File(stream, new MediaTypeHeaderValue("video/mp4").MediaType, true);
         }
     }

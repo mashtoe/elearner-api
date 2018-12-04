@@ -16,6 +16,7 @@ namespace ELearner.Core.ApplicationService.Services
         readonly UserConverter _userConv;
         readonly SectionConverter _secConverter;
         readonly CategoryConverter _catConv;
+        readonly LessonConverter _lesConv;
         readonly IDataFacade _facade;
 
         public CourseService(IDataFacade facade)
@@ -24,6 +25,7 @@ namespace ELearner.Core.ApplicationService.Services
             _userConv = new UserConverter();
             _secConverter = new SectionConverter();
             _catConv = new CategoryConverter();
+            _lesConv = new LessonConverter();
             _facade = facade;
         }
 
@@ -31,8 +33,9 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                // TODO check if entity is valid, and throw errors if not
-                var courseCreated = uow.CourseRepo.Create(_crsConv.Convert(course));
+                var fullyConvertedCourse = ConvertCourseWithSectionsAndLessons(course);
+
+                var courseCreated = uow.CourseRepo.Create(fullyConvertedCourse);
                 uow.Complete();
                 return _crsConv.Convert(courseCreated);
             }
@@ -60,15 +63,15 @@ namespace ELearner.Core.ApplicationService.Services
                 if (courseFromDb != null)
                 {
                     var convCat = _catConv.Convert(courseFromDb.Category);
-                    var convSecs = courseFromDb.Sections?.Select(s => _secConverter.Convert(s)).ToList();
-                    course = _crsConv.Convert(courseFromDb);
+                    //var convSecs = courseFromDb.Sections?.Select(s => _secConverter.Convert(s)).ToList();
+                    course = ConvertCourseWithSectionsAndLessons(courseFromDb);
                     course.Category = convCat;
-                    course.Sections = convSecs;
+                    //course.Sections = convSecs;
                     //course.Category = _catConv.Convert(uow.CategoryRepo.Get(course.CategoryId));
-                    if (course.UserIds != null)
+                    /*if (course.UserIds != null)
                     {
                         course.Users = uow.UserRepo.GetAllById(course.UserIds).Select(s => _userConv.Convert(s)).ToList();
-                    }
+                    }*/
                     /*if(course.SectionIds != null) {
                         course.Sections = uow.SectionRepo.GetAllById(course.SectionIds)
                         .Select(s => _secConverter.Convert(s)).ToList();
@@ -144,6 +147,52 @@ namespace ELearner.Core.ApplicationService.Services
                 uow.Complete();
                 return _crsConv.Convert(courseFromDb);
             }
+        }
+
+        private Course ConvertCourseWithSectionsAndLessons(CourseBO course) {
+            var listSectionsConverted = new List<Section>();
+            if (course.Sections != null) {
+                foreach (var section in course.Sections) {
+                    //sections
+                    if (section.Lessons != null) {
+                        var listLessonsConverted = new List<Lesson>();
+                        foreach (var lesson in section.Lessons) {
+                            //lessons
+                            var lessonConverted = _lesConv.Convert(lesson);
+                            listLessonsConverted.Add(lessonConverted);
+                        }
+                        var convertedSection = _secConverter.Convert(section);
+                        convertedSection.Lessons = listLessonsConverted;
+                        listSectionsConverted.Add(convertedSection);
+                    }
+                }
+            }
+            var courseEntity = _crsConv.Convert(course);
+            courseEntity.Sections = listSectionsConverted;
+            return courseEntity;
+        }
+
+        private CourseBO ConvertCourseWithSectionsAndLessons(Course course) {
+            var listSectionsConverted = new List<SectionBO>();
+            if (course.Sections != null) {
+                foreach (var section in course.Sections) {
+                    //sections
+                    if (section.Lessons != null) {
+                        var listLessonsConverted = new List<LessonBO>();
+                        foreach (var lesson in section.Lessons) {
+                            //lessons
+                            var lessonConverted = _lesConv.Convert(lesson);
+                            listLessonsConverted.Add(lessonConverted);
+                        }
+                        var convertedSection = _secConverter.Convert(section);
+                        convertedSection.Lessons = listLessonsConverted;
+                        listSectionsConverted.Add(convertedSection);
+                    }
+                }
+            }
+            var courseEntity = _crsConv.Convert(course);
+            courseEntity.Sections = listSectionsConverted;
+            return courseEntity;
         }
     }
 }
