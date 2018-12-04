@@ -11,7 +11,7 @@ namespace ELearner.Core.Utilities {
             string guid = Guid.NewGuid().ToString();
             filename += guid;
             filename += ".txt";
-            File.WriteAllLines(pathlocal + filename, lines);
+            //File.WriteAllLines(pathlocal + filename, lines);
         }
     }
 }
