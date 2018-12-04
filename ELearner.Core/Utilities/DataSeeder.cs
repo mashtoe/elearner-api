@@ -54,13 +54,19 @@ namespace ELearner.Core.Utilities {
             
             var favCategory = _catService.Create(category);
 
-            var lesson = new LessonBO() {
-                Title = "Introduction to learning all the cool stuff",
-                VideoId = "dogs.mp4"
-            };
-            //var firstLesson = _lesService.Create(lesson);
             var lessons = new List<LessonBO>();
-            lessons.Add(lesson);
+            for (int i = 0; i < 20; i++) {
+                var lesson = new LessonBO() {
+                    Title = "Hello" + i,
+                    VideoId = "dogs.mp4"
+                };
+                lessons.Add(lesson);
+
+            }
+
+            //var firstLesson = _lesService.Create(lesson);
+
+
             var section = new SectionBO() {
                 Title = "Hard stuff",
                 Lessons = lessons
