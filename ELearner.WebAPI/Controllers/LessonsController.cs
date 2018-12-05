@@ -57,8 +57,8 @@ namespace ELearner.WebAPI.Controllers
             return Ok(_lessonService.Delete(id));
         }
         
-        [HttpGet("stream/{name}")]
-        public FileStreamResult GetVideo(string name) {
+        [HttpGet("stream/{lessonID}/{name}")]
+        public FileStreamResult GetVideo(string lessonId, string name) {
             var stream = _lessonService.GetVideoStream(name);
             return File(stream, new MediaTypeHeaderValue("video/mp4").MediaType, true);
         }

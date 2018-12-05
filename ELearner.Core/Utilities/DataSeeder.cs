@@ -27,6 +27,7 @@ namespace ELearner.Core.Utilities {
         }
 
         public void SeedData() {
+            #region User creation
             var user = new UserRegisterDto() {
                Username = "UserMan",
                Password = "secretpassword"
@@ -51,9 +52,11 @@ namespace ELearner.Core.Utilities {
             var category = new CategoryBO(){
                 Name = "Math"
             };
-            
+            #endregion
+
             var favCategory = _catService.Create(category);
 
+            #region Building course
             var lessons = new List<LessonBO>();
             for (int i = 0; i < 20; i++) {
                 var lesson = new LessonBO() {
@@ -63,12 +66,8 @@ namespace ELearner.Core.Utilities {
                 lessons.Add(lesson);
 
             }
-
-            //var firstLesson = _lesService.Create(lesson);
-
-
             var section = new SectionBO() {
-                Title = "Hard stuff",
+                Title = "This is the best section imho",
                 Lessons = lessons
             };
 
@@ -94,7 +93,6 @@ namespace ELearner.Core.Utilities {
                 Lessons = section3Lessons
             };
 
-            //var hardSection = _secService.Create(section);
             var sections = new List<SectionBO>();
             sections.Add(section);
             sections.Add(section2);
@@ -106,7 +104,9 @@ namespace ELearner.Core.Utilities {
                 Sections = sections
             };
             _courseService.Create(course);
+            #endregion
 
+            #region filler courses
             for (int i = 0; i < 50; i++) {
                 /*
                 if (i % 10 == 0) {
@@ -123,6 +123,7 @@ namespace ELearner.Core.Utilities {
                 };
                 _courseService.Create(crs);
             }
+            #endregion
         }
     }
 }
