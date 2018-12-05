@@ -29,7 +29,7 @@ namespace Elearner.Infrastructure.Data.Repositories {
             .FirstOrDefault(course => course.Id == id);
         }
         public IEnumerable<Course> GetAll(List<IFilterStrategy> filters) {
-            IEnumerable<Course> courses = _context.Courses;
+            IEnumerable<Course> courses = _context.Courses.Include(c => c.Creator);
             if (filters != null) {
                 for (int i = 0; i < filters.Count; i++) {
                     courses = filters[i].Filter(courses);
