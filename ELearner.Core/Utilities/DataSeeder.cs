@@ -67,7 +67,7 @@ namespace ELearner.Core.Utilities {
 
             }
             var section = new SectionBO() {
-                Title = "This is the best section imho",
+                Title = "Everyone likes dogs",
                 Lessons = lessons
             };
 
@@ -78,7 +78,7 @@ namespace ELearner.Core.Utilities {
             var otherlessons = new List<LessonBO>();
             otherlessons.Add(lesson1ForSection2);
             var section2 = new SectionBO() {
-                Title = "Easy stuff",
+                Title = "Long video",
                 Lessons = otherlessons
             };
 
@@ -89,7 +89,7 @@ namespace ELearner.Core.Utilities {
             var section3Lessons = new List<LessonBO>();
             section3Lessons.Add(lesson1ForSection3);
             var section3 = new SectionBO() {
-                Title = "AHHHHHHHH",
+                Title = "Section 3",
                 Lessons = section3Lessons
             };
 
