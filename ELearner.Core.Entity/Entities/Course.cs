@@ -13,9 +13,7 @@ namespace ELearner.Core.Entity.Entities {
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public int CreaterId {get; set;}
-        public User Creater {get; set;}
-
-        public string Description {get; set;}
+        public int? CreatorId {get; set;}
+        public User Creator {get; set;}
     }
 }
