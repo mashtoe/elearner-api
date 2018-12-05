@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ELearner.Core.DomainService.Facade;
 using ELearner.Core.Entity.BusinessObjects;
@@ -86,6 +87,8 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork)
             {
                 var courses = uow.CourseRepo.GetAll();
+
+
                 return courses.Select(c => _crsConv.Convert(c)).ToList();
             }
         }
@@ -127,9 +130,18 @@ namespace ELearner.Core.ApplicationService.Services
                     count = uow.CourseRepo.GetAll().Count();
                     courses = uow.CourseRepo.GetAll();
                 }
-                var coursesConvereted = courses.Select(c => _crsConv.Convert(c)).ToList();
 
-                return new CoursePaginateDto() { Total = count, Courses = coursesConvereted };
+                var courselistObject = new List<CourseBO>();
+                foreach (var course in courses)
+                {
+                    var creatorConverted = _userConv.Convert(course.Creator);
+                    var courseConvereted = _crsConv.Convert(course);
+
+                    courseConvereted.Creator = creatorConverted;
+                    courselistObject.Add(courseConvereted);
+                }
+                Console.WriteLine(courses);
+                return new CoursePaginateDto() { Total = count, Courses = courselistObject };
             }
         }
 
