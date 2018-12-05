@@ -12,5 +12,10 @@ namespace ELearner.Core.Entity.Entities {
         // ? means it can be null
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public int CreaterId {get; set;}
+        public User Creater {get; set;}
+
+        public string Description {get; set;}
     }
 }

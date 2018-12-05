@@ -13,5 +13,9 @@ namespace ELearner.Core.Entity.BusinessObjects {
         // ? means it can be null
         public int? CategoryId { get; set; }
         public CategoryBO Category { get; set; }
+        public int CreaterId {get; set;}
+        public UserBO Creater {get; set;}
+
+        public string Descritption {get; set;}
     }
 }
