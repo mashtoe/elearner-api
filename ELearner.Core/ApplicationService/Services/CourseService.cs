@@ -64,9 +64,14 @@ namespace ELearner.Core.ApplicationService.Services
                 if (courseFromDb != null)
                 {
                     var convCat = _catConv.Convert(courseFromDb.Category);
+
+                    var creatorConverted = _userConv.Convert(courseFromDb.Creator);
+
+                    
                     //var convSecs = courseFromDb.Sections?.Select(s => _secConverter.Convert(s)).ToList();
                     course = ConvertCourseWithSectionsAndLessons(courseFromDb);
                     course.Category = convCat;
+                    course.Creator = creatorConverted;
                     //course.Sections = convSecs;
                     //course.Category = _catConv.Convert(uow.CategoryRepo.Get(course.CategoryId));
                     /*if (course.UserIds != null)
