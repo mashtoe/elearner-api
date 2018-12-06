@@ -6,15 +6,15 @@ using ELearner.Core.Entity.Entities;
 
 namespace ELearner.Core.Utilities.FilterStrategy {
     public class FilterEnrolledStrategy : IFilterStrategy {
-        public User User { get; set; }
+        public List<UserCourse> UserCourses { get; set; }
 
         public IEnumerable<Course> Filter(IEnumerable<Course> courses) {
-            if (User != null) {
-                courses = courses.Where(c => true);
+            if (UserCourses != null) {
+                courses = courses.Where(c => UserCourses.Exists(uc => uc.CourseId == c.Id));
                 var list = courses.ToList();
                 //courses = courses.Where(c => c.Users.Exists(u => u.UserID == User.Id));
             }
             return courses;
         }
-    }
+    }   
 }

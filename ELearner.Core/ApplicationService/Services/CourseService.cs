@@ -111,8 +111,10 @@ namespace ELearner.Core.ApplicationService.Services
                     // nullable int
                     if (filter.UserId != null) {
                         var user = uow.UserRepo.Get((int)filter.UserId);
-                        if (user != null) {
-                            filterStrats.Add(new FilterEnrolledStrategy() { User = user });
+                        var userCourses = uow.UserRepo.GetUserCoursesForUser((int)filter.UserId);
+
+                        if (userCourses != null) {
+                            filterStrats.Add(new FilterEnrolledStrategy() { UserCourses = userCourses.ToList() });
                         }
                     }
                     if (filter.CurrentPage > -1 && filter.PageSize > 0)

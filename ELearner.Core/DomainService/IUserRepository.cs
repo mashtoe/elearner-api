@@ -20,5 +20,8 @@ namespace ELearner.Core.DomainService {
         //Delete Data
         User Delete(int id);
         IEnumerable<User> GetAllById(IEnumerable<int> ids);
+
+        //usercourse related
+        IEnumerable<UserCourse> GetUserCoursesForUser(int userId);
     }
 }
