@@ -61,7 +61,7 @@ namespace Elearner.API.Controllers {
             }
         }
 
-        [HttpGet("enroll/{id}/{id}")]
+        [HttpGet("enroll/{courseId}/{userId}")]
         public ActionResult<UserBO> Enroll(int userId, int courseId) {
             var user = _userService.Enroll(userId, courseId);
          if (user == null)
