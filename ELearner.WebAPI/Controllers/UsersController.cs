@@ -60,5 +60,18 @@ namespace Elearner.API.Controllers {
                 return BadRequest();
             }
         }
+
+        [HttpGet("enroll/{courseId}/{userId}")]
+        public ActionResult<UserBO> Enroll(int userId, int courseId) {
+            var user = _userService.Enroll(userId, courseId);
+         if (user == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(user);
+            }
+        }
     }
 }

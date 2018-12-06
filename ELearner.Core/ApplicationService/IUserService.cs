@@ -18,6 +18,7 @@ namespace ELearner.Core.ApplicationService
         UserBO Delete(int id);
         // Upgrades the users Role. (User => Educator) (Educator => Admin)
         UserBO Promote(int id);
-
+        // Enables a course for a user
+        UserBO Enroll(int courseId, int userId);
     }
 }
