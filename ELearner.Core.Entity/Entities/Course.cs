@@ -6,7 +6,6 @@ namespace ELearner.Core.Entity.Entities {
     public class Course {
         public string Name { get; set; }
         public int Id { get; set; }
-
         public List<UserCourse> Users { get; set; }
         public List<Section> Sections {get; set;}
         // ? means it can be null
