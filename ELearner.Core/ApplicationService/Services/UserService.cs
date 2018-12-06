@@ -108,7 +108,6 @@ namespace ELearner.Core.ApplicationService.Services
                     {
                         if (course.CourseId == courseFromDb.Id)
                         {
-                            uow.Complete();
                             return _userConv.Convert(userFromDb);
                         }
                     }
