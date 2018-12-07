@@ -71,10 +71,5 @@ namespace ELearner.Infrastructure.Static.Data.Repositories {
             var users = _fakeDb.UsersNotSaved.Where(s => ids.Contains(s.Id));
             return users;
         }
-
-        public IEnumerable<UserCourse> GetUserCoursesForUser(int userId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

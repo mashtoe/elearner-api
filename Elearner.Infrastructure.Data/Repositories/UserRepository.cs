@@ -45,11 +45,5 @@ namespace Elearner.Infrastructure.Data.Repositories
             var users = _context.Users.Where(e => ids.Contains(e.Id));
             return users;
         }
-
-        public IEnumerable<UserCourse> GetUserCoursesForUser(int userId)
-        {
-            var userCourses = _context.UserCourses.Where(uc => uc.UserID == userId);
-            return userCourses;
-        }
     }
 }
