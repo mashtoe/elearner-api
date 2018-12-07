@@ -108,6 +108,14 @@ namespace ELearner.Core.ApplicationService.Services
                     {
                         filterStrats.Add(new FilterOrderByNameStategy() { OrderBy = filter.OrderBy });
                     }
+                    // nullable int
+                    if (filter.UserId != null) {
+                        var user = uow.UserRepo.Get((int)filter.UserId);
+
+                        if (user != null) {
+                            filterStrats.Add(new FilterEnrolledStrategy() { User = user });
+                        }
+                    }
                     if (filter.CurrentPage > -1 && filter.PageSize > 0)
                     {
                         paginateStrat = new FilterPaginateStrategy() { CurrentPage = filter.CurrentPage, PageSize = filter.PageSize };
