@@ -36,7 +36,8 @@ namespace Elearner.Infrastructure.Data.Repositories {
                     courses = filters[i].Filter(courses);
                 }
             }
-            return courses;
+            // we only want to show the published courses to the user
+            return courses.Where(c => c.Published == true);
         }
 
         //Delete Data

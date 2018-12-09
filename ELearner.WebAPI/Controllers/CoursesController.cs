@@ -87,5 +87,15 @@ namespace Elearner.API.Controllers {
         public ActionResult<CourseBO> Delete(int id) {
             return Ok(_courseService.Delete(id));
         }
+
+        [HttpGet("publish/{courseId}")]
+        public ActionResult<CourseBO> PublishCourse(int courseId) {
+            var publishedCourse = _courseService.Publish(courseId);
+            if (publishedCourse != null) {
+                return Ok(publishedCourse);
+            } else {
+                return BadRequest();
+            }
+        }
     }
 }
