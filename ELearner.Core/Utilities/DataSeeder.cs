@@ -38,7 +38,9 @@ namespace ELearner.Core.Utilities {
                 Username = "EducatorMan",
                 Password = "secretpassword"
             };
+
             var educatorCreated = _authService.Register(educator);
+
             _userService.Promote(educatorCreated.Id);
 
             var admin = new UserRegisterDto() {
@@ -102,7 +104,8 @@ namespace ELearner.Core.Utilities {
                 Name = " Building Course",
                 UserIds = userIds,
                 CategoryId = favCategory.Id,
-                Sections = sections
+                Sections = sections,
+                CreatorId = educatorCreated.Id
             };
             _courseService.Create(course);
             #endregion
@@ -118,6 +121,8 @@ namespace ELearner.Core.Utilities {
                 }
                 var crs = new CourseBO() {
                     Name = " Course" + i,
+
+                    CreatorId = educatorCreated.Id,
                     UserIds = crsUserIds,
                     CategoryId = favCategory.Id
                 };

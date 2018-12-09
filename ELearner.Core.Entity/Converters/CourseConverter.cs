@@ -15,6 +15,7 @@ namespace ELearner.Core.Entity.Converters {
                 Id = course.Id,
                 Name = course.Name,
                 CategoryId = course.CategoryId,
+                CreatorId = course.CreatorId,
                 Users = course.UserIds?.Select(sId => new UserCourse() {
                     CourseId = course.Id,
                     UserID = sId
@@ -35,7 +36,9 @@ namespace ELearner.Core.Entity.Converters {
                 SectionIds = course.Sections?.Select(s => s.Id).ToList(),   
                 CategoryId = course.CategoryId,
                 Description = course.Description,
-                Published = course.Published
+                Published = course.Published,
+                CreatorId = course.CategoryId
+                //Category = new CategoryConverter().Convert(course.Category)
             };
         }
     }

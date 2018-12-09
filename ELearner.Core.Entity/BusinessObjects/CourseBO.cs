@@ -19,5 +19,7 @@ namespace ELearner.Core.Entity.BusinessObjects {
         // ? means it can be null
         public int? CategoryId { get; set; }
         public CategoryBO Category { get; set; }
+        public int? CreatorId {get; set;}
+        public UserBO Creator {get; set;}
     }
 }

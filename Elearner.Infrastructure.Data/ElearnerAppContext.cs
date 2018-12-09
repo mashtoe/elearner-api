@@ -39,6 +39,11 @@ namespace Elearner.Infrastructure.Data {
                 .WithMany(crs => crs.Users)
                 .HasForeignKey(sc => sc.CourseId);
             #endregion  
+
+            modelBuilder.Entity<User>()
+            .HasMany(u => u.CoursesCreated)
+            .WithOne(c => c.Creator);
         }
+
     }
 }

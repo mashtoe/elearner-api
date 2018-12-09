@@ -15,6 +15,7 @@ namespace ELearner.Core.Entity.BusinessObjects {
         public Role Role { get; set; }
 
         public ApplicationBO Application { get; set; }
+
     }
 }
 
