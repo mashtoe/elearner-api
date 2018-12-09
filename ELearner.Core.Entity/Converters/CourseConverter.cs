@@ -18,8 +18,9 @@ namespace ELearner.Core.Entity.Converters {
                 Users = course.UserIds?.Select(sId => new UserCourse() {
                     CourseId = course.Id,
                     UserID = sId
-                }).ToList()
-                
+                }).ToList(),
+                Description = course.Description,
+                Published = course.Published
             };
         }
 
@@ -32,9 +33,9 @@ namespace ELearner.Core.Entity.Converters {
                 Name = course.Name,
                 UserIds = course.Users?.Select(s => s.UserID).ToList(),
                 SectionIds = course.Sections?.Select(s => s.Id).ToList(),   
-
-                CategoryId = course.CategoryId
-                //Category = new CategoryConverter().Convert(course.Category)
+                CategoryId = course.CategoryId,
+                Description = course.Description,
+                Published = course.Published
             };
         }
     }
