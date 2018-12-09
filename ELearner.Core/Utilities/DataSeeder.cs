@@ -105,13 +105,21 @@ namespace ELearner.Core.Utilities {
                 UserIds = userIds,
                 CategoryId = favCategory.Id,
                 Sections = sections,
-                CreatorId = educatorCreated.Id
+                CreatorId = educatorCreated.Id,
+                Published = true,
+                Description = "Your body can’t digest corn. So if you ate literally nothing but corn every day you’d reach the point where you’re shitting out pure corn and then you’ve got an infinite food source."
             };
             _courseService.Create(course);
             #endregion
 
             #region filler courses
             for (int i = 0; i < 50; i++) {
+                bool published = true;
+                if (i % 10 == 0) {
+                    published = false;
+                    // crsUserIds.Add(userCreated.Id);
+                }
+
                 List<int> crsUserIds = new List<int>();
                 if ((i + 1) % 2 == 0) {
                     crsUserIds.Add(userCreated.Id);
@@ -119,12 +127,16 @@ namespace ELearner.Core.Utilities {
                 if ((i + 1) % 13 == 0) {
                     crsUserIds.Add(educatorCreated.Id);
                 }
+                string flower = "flower";
+                if (i > 1 || i < 1) flower += "s";
                 var crs = new CourseBO() {
                     Name = " Course" + i,
 
                     CreatorId = educatorCreated.Id,
                     UserIds = crsUserIds,
-                    CategoryId = favCategory.Id
+                    CategoryId = favCategory.Id,
+                    Description = i + " " + flower + " in the garden",
+                    Published = published
                 };
                 
                 _courseService.Create(crs);

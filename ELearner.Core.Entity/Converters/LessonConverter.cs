@@ -16,7 +16,7 @@ namespace ELearner.Core.Entity.Converters
                 Id = lesson.Id,
                 Title = lesson.Title,
                 SectionId = lesson.SectionId,
-                VideoId = lesson.VideoId
+                VideoId = lesson.VideoId,
             };
         }
 

@@ -174,6 +174,20 @@ namespace ELearner.Core.ApplicationService.Services
             }
         }
 
+        public CourseBO Publish(int courseId) {
+            using (var uow = _facade.UnitOfWork) {
+                var courseFromDb = uow.CourseRepo.Get(courseId);
+                if (courseFromDb == null) return null;
+                if (courseFromDb.Published == false) {
+                    courseFromDb.Published = true;
+                } else {
+                    return null;
+                }
+                uow.Complete();
+                return _crsConv.Convert(courseFromDb);
+            }
+        }
+
         private Course ConvertCourseWithSectionsAndLessons(CourseBO course) {
             var listSectionsConverted = new List<Section>();
             if (course.Sections != null) {

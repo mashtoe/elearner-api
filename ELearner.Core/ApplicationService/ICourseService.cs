@@ -18,5 +18,6 @@ namespace ELearner.Core.ApplicationService {
         //Delete one course with id (CRUD: Delete)
         CourseBO Delete(int id);
         CoursePaginateDto GetFilteredOrders(Filter filter);
+        CourseBO Publish(int courseId);
     }
 }
