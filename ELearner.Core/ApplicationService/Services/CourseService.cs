@@ -124,6 +124,9 @@ namespace ELearner.Core.ApplicationService.Services
                             filterStrats.Add(new FilterEnrolledStrategy() { User = user });
                         }
                     }
+                    if (filter.CategoryId != null) {
+                        filterStrats.Add(new FilterByCategoryStrategy() { CategoryId = filter.CategoryId });
+                    }
                     if (filter.CurrentPage > -1 && filter.PageSize > 0)
                     {
                         paginateStrat = new FilterPaginateStrategy() { CurrentPage = filter.CurrentPage, PageSize = filter.PageSize };
