@@ -100,6 +100,16 @@ namespace ELearner.Core.Utilities {
             sections.Add(section);
             sections.Add(section2);
             sections.Add(section3);
+
+            var material = new List<UndistributedCourseMaterialBO>();
+            material.Add(new UndistributedCourseMaterialBO() {
+                VideoId = "dogs.mp4"
+            });
+            material.Add(new UndistributedCourseMaterialBO() {
+                VideoId = "long.mp4"
+            });
+
+
             var course = new CourseBO() {
                 Name = " Building Course",
                 UserIds = userIds,
@@ -107,7 +117,8 @@ namespace ELearner.Core.Utilities {
                 Sections = sections,
                 CreatorId = educatorCreated.Id,
                 Published = true,
-                Description = "Your body can’t digest corn. So if you ate literally nothing but corn every day you’d reach the point where you’re shitting out pure corn and then you’ve got an infinite food source."
+                Description = "Your body can’t digest corn. So if you ate literally nothing but corn every day you’d reach the point where you’re shitting out pure corn and then you’ve got an infinite food source.",
+                UndistributedCourseMaterial = material
             };
             _courseService.Create(course);
             #endregion

@@ -21,5 +21,7 @@ namespace ELearner.Core.Entity.BusinessObjects {
         public CategoryBO Category { get; set; }
         public int? CreatorId {get; set;}
         public UserBO Creator {get; set;}
+
+        public List<UndistributedCourseMaterialBO> UndistributedCourseMaterial { get; set; }
     }
 }
