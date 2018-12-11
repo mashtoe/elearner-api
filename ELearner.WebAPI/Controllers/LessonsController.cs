@@ -62,5 +62,29 @@ namespace ELearner.WebAPI.Controllers
             var stream = _lessonService.GetVideoStream(name);
             return File(stream, new MediaTypeHeaderValue("video/mp4").MediaType, true);
         }
+
+        [HttpPost("upload"), DisableRequestSizeLimit]
+        public ActionResult UploadFile() {
+            try {
+                var file = Request.Form.Files[0];
+                string folderName = "Upload";
+                // string webRootPath = _hostingEnvironment.WebRootPath;
+                string localPath = "C:/ElearnerFiles/";
+                string newPath = Path.Combine(localPath, folderName);
+                if (!Directory.Exists(newPath)) {
+                    Directory.CreateDirectory(newPath);
+                }
+                if (file.Length > 0) {
+                    string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    string fullPath = Path.Combine(newPath, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create)) {
+                        file.CopyTo(stream);
+                    }
+                }
+                return Json("Upload Successful.");
+            } catch (System.Exception ex) {
+                return Json("Upload Failed: " + ex.Message);
+            }
+        }
     }
 }

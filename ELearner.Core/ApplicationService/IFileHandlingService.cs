@@ -1,0 +1,16 @@
+﻿using ELearner.Core.Entity.BusinessObjects;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+
+namespace ELearner.Core.ApplicationService {
+    public interface IFileHandlingService {
+        // 
+        Stream GetVideoStream(string id);
+        // upload file to destination
+        UndistributedCourseMaterialBO UploadFile(IFormFile file);
+
+    }
+}
