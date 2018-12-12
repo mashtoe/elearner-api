@@ -6,8 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ELearner.Core.Utilities {
-    public class DataSeeder : IDataSeeder {
+namespace ELearner.Core.Utilities
+{
+    public class DataSeeder : IDataSeeder
+    {
 
         readonly IAuthService _authService;
         readonly ICourseService _courseService;
@@ -17,7 +19,8 @@ namespace ELearner.Core.Utilities {
         readonly ILessonService _lesService;
 
 
-        public DataSeeder(IAuthService authService, ICourseService courseService, IUserService userService, ICategoryService categoryService, ISectionService sectionService, ILessonService lessonService) {
+        public DataSeeder(IAuthService authService, ICourseService courseService, IUserService userService, ICategoryService categoryService, ISectionService sectionService, ILessonService lessonService)
+        {
             _authService = authService;
             _courseService = courseService;
             _userService = userService;
@@ -26,15 +29,18 @@ namespace ELearner.Core.Utilities {
             _lesService = lessonService;
         }
 
-        public void SeedData() {
+        public void SeedData()
+        {
             #region User creation
-            var user = new UserRegisterDto() {
-               Username = "UserMan",
-               Password = "secretpassword"
+            var user = new UserRegisterDto()
+            {
+                Username = "UserMan",
+                Password = "secretpassword"
             };
             var userCreated = _authService.Register(user);
 
-            var educator = new UserRegisterDto() {
+            var educator = new UserRegisterDto()
+            {
                 Username = "EducatorMan",
                 Password = "secretpassword"
             };
@@ -43,7 +49,8 @@ namespace ELearner.Core.Utilities {
 
             _userService.Promote(educatorCreated.Id);
 
-            var admin = new UserRegisterDto() {
+            var admin = new UserRegisterDto()
+            {
                 Username = "AdminMan",
                 Password = "secretpassword"
             };
@@ -52,7 +59,8 @@ namespace ELearner.Core.Utilities {
             List<int> userIds = new List<int>();
             userIds.Add(userCreated.Id);
 
-            var category = new CategoryBO(){
+            var category = new CategoryBO()
+            {
                 Name = "Math"
             };
             #endregion
@@ -61,37 +69,44 @@ namespace ELearner.Core.Utilities {
 
             #region Building course
             var lessons = new List<LessonBO>();
-            for (int i = 0; i < 20; i++) {
-                var lesson = new LessonBO() {
+            for (int i = 0; i < 20; i++)
+            {
+                var lesson = new LessonBO()
+                {
                     Title = "Hello" + i,
                     VideoId = "dogs.mp4"
                 };
                 lessons.Add(lesson);
 
             }
-            var section = new SectionBO() {
+            var section = new SectionBO()
+            {
                 Title = "Everyone likes dogs",
                 Lessons = lessons
             };
 
-            var lesson1ForSection2 = new LessonBO() {
+            var lesson1ForSection2 = new LessonBO()
+            {
                 Title = "Lesson 2 title",
                 VideoId = "long.mp4"
             };
             var otherlessons = new List<LessonBO>();
             otherlessons.Add(lesson1ForSection2);
-            var section2 = new SectionBO() {
+            var section2 = new SectionBO()
+            {
                 Title = "Long video",
                 Lessons = otherlessons
             };
 
-            var lesson1ForSection3 = new LessonBO() {
+            var lesson1ForSection3 = new LessonBO()
+            {
                 Title = "Lesson 1 title",
                 VideoId = "dogs.mp4"
             };
             var section3Lessons = new List<LessonBO>();
             section3Lessons.Add(lesson1ForSection3);
-            var section3 = new SectionBO() {
+            var section3 = new SectionBO()
+            {
                 Title = "Section 3",
                 Lessons = section3Lessons
             };
@@ -100,7 +115,8 @@ namespace ELearner.Core.Utilities {
             sections.Add(section);
             sections.Add(section2);
             sections.Add(section3);
-            var course = new CourseBO() {
+            var course = new CourseBO()
+            {
                 Name = " Building Course",
                 UserIds = userIds,
                 CategoryId = favCategory.Id,
@@ -113,23 +129,28 @@ namespace ELearner.Core.Utilities {
             #endregion
 
             #region filler courses
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 50; i++)
+            {
                 bool published = true;
-                if (i % 10 == 0) {
+                if (i % 10 == 0)
+                {
                     published = false;
                     // crsUserIds.Add(userCreated.Id);
                 }
 
                 List<int> crsUserIds = new List<int>();
-                if ((i + 1) % 2 == 0) {
+                if ((i + 1) % 2 == 0)
+                {
                     crsUserIds.Add(userCreated.Id);
                 }
-                if ((i + 1) % 13 == 0) {
+                if ((i + 1) % 13 == 0)
+                {
                     crsUserIds.Add(educatorCreated.Id);
                 }
                 string flower = "flower";
                 if (i > 1 || i < 1) flower += "s";
-                var crs = new CourseBO() {
+                var crs = new CourseBO()
+                {
                     Name = " Course" + i,
 
                     CreatorId = educatorCreated.Id,
@@ -138,10 +159,83 @@ namespace ELearner.Core.Utilities {
                     Description = i + " " + flower + " in the garden",
                     Published = published
                 };
-                
+
                 _courseService.Create(crs);
             }
             #endregion
+
+            #region categories
+
+            var cat_1 = new CategoryBO()
+            {
+                Id = 12,
+                Name = "Electronics"
+            };
+            var cat_2 = new CategoryBO()
+            {
+                Id = 2,
+                Name = "Business "
+            };
+            var cat_3 = new CategoryBO()
+            {
+                Id = 3,
+                Name = "Robotics"
+            };
+            var cat_4 = new CategoryBO()
+            {
+                Id = 4,
+                Name = "Graphic Design"
+            };
+            var cat_5 = new CategoryBO()
+            {
+                Id = 5,
+                Name = "Information Technology"
+            };
+            var cat_6 = new CategoryBO()
+            {
+                Id = 6,
+                Name = "English"
+            };
+            var cat_7 = new CategoryBO()
+            {
+                Id = 7,
+                Name = "Spanish"
+            };
+            var cat_8 = new CategoryBO()
+            {
+                Id = 8,
+                Name = "Visual Arts"
+            };
+             var cat_9 = new CategoryBO()
+            {
+                Id = 9,
+                Name = "Marketing"
+            };
+             var cat_10 = new CategoryBO()
+            {
+                Id = 10,
+                Name = "Productivity"
+            };
+             var cat_11 = new CategoryBO()
+            {
+                Id = 11,
+                Name = "Leadership"
+            };
+
+            var cat1 = _catService.Create(cat_1);
+            var cat2 = _catService.Create(cat_2);
+            var cat3 = _catService.Create(cat_3);
+            var cat4 = _catService.Create(cat_4);
+            var cat5 = _catService.Create(cat_5);
+            var cat6 = _catService.Create(cat_6);
+            var cat7 = _catService.Create(cat_7);
+            var cat8 = _catService.Create(cat_8);
+            var cat9 = _catService.Create(cat_9);
+            var cat10 = _catService.Create(cat_10);
+            var cat11 = _catService.Create(cat_11);
+    
+            #endregion
+
         }
     }
 }
