@@ -26,6 +26,7 @@ namespace Elearner.Infrastructure.Data.Repositories {
             .Include(c => c.Users)
             .Include(c => c.Category)
             .Include(c => c.Creator)
+            .Include(c => c.UndistributedCourseMaterial)
             .Include(c => c.Sections).ThenInclude(sec => sec.Lessons)
             .FirstOrDefault(course => course.Id == id);
         }

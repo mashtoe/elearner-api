@@ -18,6 +18,7 @@ namespace ELearner.Core.ApplicationService.Services
         readonly SectionConverter _secConverter;
         readonly CategoryConverter _catConv;
         readonly LessonConverter _lesConv;
+        readonly UndistributedCourseMaterialConverter _matConv;
         readonly IDataFacade _facade;
 
         public CourseService(IDataFacade facade)
@@ -27,6 +28,7 @@ namespace ELearner.Core.ApplicationService.Services
             _secConverter = new SectionConverter();
             _catConv = new CategoryConverter();
             _lesConv = new LessonConverter();
+            _matConv = new UndistributedCourseMaterialConverter();
             _facade = facade;
         }
 
@@ -35,7 +37,6 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork)
             {
                 var fullyConvertedCourse = ConvertCourseWithSectionsAndLessons(course);
-
                 var courseCreated = uow.CourseRepo.Create(fullyConvertedCourse);
                 uow.Complete();
                 return _crsConv.Convert(courseCreated);
@@ -66,7 +67,6 @@ namespace ELearner.Core.ApplicationService.Services
                     var convCat = _catConv.Convert(courseFromDb.Category);
 
                     var creatorConverted = _userConv.Convert(courseFromDb.Creator);
-
                     
                     //var convSecs = courseFromDb.Sections?.Select(s => _secConverter.Convert(s)).ToList();
                     course = ConvertCourseWithSectionsAndLessons(courseFromDb);
@@ -170,8 +170,14 @@ namespace ELearner.Core.ApplicationService.Services
                 {
                     return null;
                 }
-                courseFromDb.Name = course.Name;
-                courseFromDb.CategoryId = course.CategoryId;
+                var courseConverted = ConvertCourseWithSectionsAndLessons(course);
+
+                courseFromDb.Name = courseConverted.Name;
+                courseFromDb.CategoryId = courseConverted.CategoryId;
+                courseFromDb.Sections = courseConverted.Sections;
+                courseFromDb.UndistributedCourseMaterial = courseConverted.UndistributedCourseMaterial;
+
+
                 uow.Complete();
                 return _crsConv.Convert(courseFromDb);
             }
@@ -192,6 +198,8 @@ namespace ELearner.Core.ApplicationService.Services
         }
 
         private Course ConvertCourseWithSectionsAndLessons(CourseBO course) {
+
+            var materialConverted = course.UndistributedCourseMaterial?.Select(m => _matConv.Convert(m)).ToList();
             var listSectionsConverted = new List<Section>();
             if (course.Sections != null) {
                 foreach (var section in course.Sections) {
@@ -211,10 +219,12 @@ namespace ELearner.Core.ApplicationService.Services
             }
             var courseEntity = _crsConv.Convert(course);
             courseEntity.Sections = listSectionsConverted;
+            courseEntity.UndistributedCourseMaterial = materialConverted;
             return courseEntity;
         }
 
         private CourseBO ConvertCourseWithSectionsAndLessons(Course course) {
+            var materialConverted = course.UndistributedCourseMaterial?.Select(m => _matConv.Convert(m)).ToList();
             var listSectionsConverted = new List<SectionBO>();
             if (course.Sections != null) {
                 foreach (var section in course.Sections) {
@@ -234,6 +244,7 @@ namespace ELearner.Core.ApplicationService.Services
             }
             var courseEntity = _crsConv.Convert(course);
             courseEntity.Sections = listSectionsConverted;
+            courseEntity.UndistributedCourseMaterial = materialConverted;
             return courseEntity;
         }
     }

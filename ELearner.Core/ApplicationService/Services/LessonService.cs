@@ -14,9 +14,9 @@ namespace ELearner.Core.ApplicationService.Services
         readonly LessonConverter _lessonConv;
         readonly SectionConverter _secConv;
         readonly IDataFacade _facade;
-        readonly IVideoStreamer _videoStream;
+        readonly IFileHandler _videoStream;
 
-        public LessonService(IDataFacade facade, IVideoStreamer videoStream)
+        public LessonService(IDataFacade facade, IFileHandler videoStream)
         {
             _lessonConv = new LessonConverter();
             _secConv = new SectionConverter();

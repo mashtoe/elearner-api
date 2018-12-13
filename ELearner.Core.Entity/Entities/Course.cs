@@ -13,12 +13,14 @@ namespace ELearner.Core.Entity.Entities {
         public bool Published { get; set; }
 
         public List<UserCourse> Users { get; set; }
-        public List<Section> Sections {get; set;}
+        public List<Section> Sections { get; set; }
         // ? means it can be null
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public int? CreatorId {get; set;}
-        public User Creator {get; set;}
+        public int? CreatorId { get; set; }
+        public User Creator { get; set; }
+
+        public List<UndistributedCourseMaterial> UndistributedCourseMaterial { get; set; }
     }
 }
