@@ -49,7 +49,7 @@ namespace Elearner.API {
             services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IDataSeeder, DataSeeder>();
-            services.AddScoped<IVideoStreamer, VideoStreamService>();
+            services.AddScoped<IFileHandler, RemoteFileHandler>();
             services.AddScoped<IFileHandlingService, FileHandlingService>();
 
 

@@ -6,11 +6,11 @@ using System.Net;
 using System.Net.Http;
 
 namespace ELearner.Infrastructure.FileAccess {
-    public class VideoStreamService: IVideoStreamer {
+    public class RemoteFileHandler: IFileHandler {
 
         private static string pathFtp = "ftp://elearning@elearning.vps.hartnet.dk/www/lessonFiles/";
 
-        public VideoStreamService() {
+        public RemoteFileHandler() {
         }
 
         public Stream GetVideoStream(string name) {

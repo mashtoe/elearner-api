@@ -12,12 +12,12 @@ using System.Text;
 namespace ELearner.Core.ApplicationService.Services {
     public class FileHandlingService : IFileHandlingService {
 
-        readonly IVideoStreamer _videoStream;
+        readonly IFileHandler _videoStream;
         readonly IDataFacade _facade;
         readonly UndistributedCourseMaterialConverter _matConv;
 
 
-        public FileHandlingService(IDataFacade facade, IVideoStreamer videoStream) {
+        public FileHandlingService(IDataFacade facade, IFileHandler videoStream) {
             _facade = facade;
             _videoStream = videoStream;
             _matConv = new UndistributedCourseMaterialConverter();

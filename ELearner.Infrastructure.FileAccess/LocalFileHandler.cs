@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ELearner.Infrastructure.FileAccess {
-    public class LocalVideoStreamService : IVideoStreamer {
+    public class LocalFileHandler : IFileHandler {
         public Stream GetVideoStream(string id) {
             var stream = (Stream)new FileStream(id, FileMode.Open, System.IO.FileAccess.Read);
             return stream;
