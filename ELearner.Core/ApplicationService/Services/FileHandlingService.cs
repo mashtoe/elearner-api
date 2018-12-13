@@ -2,6 +2,7 @@
 using ELearner.Core.DomainService.Facade;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
+using ELearner.Core.Entity.Dtos;
 using ELearner.Core.Entity.Entities;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -32,10 +33,10 @@ namespace ELearner.Core.ApplicationService.Services {
             return _videoStream.GetVideoStream(url);
         }
 
-        public UndistributedCourseMaterialBO UploadFile(IFormFile file, int courseId) {
+        public UndistributedCourseMaterialBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId) {
             using (var uow = _facade.UnitOfWork) {
                 // upload file
-                var fileName = _videoStream.UploadFile(file);
+                var fileName = _videoStream.UploadFile(file, progress, jobId);
                 if (fileName != null) {
                     // create and return material object on success
                     var course = uow.CourseRepo.Get(courseId);

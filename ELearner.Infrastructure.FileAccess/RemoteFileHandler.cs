@@ -1,15 +1,17 @@
 ﻿using ELearner.Core.DomainService;
+using ELearner.Core.Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Net;
 using System.Net.FtpClient;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ELearner.Infrastructure.FileAccess {
     public class RemoteFileHandler: IFileHandler {
 
-        private static string pathFtp = "ftp://elearning@elearning.vps.hartnet.dk/www/lessonFiles/";
+        // private static string pathFtp = "ftp://elearning@elearning.vps.hartnet.dk/www/lessonFiles/";
 
         public RemoteFileHandler() {
         }
@@ -19,7 +21,7 @@ namespace ELearner.Infrastructure.FileAccess {
         }
 
 
-        public string UploadFile(IFormFile file) {
+        public string UploadFile(IFormFile file, IProgress<UploadProgress> progress, int jobId) {
             string fileName = null;
             using (FtpClient client = new FtpClient()) {
                 SetCredentials(client);
@@ -27,18 +29,26 @@ namespace ELearner.Infrastructure.FileAccess {
                     string uuid = Guid.NewGuid().ToString();
                     fileName = uuid + ".mp4";
                     string fileUri = "/www/lessonFiles/" + fileName;
-                    using (var ftpStream = client.OpenWrite(fileUri)) {
-                        using (var fileStream = file.OpenReadStream()) {
-                            // fileStream.CopyTo(ftpStream);
-                            byte[] buffer = new byte[512 * 1024];
-                            int read;
-                            while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0) {
-                                ftpStream.Write(buffer, 0, read);
-                                double progress = fileStream.Position * 100 / fileStream.Length;
-                            }
 
+                    //await Task.Run(() =>
+                    //{
+                        using (var ftpStream = client.OpenWrite(fileUri))
+                        {
+                            using (var fileStream = file.OpenReadStream())
+                            {
+                                // fileStream.CopyTo(ftpStream);
+                                byte[] buffer = new byte[512 * 1024];
+                                int read;
+                                while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+                                {
+                                    ftpStream.Write(buffer, 0, read);
+                                    int currentProgress = (int)(fileStream.Position * 100 / fileStream.Length);
+                                    progress.Report(new UploadProgress() { JobId = jobId, Progress = currentProgress});
+                                }
+                            }
                         }
-                    }
+                    //});
+                    
                 }
             }
             return fileName;

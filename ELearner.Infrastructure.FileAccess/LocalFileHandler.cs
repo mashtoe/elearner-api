@@ -1,4 +1,5 @@
 ﻿using ELearner.Core.DomainService;
+using ELearner.Core.Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,11 @@ namespace ELearner.Infrastructure.FileAccess {
                 return fileName;
             }
             throw new Exception();
+        }
+
+        public string UploadFile(IFormFile file, IProgress<UploadProgress> progress, int jobId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ELearner.Core.Entity.BusinessObjects;
+using ELearner.Core.Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace ELearner.Core.ApplicationService {
         // 
         Stream GetVideoStream(string id);
         // upload file to destination
-        UndistributedCourseMaterialBO UploadFile(IFormFile file, int courseId);
+        UndistributedCourseMaterialBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId);
 
     }
 }

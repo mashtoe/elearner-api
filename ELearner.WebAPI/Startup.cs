@@ -26,6 +26,7 @@ using System;
 using System.Text;
 using ELearner.Infrastructure.FileAccess;
 using Microsoft.AspNetCore.Http.Features;
+using Elearner.API.Hubs;
 //using ELearner.Infrastructure.Data.Repositories;
 
 namespace Elearner.API {
@@ -81,7 +82,7 @@ namespace Elearner.API {
             // Here Cross-Origin Resource Sharing is added
             // Important that this line is before AddMvc
             services.AddCors();
-
+            services.AddSignalR();
             services.AddMvc().AddJsonOptions(options => {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
@@ -119,6 +120,9 @@ namespace Elearner.API {
                 });
                 //app.UseHsts();
             }
+            app.UseSignalR(routes => { routes.MapHub<JobProgressHub>("/api/jobprogress"); });
+
+
             // Origins who are allowed to request data from this api is listed here. We allow all http methods and all headers atm
             // app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
