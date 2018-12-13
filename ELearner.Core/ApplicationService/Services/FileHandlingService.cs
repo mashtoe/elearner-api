@@ -43,6 +43,7 @@ namespace ELearner.Core.ApplicationService.Services {
                         VideoId = fileName,
                         Course = course
                     };
+                    course.UndistributedCourseMaterial.Add(material);
                     uow.Complete();
                     return _matConv.Convert(material);
                 } else { return null; }
