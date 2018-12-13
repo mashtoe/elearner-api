@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Net;
+using System.Net.FtpClient;
 using System.Net.Http;
 
 namespace ELearner.Infrastructure.FileAccess {
@@ -17,27 +18,38 @@ namespace ELearner.Infrastructure.FileAccess {
             return new PartialHTTPStream(name);
         }
 
+
         public string UploadFile(IFormFile file) {
             string fileName = null;
-            using (WebClientNoTimeOut client = new WebClientNoTimeOut()) {
+            using (FtpClient client = new FtpClient()) {
+                SetCredentials(client);
                 if (file.ContentType.Equals("video/mp4")) {
                     string uuid = Guid.NewGuid().ToString();
                     fileName = uuid + ".mp4";
                     string fileUri = pathFtp + fileName;
-                    SetCredentials(client);
-                    using (Stream fileStream = file.OpenReadStream()) {
-                        var openWriteStream = client.OpenWrite(fileUri);
-                        fileStream.CopyTo(openWriteStream);
-                        // byte[] data = ReadFully(fileStream);
-                        // client.UploadData(fileUri, data);
+                    string fileUri2 = "/www/lessonFiles/" + fileName;
+                    var fullRemotePath = string.Format("{0}/{1}", pathFtp, fileName);
+                    using (var ftpStream = client.OpenWrite(fileUri2)) {
+                        using (var fileStream = file.OpenReadStream()) {
+                            fileStream.CopyTo(ftpStream);
+                        }
                     }
-                     //var openWriteStream = client.OpenWrite(fileUri, "STOR");
-                    //await file.CopyToAsync(openWriteStream);
                 }
             }
             return fileName;
         }
 
+        
+        private void SetCredentials(FtpClient client) {
+            client.Host = "elearning.vps.hartnet.dk";
+            // client.Port = _settings.FtpsRemotePort;
+            client.DataConnectionConnectTimeout = 60000;
+            client.ConnectTimeout = 60000;
+            client.Credentials = new NetworkCredential("elearning", "eLearn!ng");
+            client.DataConnectionType = 0;
+        }
+
+        /*
         public static byte[] ReadFully(Stream input) {
             byte[] buffer = new byte[16 * 1024];
             using (MemoryStream ms = new MemoryStream()) {
@@ -57,5 +69,34 @@ namespace ELearner.Infrastructure.FileAccess {
             //client.Credentials = new NetworkCredential("elearning.vps.hartnet.dk", "eLearn!ng");
             client.Credentials = new NetworkCredential("elearning", "eLearn!ng");
         }
+
+        public string UploadFile2(IFormFile file) {
+            string fileName = null;
+            using (WebClientNoTimeOut client = new WebClientNoTimeOut()) {
+                if (file.ContentType.Equals("video/mp4")) {
+                    string uuid = Guid.NewGuid().ToString();
+                    fileName = uuid + ".mp4";
+                    string fileUri = pathFtp + fileName;
+                    SetCredentials(client);
+                    using (Stream fileStream = file.OpenReadStream()) {
+                        var ftpWriteStream = client.OpenWrite(fileUri);
+                        byte[] buffer = new byte[512 * 1024];
+                        int read;
+                        while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0) {
+                            ftpWriteStream.Write(buffer, 0, read);
+                            double progress = fileStream.Position * 100 / fileStream.Length;
+                        }
+
+                        // 2
+                        // fileStream.CopyTo(openWriteStream);
+
+                        // 1
+                        // byte[] data = ReadFully(fileStream);
+                        // client.UploadData(fileUri, data);
+                    }
+                }
+            }
+            return fileName;
+        }*/
     }
 }
