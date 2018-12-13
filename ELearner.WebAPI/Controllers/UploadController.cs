@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using Microsoft.AspNetCore.Http;
@@ -18,14 +19,14 @@ namespace Elearner.API.Controllers
 
         }
 
-        [HttpPost, DisableRequestSizeLimit]
-        public ActionResult<UndistributedCourseMaterialBO> UploadFile() {
+        [HttpPost("{courseId}"), DisableRequestSizeLimit]
+        public ActionResult<UndistributedCourseMaterialBO> UploadFile(int courseId) {
             try {
                 IFormFile file = Request.Form.Files[0];
-                
-                return Json("Upload Successful.");
+                var material = _fileHandlingService.UploadFile(file, courseId);
+                return Ok(material);
             } catch (System.Exception ex) {
-                return Json("Upload Failed: " + ex.Message);
+                return BadRequest();
             }
         }
     }

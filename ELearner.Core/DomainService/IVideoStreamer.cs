@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace ELearner.Core.DomainService {
     public interface IVideoStreamer {
         Stream GetVideoStream(string id);
-        void UploadFile(IFormFile file);
+        // return name of uploaded file pls
+        string UploadFile(IFormFile file);
     }
 }

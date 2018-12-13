@@ -17,18 +17,35 @@ namespace ELearner.Infrastructure.FileAccess {
             return new PartialHTTPStream(name);
         }
 
-        public void UploadFile(IFormFile file) {
-
+        public string UploadFile(IFormFile file) {
+            string fileName = null;
+            using (WebClientNoTimeOut client = new WebClientNoTimeOut()) {
+                if (file.ContentType.Equals("video/mp4")) {
+                    string uuid = Guid.NewGuid().ToString();
+                    fileName = uuid + ".mp4";
+                    string fileUri = pathFtp + fileName;
+                    SetCredentials(client);
+                    using (Stream fileStream = file.OpenReadStream()) {
+                        var openWriteStream = client.OpenWrite(fileUri);
+                        fileStream.CopyTo(openWriteStream);
+                        // byte[] data = ReadFully(fileStream);
+                        // client.UploadData(fileUri, data);
+                    }
+                     //var openWriteStream = client.OpenWrite(fileUri, "STOR");
+                    //await file.CopyToAsync(openWriteStream);
+                }
+            }
+            return fileName;
         }
 
-        public string UploadData(byte[] data, string fileType) {
-            using (WebClient client = new WebClient()) {
-                string uuid = Guid.NewGuid().ToString();
-                SetCredentials(client);
-                string fileName = uuid + fileType;
-                string fileUri = pathFtp + fileName;
-                client.UploadData(fileUri, data);
-                return fileName;
+        public static byte[] ReadFully(Stream input) {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream()) {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0) {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
             }
         }
 
@@ -37,7 +54,8 @@ namespace ELearner.Infrastructure.FileAccess {
         /// </summary>
         /// <param name="client"></param>
         public void SetCredentials(WebClient client) {
-            client.Credentials = new NetworkCredential("elearning.vps.hartnet.dk ", "eLearn!ng");
+            //client.Credentials = new NetworkCredential("elearning.vps.hartnet.dk", "eLearn!ng");
+            client.Credentials = new NetworkCredential("elearning", "eLearn!ng");
         }
     }
 }

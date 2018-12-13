@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 namespace ELearner.Infrastructure.FileAccess {
     public class LocalVideoStreamService : IVideoStreamer {
         public Stream GetVideoStream(string id) {
-            var stream = (Stream) new FileStream(id, FileMode.Open, System.IO.FileAccess.Read);
+            var stream = (Stream)new FileStream(id, FileMode.Open, System.IO.FileAccess.Read);
             return stream;
         }
 
-        public void UploadFile(IFormFile file) {
+        public string UploadFile(IFormFile file) {
             string folderName = "Upload";
             // string webRootPath = _hostingEnvironment.WebRootPath;
             string localPath = "C:/ElearnerFiles/videos/";
@@ -28,7 +28,9 @@ namespace ELearner.Infrastructure.FileAccess {
                 using (var stream = new FileStream(fullPath, FileMode.Create)) {
                     file.CopyTo(stream);
                 }
+                return fileName;
             }
+            throw new Exception();
         }
     }
 }
