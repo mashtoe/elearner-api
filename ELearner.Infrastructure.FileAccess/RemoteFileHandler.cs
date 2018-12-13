@@ -26,12 +26,17 @@ namespace ELearner.Infrastructure.FileAccess {
                 if (file.ContentType.Equals("video/mp4")) {
                     string uuid = Guid.NewGuid().ToString();
                     fileName = uuid + ".mp4";
-                    string fileUri = pathFtp + fileName;
-                    string fileUri2 = "/www/lessonFiles/" + fileName;
-                    var fullRemotePath = string.Format("{0}/{1}", pathFtp, fileName);
-                    using (var ftpStream = client.OpenWrite(fileUri2)) {
+                    string fileUri = "/www/lessonFiles/" + fileName;
+                    using (var ftpStream = client.OpenWrite(fileUri)) {
                         using (var fileStream = file.OpenReadStream()) {
-                            fileStream.CopyTo(ftpStream);
+                            // fileStream.CopyTo(ftpStream);
+                            byte[] buffer = new byte[512 * 1024];
+                            int read;
+                            while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0) {
+                                ftpStream.Write(buffer, 0, read);
+                                double progress = fileStream.Position * 100 / fileStream.Length;
+                            }
+
                         }
                     }
                 }
