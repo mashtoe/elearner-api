@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ELearner.WebAPI.Controllers
@@ -32,6 +33,7 @@ namespace ELearner.WebAPI.Controllers
             return Ok(_lessonService.Get(id));
         }
         // POST api/<controller>
+        [Authorize("User")]
         [HttpPost]
         public ActionResult<LessonBO> Post([FromBody]LessonBO lesson)
         {

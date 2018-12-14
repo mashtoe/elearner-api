@@ -13,14 +13,14 @@ using System.Text;
 namespace ELearner.Core.ApplicationService.Services {
     public class FileHandlingService : IFileHandlingService {
 
-        readonly IFileHandler _videoStream;
+        readonly IFileHandler _fileHanlder;
         readonly IDataFacade _facade;
         readonly UndistributedCourseMaterialConverter _matConv;
 
 
-        public FileHandlingService(IDataFacade facade, IFileHandler videoStream) {
+        public FileHandlingService(IDataFacade facade, IFileHandler fileHandler) {
             _facade = facade;
-            _videoStream = videoStream;
+            _fileHanlder = fileHandler;
             _matConv = new UndistributedCourseMaterialConverter();
         }
 
@@ -30,18 +30,19 @@ namespace ELearner.Core.ApplicationService.Services {
             //var url = "C:/ElearnerFiles/long.mp4";
             //var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
-            return _videoStream.GetVideoStream(url);
+            return _fileHanlder.GetVideoStream(url);
         }
 
-        public UndistributedCourseMaterialBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId) {
+        public UndistributedCourseMaterialBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId, string fileName) {
             using (var uow = _facade.UnitOfWork) {
+                // generate filename
                 // upload file
-                var fileName = _videoStream.UploadFile(file, progress, jobId);
-                if (fileName != null) {
+                string fullFileName = _fileHanlder.UploadFile(file, progress, jobId, fileName);
+                if (fullFileName != null) {
                     // create and return material object on success
                     var course = uow.CourseRepo.Get(courseId);
                     var material = new UndistributedCourseMaterial() {
-                        VideoId = fileName,
+                        VideoId = fullFileName,
                         Course = course
                     };
                     course.UndistributedCourseMaterial.Add(material);

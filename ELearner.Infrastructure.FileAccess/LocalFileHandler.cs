@@ -34,7 +34,7 @@ namespace ELearner.Infrastructure.FileAccess {
             throw new Exception();
         }
 
-        public string UploadFile(IFormFile file, IProgress<UploadProgress> progress, int jobId)
+        public string UploadFile(IFormFile file, IProgress<UploadProgress> progress, int jobId, string fileName)
         {
             throw new NotImplementedException();
         }

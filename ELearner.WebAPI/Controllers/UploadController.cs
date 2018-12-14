@@ -23,7 +23,12 @@ namespace Elearner.API.Controllers
             _fileHandlingService = fileHandlingService;
             _hubContext = hubContext;
         }
-
+        /*
+        /// <summary>
+        /// </summary>
+        /// <param name="courseId">course id is for assigning to correct course</param>
+        /// <param name="jobId">jobId: (defined as userId) client subscribes to listen for events with their own jobId</param>
+        /// <returns></returns>
         [HttpPost("{courseId}/{jobId}"), DisableRequestSizeLimit]
         public ActionResult<UndistributedCourseMaterialBO> UploadFile(int courseId, int jobId) {
             try {
@@ -31,7 +36,27 @@ namespace Elearner.API.Controllers
 
                 var progressIndicator = new Progress<UploadProgress>(ReportProgress);
                 var material = _fileHandlingService.UploadFile(file, courseId, progressIndicator, jobId);
-                return Json("Upload succesful");
+                return material;
+            } catch (System.Exception ex) {
+                return BadRequest();
+            }
+        }*/
+        
+        /// <summary>
+        /// </summary>
+        /// <param name="courseId">course id is for assigning to correct course</param>
+        /// <param name="jobId">jobId: (defined as userId) client subscribes to listen for events with their own jobId</param>
+        /// <param name="generatedFileName">generatedFileName: user in client can have multiple files being uploaded at once. 
+        /// this is used to assign progress to correct upload. Also used for the name of the file</param>
+        /// <returns></returns>
+        [HttpPost("{courseId}/{jobId}/{generatedFileName}"), DisableRequestSizeLimit]
+        public ActionResult<UndistributedCourseMaterialBO> UploadFile(int courseId, int jobId, string generatedFileName) {
+            try {
+                IFormFile file = Request.Form.Files[0];
+
+                var progressIndicator = new Progress<UploadProgress>(ReportProgress);
+                var material = _fileHandlingService.UploadFile(file, courseId, progressIndicator, jobId, generatedFileName);
+                return material;
             }
             catch (System.Exception ex) {
                 return BadRequest();
@@ -40,7 +65,7 @@ namespace Elearner.API.Controllers
 
         void ReportProgress(UploadProgress uploadProgress)
         {
-             _hubContext.Clients.Group(uploadProgress.JobId + "").SendAsync("progress", uploadProgress.Progress);
+             _hubContext.Clients.Group(uploadProgress.JobId + "").SendAsync("progress", uploadProgress);
 
         }
     }

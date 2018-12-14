@@ -21,37 +21,39 @@ namespace ELearner.Infrastructure.FileAccess {
         }
 
 
-        public string UploadFile(IFormFile file, IProgress<UploadProgress> progress, int jobId) {
-            string fileName = null;
-            using (FtpClient client = new FtpClient()) {
-                SetCredentials(client);
-                if (file.ContentType.Equals("video/mp4")) {
-                    string uuid = Guid.NewGuid().ToString();
-                    fileName = uuid + ".mp4";
-                    string fileUri = "/www/lessonFiles/" + fileName;
+        public string UploadFile(IFormFile file, IProgress<UploadProgress> progress, int jobId, string fileName) {
+            try {
+                string fullFileName = "";
+                using (FtpClient client = new FtpClient()) {
+                    SetCredentials(client);
+                    if (file.ContentType.Equals("video/mp4")) {
+                        fullFileName = fileName + ".mp4";
+                        string fileUri = "/www/lessonFiles/" + fileName;
 
-                    //await Task.Run(() =>
-                    //{
-                        using (var ftpStream = client.OpenWrite(fileUri))
-                        {
-                            using (var fileStream = file.OpenReadStream())
-                            {
+                        using (var ftpStream = client.OpenWrite(fileUri)) {
+                            using (var fileStream = file.OpenReadStream()) {
                                 // fileStream.CopyTo(ftpStream);
                                 byte[] buffer = new byte[512 * 1024];
                                 int read;
-                                while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0)
-                                {
+                                int currentProgress = 0;
+                                while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0) {
                                     ftpStream.Write(buffer, 0, read);
-                                    int currentProgress = (int)(fileStream.Position * 100 / fileStream.Length);
-                                    progress.Report(new UploadProgress() { JobId = jobId, Progress = currentProgress});
+                                    int newProgress = (int)(fileStream.Position * 100 / fileStream.Length);
+                                    if (currentProgress != newProgress) {
+                                        progress.Report(new UploadProgress() { JobId = jobId, Progress = currentProgress, FileName = fileName });
+                                        currentProgress = newProgress;
+                                    }
                                 }
+                                progress.Report(new UploadProgress() { JobId = jobId, Progress = 100, FileName = fileName });
                             }
                         }
-                    //});
-                    
+                    }
                 }
+                return fullFileName;
+            } catch (Exception ex) {
+                return null;
             }
-            return fileName;
+
         }
 
         
