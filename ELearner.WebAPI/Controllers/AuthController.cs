@@ -2,6 +2,7 @@ using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ELearner.API.Controllers
 {
@@ -16,6 +17,7 @@ namespace ELearner.API.Controllers
             _authService = authService;
         }
 
+
         [HttpPost("register")]
         public ActionResult<UserBO> Register([FromBody]UserRegisterDto userDto)
         {
@@ -27,16 +29,17 @@ namespace ELearner.API.Controllers
             }
             return StatusCode(201);
         }
-
+        
         [HttpPost("login")]
-        public IActionResult Login([FromBody]UserLoginDto userDto ) {
-
+        public IActionResult Login([FromBody]UserLoginDto userDto)
+        {
             var jwtToken = _authService.Login(userDto);
             if (jwtToken == "")
             {
                 return Unauthorized();
             }
-            return Ok(new {
+            return Ok(new
+            {
                 token = jwtToken
             });
         }

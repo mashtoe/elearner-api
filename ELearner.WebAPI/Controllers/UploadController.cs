@@ -5,9 +5,11 @@ using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Elearner.API.Controllers
 {
+    [Authorize(Roles = "Admin, Educator")]
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class UploadController : Controller
@@ -16,16 +18,16 @@ namespace Elearner.API.Controllers
 
         public UploadController(IFileHandlingService fileHandlingService) {
             this._fileHandlingService = fileHandlingService;
-
         }
 
+        
         [HttpPost("{courseId}"), DisableRequestSizeLimit]
         public ActionResult<UndistributedCourseMaterialBO> UploadFile(int courseId) {
             try {
                 IFormFile file = Request.Form.Files[0];
                 var material = _fileHandlingService.UploadFile(file, courseId);
                 return Ok(material);
-            } catch (System.Exception ex) {
+            } catch (System.Exception exception) {
                 return BadRequest();
             }
         }
