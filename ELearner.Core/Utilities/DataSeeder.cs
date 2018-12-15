@@ -69,7 +69,7 @@ namespace ELearner.Core.Utilities
 
             #region Building course
             var lessons = new List<LessonBO>();
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 2; i++)
             {
                 var lesson = new LessonBO()
                 {
@@ -114,7 +114,7 @@ namespace ELearner.Core.Utilities
             var sections = new List<SectionBO>();
             sections.Add(section);
             sections.Add(section2);
-            sections.Add(section3);
+            //sections.Add(section3);
 
             var material = new List<UndistributedCourseMaterialBO>();
             material.Add(new UndistributedCourseMaterialBO() {

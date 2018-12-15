@@ -165,6 +165,7 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
+                List<SectionBO> sections = new List<SectionBO>(course.Sections);
                 var courseFromDb = uow.CourseRepo.Get(course.Id);
                 if (courseFromDb == null)
                 {
@@ -174,8 +175,45 @@ namespace ELearner.Core.ApplicationService.Services
 
                 courseFromDb.Name = courseConverted.Name;
                 courseFromDb.CategoryId = courseConverted.CategoryId;
-                courseFromDb.Sections = courseConverted.Sections;
-                courseFromDb.UndistributedCourseMaterial = courseConverted.UndistributedCourseMaterial;
+
+                //1. Remove All, except the "old" ids we 
+                //      wanna keep (Avoid attached issues)
+                courseFromDb.Sections.RemoveAll(
+                    sDb => !courseConverted.Sections.Exists(
+                        s => s.Id == sDb.Id));
+
+                //2. Remove All ids already in database 
+                //      from customerUpdated
+                courseConverted.Sections.RemoveAll(
+                    s => courseFromDb.Sections.Exists(
+                        sDb => s.Id == sDb.Id));
+
+                //3. Add All new CustomerAddresses not 
+                //      yet seen in the DB
+                courseFromDb.Sections.AddRange(courseConverted.Sections);
+                // index 2 seems to be wrong. converted seems to have one element after stuff
+                List<Section> sectionsConverted = ConvertSections(sections);
+                for (int i = 0; i < courseFromDb.Sections.Count(); i++)// var sectionDirty in courseFromDb.Sections) {
+                {    //1. 
+                    courseFromDb.Sections[i].Lessons.RemoveAll(
+                        lD => !sectionsConverted[i].Lessons.Exists(
+                            l => l.Id == lD.Id));
+
+                    //2. 
+                    sectionsConverted[i].Lessons.RemoveAll(
+                        l => courseFromDb.Sections[i].Lessons.Exists(
+                            l2 => l.Id == l2.Id));
+                    //3.
+                    foreach (var item in sectionsConverted[i].Lessons) {
+                        item.Section = courseFromDb.Sections[i];
+                        item.SectionId = courseFromDb.Sections[i].Id;
+                    }
+
+                    courseFromDb.Sections[i].Lessons.AddRange(sectionsConverted[i].Lessons);
+                }
+
+                //courseFromDb.Sections = courseConverted.Sections;
+                //courseFromDb.UndistributedCourseMaterial = courseConverted.UndistributedCourseMaterial;
 
 
                 uow.Complete();
@@ -195,6 +233,21 @@ namespace ELearner.Core.ApplicationService.Services
                 uow.Complete();
                 return _crsConv.Convert(courseFromDb);
             }
+        }
+
+        private List<Section> ConvertSections(List<SectionBO> sectionsToConvert) {
+            var sectionsConverted = new List<Section>();
+            foreach (var section in sectionsToConvert) {
+                var lessonsConverted = new List<Lesson>();
+                foreach (var lesson in section.Lessons) {
+                    var lessonConverted = _lesConv.Convert(lesson);
+                    lessonsConverted.Add(lessonConverted);
+                }
+                var sectionConverted = _secConverter.Convert(section);
+                sectionConverted.Lessons = lessonsConverted;
+                sectionsConverted.Add(sectionConverted);
+            }
+            return sectionsConverted;
         }
 
         private Course ConvertCourseWithSectionsAndLessons(CourseBO course) {
@@ -247,5 +300,7 @@ namespace ELearner.Core.ApplicationService.Services
             courseEntity.UndistributedCourseMaterial = materialConverted;
             return courseEntity;
         }
+
+
     }
 }

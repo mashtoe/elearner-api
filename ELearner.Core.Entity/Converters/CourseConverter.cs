@@ -21,7 +21,7 @@ namespace ELearner.Core.Entity.Converters {
                     UserID = sId
                 }).ToList(),
                 Description = course.Description,
-                Published = course.Published
+                Published = course.Published,
             };
         }
 

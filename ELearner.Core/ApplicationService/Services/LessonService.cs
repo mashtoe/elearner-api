@@ -68,7 +68,7 @@ namespace ELearner.Core.ApplicationService.Services
                     return null;
                 }
                 lessonFromDb.Title = lesson.Title;
-                lessonFromDb.SectionId = lesson.SectionId;
+                //lessonFromDb.SectionId = lesson.SectionId;
                 uow.Complete();
                 return _lessonConv.Convert(lessonFromDb);
             }

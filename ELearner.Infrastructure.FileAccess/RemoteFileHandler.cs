@@ -28,7 +28,7 @@ namespace ELearner.Infrastructure.FileAccess {
                     SetCredentials(client);
                     if (file.ContentType.Equals("video/mp4")) {
                         fullFileName = fileName + ".mp4";
-                        string fileUri = "/www/lessonFiles/" + fileName;
+                        string fileUri = "/www/lessonFiles/" + fullFileName;
 
                         using (var ftpStream = client.OpenWrite(fileUri)) {
                             using (var fileStream = file.OpenReadStream()) {
