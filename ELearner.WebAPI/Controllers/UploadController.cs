@@ -50,13 +50,13 @@ namespace Elearner.API.Controllers
         /// this is used to assign progress to correct upload. Also used for the name of the file</param>
         /// <returns></returns>
         [HttpPost("{courseId}/{jobId}/{generatedFileName}"), DisableRequestSizeLimit]
-        public ActionResult<UndistributedCourseMaterialBO> UploadFile(int courseId, int jobId, string generatedFileName) {
+        public ActionResult<LessonBO> UploadFile(int courseId, int jobId, string generatedFileName) {
             try {
                 IFormFile file = Request.Form.Files[0];
 
                 var progressIndicator = new Progress<UploadProgress>(ReportProgress);
-                var material = _fileHandlingService.UploadFile(file, courseId, progressIndicator, jobId, generatedFileName);
-                return material;
+                var lesson = _fileHandlingService.UploadFile(file, courseId, progressIndicator, jobId, generatedFileName);
+                return lesson;
             }
             catch (System.Exception ex) {
                 return BadRequest();

@@ -16,12 +16,14 @@ namespace ELearner.Core.ApplicationService.Services {
         readonly IFileHandler _fileHanlder;
         readonly IDataFacade _facade;
         readonly UndistributedCourseMaterialConverter _matConv;
+        readonly LessonConverter _lesConv;
 
 
         public FileHandlingService(IDataFacade facade, IFileHandler fileHandler) {
             _facade = facade;
             _fileHanlder = fileHandler;
             _matConv = new UndistributedCourseMaterialConverter();
+            _lesConv = new LessonConverter();
         }
 
         public Stream GetVideoStream(string name) {
@@ -33,7 +35,7 @@ namespace ELearner.Core.ApplicationService.Services {
             return _fileHanlder.GetVideoStream(url);
         }
 
-        public UndistributedCourseMaterialBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId, string fileName) {
+        public LessonBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId, string fileName) {
             using (var uow = _facade.UnitOfWork) {
                 // generate filename
                 // upload file
@@ -41,13 +43,19 @@ namespace ELearner.Core.ApplicationService.Services {
                 if (fullFileName != null) {
                     // create and return material object on success
                     var course = uow.CourseRepo.Get(courseId);
-                    var material = new UndistributedCourseMaterial() {
+                    /*var material = new UndistributedCourseMaterial() {
                         VideoId = fullFileName,
                         Course = course
+                    };*/
+                    var lesson = new Lesson() {
+                        VideoId = fullFileName,
+                        Title = fullFileName,
+                        Course = course
                     };
-                    course.UndistributedCourseMaterial.Add(material);
+
+                    course.Lessons.Add(lesson);
                     uow.Complete();
-                    return _matConv.Convert(material);
+                    return _lesConv.Convert(lesson);
                 } else { return null; }
             }
 

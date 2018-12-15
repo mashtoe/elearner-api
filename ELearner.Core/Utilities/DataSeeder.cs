@@ -69,7 +69,7 @@ namespace ELearner.Core.Utilities
 
             #region Building course
             var lessons = new List<LessonBO>();
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 20; i++)
             {
                 var lesson = new LessonBO()
                 {
@@ -116,12 +116,14 @@ namespace ELearner.Core.Utilities
             sections.Add(section2);
             //sections.Add(section3);
 
-            var material = new List<UndistributedCourseMaterialBO>();
-            material.Add(new UndistributedCourseMaterialBO() {
-                VideoId = "dogs.mp4"
+            var material = new List<LessonBO>();
+            material.Add(new LessonBO() {
+                VideoId = "dogs.mp4",
+                Title = "Dogs"
             });
-            material.Add(new UndistributedCourseMaterialBO() {
-                VideoId = "long.mp4"
+            material.Add(new LessonBO() {
+                VideoId = "long.mp4",
+                Title = "Long"
             });
 
 
@@ -134,7 +136,7 @@ namespace ELearner.Core.Utilities
                 CreatorId = educatorCreated.Id,
                 Published = true,
                 Description = "Your body can’t digest corn. So if you ate literally nothing but corn every day you’d reach the point where you’re shitting out pure corn and then you’ve got an infinite food source.",
-                UndistributedCourseMaterial = material
+                Lessons = material
             };
             _courseService.Create(course);
             #endregion

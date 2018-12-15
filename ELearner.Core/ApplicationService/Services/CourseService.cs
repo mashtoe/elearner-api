@@ -72,16 +72,17 @@ namespace ELearner.Core.ApplicationService.Services
                     course = ConvertCourseWithSectionsAndLessons(courseFromDb);
                     course.Category = convCat;
                     course.Creator = creatorConverted;
-                    //course.Sections = convSecs;
-                    //course.Category = _catConv.Convert(uow.CategoryRepo.Get(course.CategoryId));
-                    /*if (course.UserIds != null)
-                    {
-                        course.Users = uow.UserRepo.GetAllById(course.UserIds).Select(s => _userConv.Convert(s)).ToList();
-                    }*/
-                    /*if(course.SectionIds != null) {
-                        course.Sections = uow.SectionRepo.GetAllById(course.SectionIds)
-                        .Select(s => _secConverter.Convert(s)).ToList();
-                    }*/
+
+                    // we cant use orderby in query via entity framework since we get lessons via include
+                    // so we gotta sort after the query is done
+                    foreach (var section in course.Sections) {
+                        
+                        var sortedLessons = section.Lessons.OrderBy(l => l.ListIndex).ToList();
+                        section.Lessons = sortedLessons;
+
+                    }
+                    var sortedUndistributedLessons = course.Lessons.OrderBy(l => l.ListIndex).ToList();
+                    course.Lessons = sortedUndistributedLessons;
                 }
                 return course;
             }
@@ -200,22 +201,64 @@ namespace ELearner.Core.ApplicationService.Services
                             l => l.Id == lD.Id));
 
                     //2. 
+                    //remove all unmoved lessosn
                     sectionsConverted[i].Lessons.RemoveAll(
                         l => courseFromDb.Sections[i].Lessons.Exists(
                             l2 => l.Id == l2.Id));
                     //3.
+                    //update all moved lessons section id individually
                     foreach (var item in sectionsConverted[i].Lessons) {
-                        item.Section = courseFromDb.Sections[i];
-                        item.SectionId = courseFromDb.Sections[i].Id;
+                        var lessonFromDb = uow.LessonRepo.Get(item.Id);
+                        lessonFromDb.CourseId = null;
+                        lessonFromDb.SectionId = courseFromDb.Sections[i].Id;
+                        //item.Section = courseFromDb.Sections[i];
+                        //item.SectionId = courseFromDb.Sections[i].Id;
                     }
-
-                    courseFromDb.Sections[i].Lessons.AddRange(sectionsConverted[i].Lessons);
+                    //courseFromDb.Sections[i].Lessons.AddRange(sectionsConverted[i].Lessons);
                 }
 
                 //courseFromDb.Sections = courseConverted.Sections;
                 //courseFromDb.UndistributedCourseMaterial = courseConverted.UndistributedCourseMaterial;
+                
+                //1. Remove All, except the "old" ids we 
+                //      wanna keep (Avoid attached issues)
+                courseFromDb.Lessons.RemoveAll(
+                    lDb => !courseConverted.Lessons.Exists(
+                        l => l.Id == lDb.Id));
 
+                //2. Remove All ids already in database 
+                //      from customerUpdated
+                courseConverted.Lessons.RemoveAll(
+                    l => courseFromDb.Lessons.Exists(
+                        lDb => l.Id == lDb.Id));
 
+                //3. Add All new CustomerAddresses not 
+                //      yet seen in the DB
+                foreach (var item in courseConverted.Lessons) {
+                    var lessonFromDb = uow.LessonRepo.Get(item.Id);
+                    lessonFromDb.CourseId = null;
+                    lessonFromDb.CourseId = courseFromDb.Id;
+                    //item.Section = courseFromDb.Sections[i];
+                    //item.SectionId = courseFromDb.Sections[i].Id;
+                }
+                //courseFromDb.Lessons.AddRange(courseConverted.Lessons);
+                uow.Complete();
+
+                var cussFromDbz2 = uow.CourseRepo.Get(course.Id);
+                for (int i = 0; i < cussFromDbz2.Sections.Count(); i++) {
+                    var section = cussFromDbz2.Sections[i];
+                    for (int j = 0; j < section.Lessons.Count(); j++) {
+                        var lessonFromDb = section.Lessons[j];
+                        var lesson = course.Sections[i].Lessons.FirstOrDefault(l => l.Id == lessonFromDb.Id);
+                        lessonFromDb.ListIndex = lesson.ListIndex;
+                    }
+                }
+
+                for (int i = 0; i < cussFromDbz2.Lessons.Count(); i++) {
+                    var lessonFromDb = cussFromDbz2.Lessons[i];
+                    var lesson = course.Lessons.FirstOrDefault(l => l.Id == lessonFromDb.Id);
+                    lessonFromDb.ListIndex = lesson.ListIndex;
+                }
                 uow.Complete();
                 return _crsConv.Convert(courseFromDb);
             }
@@ -252,7 +295,7 @@ namespace ELearner.Core.ApplicationService.Services
 
         private Course ConvertCourseWithSectionsAndLessons(CourseBO course) {
 
-            var materialConverted = course.UndistributedCourseMaterial?.Select(m => _matConv.Convert(m)).ToList();
+            var materialConverted = course.Lessons?.Select(l => _lesConv.Convert(l)).ToList();
             var listSectionsConverted = new List<Section>();
             if (course.Sections != null) {
                 foreach (var section in course.Sections) {
@@ -272,12 +315,12 @@ namespace ELearner.Core.ApplicationService.Services
             }
             var courseEntity = _crsConv.Convert(course);
             courseEntity.Sections = listSectionsConverted;
-            courseEntity.UndistributedCourseMaterial = materialConverted;
+            courseEntity.Lessons = materialConverted;
             return courseEntity;
         }
 
         private CourseBO ConvertCourseWithSectionsAndLessons(Course course) {
-            var materialConverted = course.UndistributedCourseMaterial?.Select(m => _matConv.Convert(m)).ToList();
+            var materialConverted = course.Lessons?.Select(l => _lesConv.Convert(l)).ToList();
             var listSectionsConverted = new List<SectionBO>();
             if (course.Sections != null) {
                 foreach (var section in course.Sections) {
@@ -297,7 +340,7 @@ namespace ELearner.Core.ApplicationService.Services
             }
             var courseEntity = _crsConv.Convert(course);
             courseEntity.Sections = listSectionsConverted;
-            courseEntity.UndistributedCourseMaterial = materialConverted;
+            courseEntity.Lessons = materialConverted;
             return courseEntity;
         }
 
