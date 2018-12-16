@@ -18,7 +18,6 @@ namespace ELearner.Core.ApplicationService.Services
         readonly SectionConverter _secConverter;
         readonly CategoryConverter _catConv;
         readonly LessonConverter _lesConv;
-        readonly UndistributedCourseMaterialConverter _matConv;
         readonly IDataFacade _facade;
 
         public CourseService(IDataFacade facade)
@@ -28,7 +27,6 @@ namespace ELearner.Core.ApplicationService.Services
             _secConverter = new SectionConverter();
             _catConv = new CategoryConverter();
             _lesConv = new LessonConverter();
-            _matConv = new UndistributedCourseMaterialConverter();
             _facade = facade;
         }
 
@@ -157,8 +155,26 @@ namespace ELearner.Core.ApplicationService.Services
                     courseConvereted.Creator = creatorConverted;
                     courselistObject.Add(courseConvereted);
                 }
-                Console.WriteLine(courses);
                 return new CoursePaginateDto() { Total = count, Courses = courselistObject };
+            }
+        }
+
+        public List<CourseBO> GetCreatorsCourses(int creatorId) {
+            using (var uow = _facade.UnitOfWork) {
+                var filterStrats = new List<IFilterStrategy>();
+                filterStrats.Add(new FilterByCreatorStrategy() { CreatorId = creatorId });
+                var courses = uow.CourseRepo.GetAll(filterStrats);
+
+                // conversion
+                var courselistObject = new List<CourseBO>();
+                foreach (var course in courses) {
+                    var creatorConverted = _userConv.Convert(course.Creator);
+                    var courseConvereted = _crsConv.Convert(course);
+
+                    courseConvereted.Creator = creatorConverted;
+                    courselistObject.Add(courseConvereted);
+                }
+                return courselistObject;
             }
         }
 
@@ -192,7 +208,6 @@ namespace ELearner.Core.ApplicationService.Services
                 //3. Add All new CustomerAddresses not 
                 //      yet seen in the DB
                 courseFromDb.Sections.AddRange(courseConverted.Sections);
-                // index 2 seems to be wrong. converted seems to have one element after stuff
                 List<Section> sectionsConverted = ConvertSections(sections);
                 for (int i = 0; i < courseFromDb.Sections.Count(); i++)// var sectionDirty in courseFromDb.Sections) {
                 {    //1. 
@@ -211,15 +226,8 @@ namespace ELearner.Core.ApplicationService.Services
                         var lessonFromDb = uow.LessonRepo.Get(item.Id);
                         lessonFromDb.CourseId = null;
                         lessonFromDb.SectionId = courseFromDb.Sections[i].Id;
-                        //item.Section = courseFromDb.Sections[i];
-                        //item.SectionId = courseFromDb.Sections[i].Id;
                     }
-                    //courseFromDb.Sections[i].Lessons.AddRange(sectionsConverted[i].Lessons);
                 }
-
-                //courseFromDb.Sections = courseConverted.Sections;
-                //courseFromDb.UndistributedCourseMaterial = courseConverted.UndistributedCourseMaterial;
-                
                 //1. Remove All, except the "old" ids we 
                 //      wanna keep (Avoid attached issues)
                 courseFromDb.Lessons.RemoveAll(
@@ -238,15 +246,12 @@ namespace ELearner.Core.ApplicationService.Services
                     var lessonFromDb = uow.LessonRepo.Get(item.Id);
                     lessonFromDb.CourseId = null;
                     lessonFromDb.CourseId = courseFromDb.Id;
-                    //item.Section = courseFromDb.Sections[i];
-                    //item.SectionId = courseFromDb.Sections[i].Id;
                 }
-                //courseFromDb.Lessons.AddRange(courseConverted.Lessons);
                 uow.Complete();
-
-                var cussFromDbz2 = uow.CourseRepo.Get(course.Id);
-                for (int i = 0; i < cussFromDbz2.Sections.Count(); i++) {
-                    var section = cussFromDbz2.Sections[i];
+                // here the ListIndex of all lessons is set on the updated course
+                var updatedCourseFromDb = uow.CourseRepo.Get(course.Id);
+                for (int i = 0; i < updatedCourseFromDb.Sections.Count(); i++) {
+                    var section = updatedCourseFromDb.Sections[i];
                     for (int j = 0; j < section.Lessons.Count(); j++) {
                         var lessonFromDb = section.Lessons[j];
                         var lesson = course.Sections[i].Lessons.FirstOrDefault(l => l.Id == lessonFromDb.Id);
@@ -254,8 +259,8 @@ namespace ELearner.Core.ApplicationService.Services
                     }
                 }
 
-                for (int i = 0; i < cussFromDbz2.Lessons.Count(); i++) {
-                    var lessonFromDb = cussFromDbz2.Lessons[i];
+                for (int i = 0; i < updatedCourseFromDb.Lessons.Count(); i++) {
+                    var lessonFromDb = updatedCourseFromDb.Lessons[i];
                     var lesson = course.Lessons.FirstOrDefault(l => l.Id == lessonFromDb.Id);
                     lessonFromDb.ListIndex = lesson.ListIndex;
                 }
