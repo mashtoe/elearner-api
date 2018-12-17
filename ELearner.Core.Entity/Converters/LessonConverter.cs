@@ -17,8 +17,7 @@ namespace ELearner.Core.Entity.Converters
                 Title = lesson.Title,
                 SectionId = lesson.SectionId,
                 VideoId = lesson.VideoId,
-                ListIndex = lesson.ListIndex,
-                IsNew = lesson.IsNew
+                ListIndex = lesson.ListIndex
             };
         }
 
@@ -34,8 +33,7 @@ namespace ELearner.Core.Entity.Converters
                 Title = lesson.Title,
                 SectionId = lesson.SectionId,
                 VideoId = lesson.VideoId,
-                ListIndex = lesson.ListIndex,
-                IsNew = lesson.IsNew
+                ListIndex = lesson.ListIndex
             };
         }
     }
