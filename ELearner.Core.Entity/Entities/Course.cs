@@ -21,6 +21,7 @@ namespace ELearner.Core.Entity.Entities {
         public int? CreatorId { get; set; }
         public User Creator { get; set; }
 
-        public List<UndistributedCourseMaterial> UndistributedCourseMaterial { get; set; }
+        public List<Lesson> Lessons { get; set; }
+        // public List<UndistributedCourseMaterial> UndistributedCourseMaterial { get; set; }
     }
 }
