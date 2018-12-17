@@ -102,6 +102,8 @@ namespace ELearner.Core.ApplicationService.Services
             {
                 var filterStrats = new List<IFilterStrategy>();
                 IFilterStrategy paginateStrat = null;
+                // we only want to show the published courses to the user
+                filterStrats.Add(new FilterByOnlyPublishedStrategy());
                 if (filter != null)
                 {
                     if (filter.FilterQueries != null)
@@ -163,7 +165,7 @@ namespace ELearner.Core.ApplicationService.Services
             using (var uow = _facade.UnitOfWork) {
                 var filterStrats = new List<IFilterStrategy>();
                 filterStrats.Add(new FilterByCreatorStrategy() { CreatorId = creatorId });
-                var courses = uow.CourseRepo.GetAll(filterStrats);
+                var courses = uow.CourseRepo.GetAll(filterStrats).OrderBy(c => c.Published);
 
                 // conversion
                 var courselistObject = new List<CourseBO>();

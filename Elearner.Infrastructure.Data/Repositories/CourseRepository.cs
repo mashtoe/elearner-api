@@ -32,13 +32,12 @@ namespace Elearner.Infrastructure.Data.Repositories {
         }
 
         public IEnumerable<Course> GetAll(List<IFilterStrategy> filters) {
-            IEnumerable<Course> courses = _context.Courses.Include(c => c.Creator).Where(c => c.Published == true); ;
+            IEnumerable<Course> courses = _context.Courses.Include(c => c.Creator);
             if (filters != null) {
                 for (int i = 0; i < filters.Count; i++) {
                     courses = filters[i].Filter(courses);
                 }
             }
-            // we only want to show the published courses to the user
             return courses;
         }
 
