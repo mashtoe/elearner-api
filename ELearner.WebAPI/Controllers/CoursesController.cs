@@ -124,7 +124,7 @@ namespace Elearner.API.Controllers
                 var courses = _courseService.GetCreatorsCourses(creatorId);
                 return Ok(courses);
             } catch (Exception ex) {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }

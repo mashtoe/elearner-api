@@ -61,7 +61,7 @@ namespace Elearner.API.Controllers
                 return lesson;
             }
             catch (System.Exception ex) {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 

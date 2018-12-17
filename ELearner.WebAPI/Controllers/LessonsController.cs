@@ -8,7 +8,6 @@ using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ELearner.WebAPI.Controllers
 {
@@ -63,7 +62,7 @@ namespace ELearner.WebAPI.Controllers
         {
             return Ok(_lessonService.Delete(id));
         }
-        [Authorize(Roles = "Admin, Educator, Student")]
+        // [Authorize(Roles = "Admin, Educator, Student")]
         [HttpGet("stream/{lessonID}/{name}")]
         public FileStreamResult GetVideo(string lessonId, string name)
         {
