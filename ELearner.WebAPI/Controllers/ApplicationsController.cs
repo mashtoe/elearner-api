@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ELearner.WebAPI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     public class ApplicationsController : Controller
     {

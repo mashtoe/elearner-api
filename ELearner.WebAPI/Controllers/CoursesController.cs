@@ -8,13 +8,16 @@ using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Elearner.API.Controllers {
-    //[Authorize(Roles = "Admin")]
+namespace Elearner.API.Controllers
+{
+
     [Route("api/[controller]")]
-    public class CoursesController : Controller {
+    public class CoursesController : Controller
+    {
         private readonly ICourseService _courseService;
 
-        public CoursesController(ICourseService courseService) {
+        public CoursesController(ICourseService courseService)
+        {
             _courseService = courseService;
         }
 
@@ -35,6 +38,7 @@ namespace Elearner.API.Controllers {
 
         // GET: api/<controller>
 
+        [Authorize(Roles = "Admin, Educator, Student")]
         [HttpPost("filter")]
         public ActionResult<CoursePaginateDto> GetAllFiltered([FromBody]Filter filter) {
             try {
@@ -44,52 +48,72 @@ namespace Elearner.API.Controllers {
             }
         }
 
+        [Authorize(Roles = "Admin, Educator, Student")]
         [HttpGet]
-        public ActionResult<CoursePaginateDto> Get() {
-            try {
+        public ActionResult<CoursePaginateDto> Get()
+        {
+            try
+            {
                 return Ok(_courseService.GetAll());
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
 
+        [Authorize(Roles = "Admin, Educator, Student")]
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public ActionResult<CourseBO> Get(int id) {
+        public ActionResult<CourseBO> Get(int id)
+        {
             return Ok(_courseService.Get(id));
         }
 
+        [Authorize(Roles = "Admin, Educator")]
         // POST api/<controller>
         [HttpPost]
-        public ActionResult<CourseBO> Post([FromBody]CourseBO course) {
-            if (course == null) {
+        public ActionResult<CourseBO> Post([FromBody]CourseBO course)
+        {
+            if (course == null)
+            {
                 return BadRequest();
             }
             return Ok(_courseService.Create(course));
         }
 
+        [Authorize(Roles = "Admin, Educator")]
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public ActionResult<CourseBO> Put(int id, [FromBody]CourseBO course) {
-            if (course == null) {
+        public ActionResult<CourseBO> Put(int id, [FromBody]CourseBO course)
+        {
+            if (course == null)
+            {
                 return BadRequest();
             }
             course.Id = id;
             return Ok(_courseService.Update(course));
         }
 
+        [Authorize(Roles = "Admin")]
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
-        public ActionResult<CourseBO> Delete(int id) {
+        public ActionResult<CourseBO> Delete(int id)
+        {
             return Ok(_courseService.Delete(id));
         }
 
+        [Authorize(Roles = "Admin, Educator")]
         [HttpGet("publish/{courseId}")]
-        public ActionResult<CourseBO> PublishCourse(int courseId) {
+        public ActionResult<CourseBO> PublishCourse(int courseId)
+        {
             var publishedCourse = _courseService.Publish(courseId);
-            if (publishedCourse != null) {
+            if (publishedCourse != null)
+            {
                 return Ok(publishedCourse);
-            } else {
+            }
+            else
+            {
                 return BadRequest();
             }
         }
@@ -99,7 +123,6 @@ namespace Elearner.API.Controllers {
             try {
                 var courses = _courseService.GetCreatorsCourses(creatorId);
                 return Ok(courses);
-
             } catch (Exception ex) {
                 return BadRequest();
             }

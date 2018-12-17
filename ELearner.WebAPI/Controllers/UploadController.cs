@@ -8,10 +8,12 @@ using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Elearner.API.Controllers
 {
+    [Authorize(Roles = "Admin, Educator")]
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class UploadController : Controller
