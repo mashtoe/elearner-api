@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ELearner.WebAPI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     [Route("api/[controller]")]
     public class ApplicationsController : Controller
     {
@@ -16,18 +16,23 @@ namespace ELearner.WebAPI.Controllers
             _applicationService = applicationService;
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: api/<controller>
         [HttpGet]
         public ActionResult<IEnumerable<ApplicationBO>> Get()
         {
             return Ok(_applicationService.GetAll());
         }
+
+        [Authorize(Roles = "Admin")]
         // GET api/<controller>/5
         [HttpGet("{id}")]
         public ActionResult<ApplicationBO> Get(int id)
         {
             return Ok(_applicationService.Get(id));
         }
+
+        [Authorize(Roles = " Student")]
         // POST api/<controller>
         [HttpPost]
         public ActionResult<ApplicationBO> Post([FromBody]ApplicationBO application)
@@ -43,7 +48,8 @@ namespace ELearner.WebAPI.Controllers
                 return BadRequest();
             }
         }
-        
+
+        [Authorize(Roles = "Admin")]
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         public ActionResult<ApplicationBO> Delete(int id)
