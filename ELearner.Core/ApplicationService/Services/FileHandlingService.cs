@@ -44,12 +44,10 @@ namespace ELearner.Core.ApplicationService.Services {
                         VideoId = fullFileName,
                         Title = fileName,
                         Course = course,
-                        IsNew = false
                     };
 
                     course.Lessons.Add(lesson);
                     uow.Complete();
-                    lesson.IsNew = true;
                     return _lesConv.Convert(lesson);
                 } else { return null; }
             }
