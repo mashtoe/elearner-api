@@ -40,14 +40,10 @@ namespace Elearner.API.Controllers
 
         [Authorize(Roles = "Admin, Educator, Student")]
         [HttpPost("filter")]
-        public ActionResult<CoursePaginateDto> GetAllFiltered([FromBody]Filter filter)
-        {
-            try
-            {
+        public ActionResult<CoursePaginateDto> GetAllFiltered([FromBody]Filter filter) {
+            try {
                 return Ok(_courseService.GetFilteredOrders(filter));
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 return BadRequest(ex.Message);
             }
         }
@@ -122,7 +118,14 @@ namespace Elearner.API.Controllers
             }
         }
 
-
-
+        [HttpGet("creatorCourses/{creatorId}")]
+        public ActionResult<IEnumerable<CourseBO>> GetCreatorsCourses (int creatorId) {
+            try {
+                var courses = _courseService.GetCreatorsCourses(creatorId);
+                return Ok(courses);
+            } catch (Exception ex) {
+                return BadRequest();
+            }
+        }
     }
 }

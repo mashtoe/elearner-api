@@ -26,10 +26,11 @@ namespace Elearner.Infrastructure.Data.Repositories {
             .Include(c => c.Users)
             .Include(c => c.Category)
             .Include(c => c.Creator)
-            .Include(c => c.UndistributedCourseMaterial)
+            .Include(c => c.Lessons)
             .Include(c => c.Sections).ThenInclude(sec => sec.Lessons)
             .FirstOrDefault(course => course.Id == id);
         }
+
         public IEnumerable<Course> GetAll(List<IFilterStrategy> filters) {
             IEnumerable<Course> courses = _context.Courses.Include(c => c.Creator).Where(c => c.Published == true); ;
             if (filters != null) {

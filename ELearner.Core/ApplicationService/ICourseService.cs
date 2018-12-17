@@ -19,5 +19,6 @@ namespace ELearner.Core.ApplicationService {
         CourseBO Delete(int id);
         CoursePaginateDto GetFilteredOrders(Filter filter);
         CourseBO Publish(int courseId);
+        List<CourseBO> GetCreatorsCourses(int creatorId);
     }
 }

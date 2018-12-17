@@ -2,6 +2,7 @@
 using ELearner.Core.DomainService.Facade;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
+using ELearner.Core.Entity.Dtos;
 using ELearner.Core.Entity.Entities;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -12,40 +13,42 @@ using System.Text;
 namespace ELearner.Core.ApplicationService.Services {
     public class FileHandlingService : IFileHandlingService {
 
-        readonly IFileHandler _videoStream;
+        readonly IFileHandler _fileHanlder;
         readonly IDataFacade _facade;
-        readonly UndistributedCourseMaterialConverter _matConv;
+        readonly LessonConverter _lesConv;
 
 
-        public FileHandlingService(IDataFacade facade, IFileHandler videoStream) {
+        public FileHandlingService(IDataFacade facade, IFileHandler fileHandler) {
             _facade = facade;
-            _videoStream = videoStream;
-            _matConv = new UndistributedCourseMaterialConverter();
+            _fileHanlder = fileHandler;
+            _lesConv = new LessonConverter();
         }
 
         public Stream GetVideoStream(string name) {
             var url = "http://elearning.vps.hartnet.dk/lessonFiles/" + name;
-            // CTRL E -> V ev
             //var url = "C:/ElearnerFiles/long.mp4";
             //var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-
-            return _videoStream.GetVideoStream(url);
+            return _fileHanlder.GetVideoStream(url);
         }
 
-        public UndistributedCourseMaterialBO UploadFile(IFormFile file, int courseId) {
+        public LessonBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId, string ftpFileName) {
             using (var uow = _facade.UnitOfWork) {
+                // generate filename
                 // upload file
-                var fileName = _videoStream.UploadFile(file);
-                if (fileName != null) {
+                string fileName = file.FileName;
+                string fullFileName = _fileHanlder.UploadFile(file, progress, jobId, ftpFileName);
+                if (fullFileName != null) {
                     // create and return material object on success
                     var course = uow.CourseRepo.Get(courseId);
-                    var material = new UndistributedCourseMaterial() {
-                        VideoId = fileName,
+                    var lesson = new Lesson() {
+                        VideoId = fullFileName,
+                        Title = fileName,
                         Course = course
                     };
-                    course.UndistributedCourseMaterial.Add(material);
+
+                    course.Lessons.Add(lesson);
                     uow.Complete();
-                    return _matConv.Convert(material);
+                    return _lesConv.Convert(lesson);
                 } else { return null; }
             }
 
