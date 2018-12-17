@@ -207,10 +207,18 @@ namespace ELearner.Core.ApplicationService.Services
 
                 //3. Add All new CustomerAddresses not 
                 //      yet seen in the DB
+                foreach (var item in courseConverted.Sections) {
+                    item.Lessons.Clear();
+                }
                 courseFromDb.Sections.AddRange(courseConverted.Sections);
+                // got error when -> upload new video -> create new section -> place new video in new section -> save changes
+                // dirty solution
+                uow.Complete();
+
                 List<Section> sectionsConverted = ConvertSections(sections);
                 for (int i = 0; i < courseFromDb.Sections.Count(); i++)// var sectionDirty in courseFromDb.Sections) {
-                {    //1. 
+                {
+                    //1. 
                     courseFromDb.Sections[i].Lessons.RemoveAll(
                         lD => !sectionsConverted[i].Lessons.Exists(
                             l => l.Id == lD.Id));
@@ -352,3 +360,26 @@ namespace ELearner.Core.ApplicationService.Services
 
     }
 }
+
+
+/*
+                    for (int j = 0; j < courseFromDb.Sections[i].Lessons.Count(); j++) {
+                        if (courseFromDb.Sections[i].Lessons[j].IsNew) {
+                            var duplicatedLesson = courseFromDb.Sections[i].Lessons[j];
+
+                            var realLesson = courseFromDb.Lessons.FirstOrDefault(l => l.Id == courseFromDb.Sections[i].Lessons[j].Id);
+                            realLesson.ListIndex = duplicatedLesson.ListIndex;
+                            realLesson.CourseId = null;
+                            realLesson.Course = null;
+                            realLesson.SectionId = courseFromDb.Sections[i].Id;
+                            courseFromDb.Lessons.Remove(realLesson);
+
+                            //duplicatedLesson.SectionId = courseFromDb.Sections[i].Id;
+                            duplicatedLesson.SectionId = null;
+                            duplicatedLesson.CourseId = null;
+                            duplicatedLesson.Course = null;
+                            if (duplicatedLesson != null) {
+                                courseFromDb.Sections[i].Lessons.Remove(duplicatedLesson);
+                            }
+                        }
+                    }*/

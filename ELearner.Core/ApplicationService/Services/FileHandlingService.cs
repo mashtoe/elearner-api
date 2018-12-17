@@ -43,11 +43,13 @@ namespace ELearner.Core.ApplicationService.Services {
                     var lesson = new Lesson() {
                         VideoId = fullFileName,
                         Title = fileName,
-                        Course = course
+                        Course = course,
+                        IsNew = false
                     };
 
                     course.Lessons.Add(lesson);
                     uow.Complete();
+                    lesson.IsNew = true;
                     return _lesConv.Convert(lesson);
                 } else { return null; }
             }

@@ -14,5 +14,8 @@ namespace ELearner.Core.Entity.Entities
 
         // index in current list (either section or undistributed lesson list)
         public int ListIndex { get; set; }
+        // this is fix for the reload course on upload problem. used to decide which lesson should overwrite, if multiple have same id
+        public bool IsNew { get; set; }
+
     }
 }
