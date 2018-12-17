@@ -22,7 +22,7 @@ namespace Elearner.API.Controllers
         {
             _userService = userService;
         }
-        [Authorize(Roles = "Admin, Educator, Student")]
+        [Authorize(Roles = "Admin")]
         // GET: api/<controller>
         [HttpGet]
         public ActionResult<IEnumerable<UserBO>> Get()
@@ -30,14 +30,14 @@ namespace Elearner.API.Controllers
             return Ok(_userService.GetAll());
         }
 
-        [Authorize(Roles = "Admin, Educator, Student")]
+        [Authorize(Roles = "Admin")]
         // GET api/<controller>/5
         [HttpGet("{id}")]
         public ActionResult<UserBO> Get(int id)
         {
             return Ok(_userService.Get(id));
         }
-        [Authorize(Roles = "Admin, Educator, Student")]
+        [Authorize(Roles = "Admin")]
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         public ActionResult<UserBO> Put(int id, [FromBody]UserBO student)
