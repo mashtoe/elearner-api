@@ -43,7 +43,7 @@ namespace ELearner.Core.ApplicationService.Services {
                     var lesson = new Lesson() {
                         VideoId = fullFileName,
                         Title = fileName,
-                        Course = course
+                        Course = course,
                     };
 
                     course.Lessons.Add(lesson);
