@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Elearner.API.csproj"
+                "${workspaceFolder}/ELearner.WebAPI/Elearner.API.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

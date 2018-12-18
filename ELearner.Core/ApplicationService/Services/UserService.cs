@@ -3,26 +3,33 @@ using System.Linq;
 using ELearner.Core.DomainService.Facade;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
+using ELearner.Core.Entity.Entities;
 
-namespace ELearner.Core.ApplicationService.Services {
+namespace ELearner.Core.ApplicationService.Services
+{
 
     // Services are part of the onions core. The core contains classes that the outer layers can depend on
-    public class UserService : IUserService {
+    public class UserService : IUserService
+    {
 
         readonly UserConverter _userConv;
         readonly CourseConverter _crsConv;
         readonly IDataFacade _facade;
 
-        public UserService(IDataFacade facade) {
+        public UserService(IDataFacade facade)
+        {
             _userConv = new UserConverter();
             _crsConv = new CourseConverter();
             _facade = facade;
         }
 
-        public UserBO Delete(int id) {
-            using (var uow = _facade.UnitOfWork) {
+        public UserBO Delete(int id)
+        {
+            using (var uow = _facade.UnitOfWork)
+            {
                 var userDeleted = uow.UserRepo.Delete(id);
-                if (userDeleted == null) {
+                if (userDeleted == null)
+                {
                     return null;
                 }
                 uow.Complete();
@@ -30,11 +37,15 @@ namespace ELearner.Core.ApplicationService.Services {
             }
         }
 
-        public UserBO Get(int id) {
-            using (var uow = _facade.UnitOfWork) {
+        public UserBO Get(int id)
+        {
+            using (var uow = _facade.UnitOfWork)
+            {
                 var user = _userConv.Convert(uow.UserRepo.Get(id));
-                if (user != null) {
-                    if (user.CourseIds != null) {
+                if (user != null)
+                {
+                    if (user.CourseIds != null)
+                    {
                         user.Courses = uow.CourseRepo.GetAllById(user.CourseIds).Select(c => _crsConv.Convert(c)).ToList();
                     }
                 }
@@ -42,17 +53,22 @@ namespace ELearner.Core.ApplicationService.Services {
             }
         }
 
-        public List<UserBO> GetAll() {
-            using (var uow = _facade.UnitOfWork) {
+        public List<UserBO> GetAll()
+        {
+            using (var uow = _facade.UnitOfWork)
+            {
                 var users = uow.UserRepo.GetAll();
                 return users.Select(s => _userConv.Convert(s)).ToList();
             }
         }
 
-        public UserBO Update(UserBO user) {
-            using (var uow = _facade.UnitOfWork) {
+        public UserBO Update(UserBO user)
+        {
+            using (var uow = _facade.UnitOfWork)
+            {
                 var userFromDb = uow.UserRepo.Get(user.Id);
-                if (userFromDb == null) {
+                if (userFromDb == null)
+                {
                     return null;
                 }
                 userFromDb.Username = user.Username;
@@ -61,12 +77,50 @@ namespace ELearner.Core.ApplicationService.Services {
             }
         }
 
-        public UserBO Promote(int id) {
-            using (var uow = _facade.UnitOfWork) {
+        public UserBO Promote(int id)
+        {
+            using (var uow = _facade.UnitOfWork)
+            {
                 var userFromDb = uow.UserRepo.Get(id);
-                if ((int)userFromDb.Role < 2) {
+                if ((int)userFromDb.Role < 2)
+                {
                     userFromDb.Role++;
                 }
+                else
+                {
+                    return null;
+                }
+                uow.Complete();
+                return _userConv.Convert(userFromDb);
+            }
+        }
+
+        public UserBO Enroll(int courseId, int userId)
+        {
+            using (var uow = _facade.UnitOfWork)
+            {
+                var userFromDb = uow.UserRepo.Get(userId);
+                var courseFromDb = uow.CourseRepo.Get(courseId);
+
+                if (userFromDb.Courses != null)
+                {
+                    foreach (var course in userFromDb.Courses)
+                    {
+                        if (course.CourseId == courseFromDb.Id)
+                        {
+                            return _userConv.Convert(userFromDb);
+                        }
+                    }
+                }
+
+                var userCourse = new UserCourse();
+                userCourse.Course = courseFromDb;
+                userCourse.CourseId = courseFromDb.Id;
+                userCourse.User = userFromDb;
+                userCourse.UserID = userFromDb.Id;
+
+                userFromDb.Courses.Add(userCourse);
+
                 uow.Complete();
                 return _userConv.Convert(userFromDb);
             }

@@ -7,5 +7,7 @@ namespace ELearner.Core.Entity.Dtos {
         // public string FilterQuery { get; set; }
         public string[] FilterQueries { get; set; }
         public string OrderBy { get; set; }
+        public int? UserId { get; set; }
+        public int? CategoryId { get; set; }
     }
 }

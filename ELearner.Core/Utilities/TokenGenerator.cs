@@ -45,7 +45,11 @@ namespace ELearner.Core.Utilities
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             var tokenString = tokenHandler.WriteToken(token);
-
+            ErrorLogger logger = new ErrorLogger();
+            string[] lines = new string[2];
+            lines[0] = tokenString;
+            lines[1] = DateTime.Now.ToString();
+            logger.WriteLog(lines, "token");
             return tokenString;
         }
     }

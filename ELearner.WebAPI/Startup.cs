@@ -24,6 +24,9 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.Text;
+using ELearner.Infrastructure.FileAccess;
+using Microsoft.AspNetCore.Http.Features;
+using Elearner.API.Hubs;
 //using ELearner.Infrastructure.Data.Repositories;
 
 namespace Elearner.API {
@@ -44,8 +47,13 @@ namespace Elearner.API {
             services.AddScoped<ISectionService, SectionService>();
             services.AddScoped<ILessonService, LessonService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IDataSeeder, DataSeeder>();
+            services.AddScoped<IFileHandler, RemoteFileHandler>();
+            services.AddScoped<IFileHandlingService, FileHandlingService>();
+
+
 
             // use following line instead for static "db"
             //services.AddScoped<IDataFacade, DataFacadeFakeDB>();
@@ -74,13 +82,16 @@ namespace Elearner.API {
             // Here Cross-Origin Resource Sharing is added
             // Important that this line is before AddMvc
             services.AddCors();
-
+            services.AddSignalR();
             services.AddMvc().AddJsonOptions(options => {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.Configure<FormOptions>(x => {
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,8 +120,12 @@ namespace Elearner.API {
                 });
                 //app.UseHsts();
             }
+            app.UseSignalR(routes => { routes.MapHub<JobProgressHub>("/api/jobprogress"); });
+
+
             // Origins who are allowed to request data from this api is listed here. We allow all http methods and all headers atm
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
+            // app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             //Lars outcommented the line below in his Clean Architecture RestAPI setup guide. will figure out why when i watch the next series
             // --means we can go to localhost witohut using https

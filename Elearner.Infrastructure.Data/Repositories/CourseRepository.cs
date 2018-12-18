@@ -24,12 +24,15 @@ namespace Elearner.Infrastructure.Data.Repositories {
         public Course Get(int id) {
             return _context.Courses
             .Include(c => c.Users)
-            .Include(c => c.Sections)
             .Include(c => c.Category)
+            .Include(c => c.Creator)
+            .Include(c => c.Lessons)
+            .Include(c => c.Sections).ThenInclude(sec => sec.Lessons)
             .FirstOrDefault(course => course.Id == id);
         }
+
         public IEnumerable<Course> GetAll(List<IFilterStrategy> filters) {
-            IEnumerable<Course> courses = _context.Courses;
+            IEnumerable<Course> courses = _context.Courses.Include(c => c.Creator);
             if (filters != null) {
                 for (int i = 0; i < filters.Count; i++) {
                     courses = filters[i].Filter(courses);

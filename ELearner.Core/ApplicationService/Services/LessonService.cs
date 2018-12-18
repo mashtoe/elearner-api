@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using ELearner.Core.DomainService;
 using ELearner.Core.DomainService.Facade;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Converters;
@@ -11,11 +14,14 @@ namespace ELearner.Core.ApplicationService.Services
         readonly LessonConverter _lessonConv;
         readonly SectionConverter _secConv;
         readonly IDataFacade _facade;
-        public LessonService(IDataFacade facade)
+        readonly IFileHandler _videoStream;
+
+        public LessonService(IDataFacade facade, IFileHandler videoStream)
         {
             _lessonConv = new LessonConverter();
             _secConv = new SectionConverter();
             _facade = facade;
+            _videoStream = videoStream;
         }
 
 
@@ -62,7 +68,7 @@ namespace ELearner.Core.ApplicationService.Services
                     return null;
                 }
                 lessonFromDb.Title = lesson.Title;
-                lessonFromDb.SectionId = lesson.SectionId;
+                //lessonFromDb.SectionId = lesson.SectionId;
                 uow.Complete();
                 return _lessonConv.Convert(lessonFromDb);
             }
@@ -80,6 +86,15 @@ namespace ELearner.Core.ApplicationService.Services
                 uow.Complete();
                 return _lessonConv.Convert(lessonDeleted);
             }
+        }
+
+        public Stream GetVideoStream(string name) {
+            var url = "http://elearning.vps.hartnet.dk/lessonFiles/" + name;
+            // CTRL E -> V ev
+            //var url = "C:/ElearnerFiles/long.mp4";
+            //var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+
+            return _videoStream.GetVideoStream(url);
         }
     }
 }
