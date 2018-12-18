@@ -194,6 +194,7 @@ namespace ELearner.Core.ApplicationService.Services
 
                 courseFromDb.Name = courseConverted.Name;
                 courseFromDb.CategoryId = courseConverted.CategoryId;
+                courseFromDb.Description = courseConverted.Description;
 
                 //1. Remove All, except the "old" ids we 
                 //      wanna keep (Avoid attached issues)
