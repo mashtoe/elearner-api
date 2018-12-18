@@ -11,7 +11,7 @@ namespace Elearner.Infrastructure.Data {
         public ElearnerAppContext(DbContextOptions<ElearnerAppContext> options) : base(options) {
             if (firstInstance) {
                 firstInstance = false;
-                Database.EnsureDeleted();
+                // Database.EnsureDeleted();
                 Database.EnsureCreated();
             }
         }
