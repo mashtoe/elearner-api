@@ -24,6 +24,10 @@ namespace Elearner.Infrastructure.Data {
         public DbSet<Category> Categories {get; set;}
         public DbSet<Application> Applications {get; set;}
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             #region Many-Many User Course
             modelBuilder.Entity<UserCourse>()
