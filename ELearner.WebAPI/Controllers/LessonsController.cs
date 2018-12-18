@@ -20,13 +20,13 @@ namespace ELearner.WebAPI.Controllers
             _lessonService = lessonService;
         }
 
-        [Authorize(Roles = "Admin, Educator, Student")]
+        /*[Authorize(Roles = "Admin, Educator, Student")]
         // GET: api/<controller>
         [HttpGet]
         public ActionResult<IEnumerable<LessonBO>> Get()
         {
             return Ok(_lessonService.GetAll());
-        }
+        }*/
         [Authorize(Roles = "Admin, Educator, Student")]
         // GET api/<controller>/5
         [HttpGet("{id}")]
@@ -34,7 +34,7 @@ namespace ELearner.WebAPI.Controllers
         {
             return Ok(_lessonService.Get(id));
         }
-
+        /*
         [Authorize(Roles = "Admin, Educator")]
         // POST api/<controller>
         [HttpPost]
@@ -45,8 +45,8 @@ namespace ELearner.WebAPI.Controllers
                 return BadRequest();
             }
             return Ok(_lessonService.Create(lesson));
-        }
-        public ActionResult<LessonBO> Put(int id, [FromBody]LessonBO lesson)
+        }*/
+        /*public ActionResult<LessonBO> Put(int id, [FromBody]LessonBO lesson)
         {
             if (lesson == null)
             {
@@ -54,7 +54,7 @@ namespace ELearner.WebAPI.Controllers
             }
             lesson.Id = id;
             return Ok(_lessonService.Update(lesson));
-        }
+        }*/
         [Authorize(Roles = "Admin")]
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
@@ -68,37 +68,6 @@ namespace ELearner.WebAPI.Controllers
         {
             var stream = _lessonService.GetVideoStream(name);
             return File(stream, new MediaTypeHeaderValue("video/mp4").MediaType, true);
-        }
-        [Authorize(Roles = "Admin, Educator")]
-        [HttpPost("upload"), DisableRequestSizeLimit]
-        public ActionResult UploadFile()
-        {
-            try
-            {
-                var file = Request.Form.Files[0];
-                string folderName = "Upload";
-                // string webRootPath = _hostingEnvironment.WebRootPath;
-                string localPath = "C:/ElearnerFiles/";
-                string newPath = Path.Combine(localPath, folderName);
-                if (!Directory.Exists(newPath))
-                {
-                    Directory.CreateDirectory(newPath);
-                }
-                if (file.Length > 0)
-                {
-                    string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    string fullPath = Path.Combine(newPath, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-                }
-                return Json("Upload Successful.");
-            }
-            catch (System.Exception ex)
-            {
-                return Json("Upload Failed: " + ex.Message);
-            }
         }
     }
 }

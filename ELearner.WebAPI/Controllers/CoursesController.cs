@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using Elearner.API.Helpers;
 using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using ELearner.Core.Entity.Dtos;
@@ -67,7 +70,8 @@ namespace Elearner.API.Controllers
         [HttpGet("{id}")]
         public ActionResult<CourseBO> Get(int id)
         {
-            return Ok(_courseService.Get(id));
+            var course = _courseService.Get(id);
+            return Ok(course);
         }
 
         [Authorize(Roles = "Admin, Educator")]
@@ -79,6 +83,11 @@ namespace Elearner.API.Controllers
             {
                 return BadRequest();
             }
+            int idFromJwt = new JwtHelper().GetUserIdFromToken(Request);
+            if (idFromJwt != course.CreatorId) {
+                return BadRequest();
+            }
+
             return Ok(_courseService.Create(course));
         }
 
@@ -91,23 +100,29 @@ namespace Elearner.API.Controllers
             {
                 return BadRequest();
             }
+            int idFromJwt = new JwtHelper().GetUserIdFromToken(Request);
+            if (idFromJwt != course.CreatorId) {
+                return BadRequest();
+            }
             course.Id = id;
             return Ok(_courseService.Update(course));
         }
 
-        [Authorize(Roles = "Admin")]
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public ActionResult<CourseBO> Delete(int id)
-        {
-            return Ok(_courseService.Delete(id));
-        }
+        // [Authorize(Roles = "Admin")]
+        // // DELETE api/<controller>/5
+        // [HttpDelete("{id}")]
+        // public ActionResult<CourseBO> Delete(int id)
+        // {
+        //     return Ok(_courseService.Delete(id));
+        // }
 
         [Authorize(Roles = "Admin, Educator")]
         [HttpGet("publish/{courseId}")]
         public ActionResult<CourseBO> PublishCourse(int courseId)
         {
-            var publishedCourse = _courseService.Publish(courseId);
+            int idFromJwt = new JwtHelper().GetUserIdFromToken(Request);
+            var publishedCourse = _courseService.Publish(courseId, idFromJwt);
+
             if (publishedCourse != null)
             {
                 return Ok(publishedCourse);

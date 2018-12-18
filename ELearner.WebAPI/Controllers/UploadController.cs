@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Elearner.API.Helpers;
 
 namespace Elearner.API.Controllers
 {
@@ -57,7 +58,11 @@ namespace Elearner.API.Controllers
                 IFormFile file = Request.Form.Files[0];
 
                 var progressIndicator = new Progress<UploadProgress>(ReportProgress);
-                var lesson = _fileHandlingService.UploadFile(file, courseId, progressIndicator, jobId, generatedFileName);
+                int idFromJwt = new JwtHelper().GetUserIdFromToken(Request);
+                var lesson = _fileHandlingService.UploadFile(file, courseId, progressIndicator, jobId, generatedFileName, idFromJwt);
+                if (lesson == null) {
+                    return BadRequest();
+                }
                 return lesson;
             }
             catch (System.Exception ex) {

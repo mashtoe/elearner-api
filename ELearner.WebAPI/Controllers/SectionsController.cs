@@ -14,7 +14,7 @@ namespace ELearner.WebAPI.Controllers
         public SectionsController(ISectionService sectionService)
         {
             _sectionService = sectionService;
-        }
+        }/*
         [Authorize(Roles = "Admin, Educator, Student")]
         // GET: api/<controller>
         [HttpGet]
@@ -55,6 +55,6 @@ namespace ELearner.WebAPI.Controllers
         public ActionResult<SectionBO> Delete(int id)
         {
             return Ok(_sectionService.Delete(id));
-        }
+        }*/
     }
 }

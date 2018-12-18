@@ -5,6 +5,7 @@ using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Elearner.API.Helpers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -73,9 +74,13 @@ namespace Elearner.API.Controllers
         }
         [Authorize(Roles = "Admin, Educator, Student")]
         [HttpGet("enroll/{courseId}/{userId}")]
-        public ActionResult<UserBO> Enroll(int userId, int courseId)
+        public ActionResult<UserBO> Enroll(int courseId, int userId)
         {
-            var user = _userService.Enroll(userId, courseId);
+            int idFromJwt = new JwtHelper().GetUserIdFromToken(Request);
+            if (userId != idFromJwt) {
+                return BadRequest();
+            }
+            var user = _userService.Enroll(courseId, userId);
             if (user == null)
             {
                 return BadRequest();
