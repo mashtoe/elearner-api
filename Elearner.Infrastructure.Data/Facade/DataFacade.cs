@@ -8,9 +8,13 @@ namespace Elearner.Infrastructure.Data.Facade {
     public class DataFacade : IDataFacade {
         DbContextOptions<ElearnerAppContext> _options;
         public DataFacade(IConfiguration conf) {
-
+            /*
             var options = new DbContextOptionsBuilder<ElearnerAppContext>()
                 .UseSqlite(conf.GetConnectionString("DefaultConnection"))
+                    .Options;
+            _options = options;*/
+            var options = new DbContextOptionsBuilder<ElearnerAppContext>()
+                .UseSqlServer(conf.GetConnectionString("Azure"))
                     .Options;
             _options = options;
         }

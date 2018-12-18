@@ -181,57 +181,46 @@ namespace ELearner.Core.Utilities
 
             var cat_1 = new CategoryBO()
             {
-                Id = 12,
                 Name = "Electronics"
             };
             var cat_2 = new CategoryBO()
             {
-                Id = 2,
                 Name = "Business "
             };
             var cat_3 = new CategoryBO()
             {
-                Id = 3,
                 Name = "Robotics"
             };
             var cat_4 = new CategoryBO()
             {
-                Id = 4,
                 Name = "Graphic Design"
             };
             var cat_5 = new CategoryBO()
             {
-                Id = 5,
                 Name = "Information Technology"
             };
             var cat_6 = new CategoryBO()
             {
-                Id = 6,
                 Name = "English"
             };
             var cat_7 = new CategoryBO()
             {
-                Id = 7,
                 Name = "Spanish"
             };
             var cat_8 = new CategoryBO()
             {
-                Id = 8,
                 Name = "Visual Arts"
             };
              var cat_9 = new CategoryBO()
             {
-                Id = 9,
                 Name = "Marketing"
             };
              var cat_10 = new CategoryBO()
             {
-                Id = 10,
                 Name = "Productivity"
             };
              var cat_11 = new CategoryBO()
             {
-                Id = 11,
                 Name = "Leadership"
             };
 
