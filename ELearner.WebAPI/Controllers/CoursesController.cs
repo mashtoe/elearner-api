@@ -108,19 +108,21 @@ namespace Elearner.API.Controllers
             return Ok(_courseService.Update(course));
         }
 
-        [Authorize(Roles = "Admin")]
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public ActionResult<CourseBO> Delete(int id)
-        {
-            return Ok(_courseService.Delete(id));
-        }
+        // [Authorize(Roles = "Admin")]
+        // // DELETE api/<controller>/5
+        // [HttpDelete("{id}")]
+        // public ActionResult<CourseBO> Delete(int id)
+        // {
+        //     return Ok(_courseService.Delete(id));
+        // }
 
         [Authorize(Roles = "Admin, Educator")]
         [HttpGet("publish/{courseId}")]
         public ActionResult<CourseBO> PublishCourse(int courseId)
         {
-            var publishedCourse = _courseService.Publish(courseId);
+            int idFromJwt = new JwtHelper().GetUserIdFromToken(Request);
+            var publishedCourse = _courseService.Publish(courseId, idFromJwt);
+
             if (publishedCourse != null)
             {
                 return Ok(publishedCourse);

@@ -12,7 +12,7 @@ namespace ELearner.Core.ApplicationService {
         // 
         Stream GetVideoStream(string id);
         // upload file to destination
-        LessonBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId, string fileName);
+        LessonBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId, string fileName, int idFromJwt);
 
     }
 }

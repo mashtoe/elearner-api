@@ -279,10 +279,13 @@ namespace ELearner.Core.ApplicationService.Services
             }
         }
 
-        public CourseBO Publish(int courseId) {
+        public CourseBO Publish(int courseId, int idFromJwt) {
             using (var uow = _facade.UnitOfWork) {
                 var courseFromDb = uow.CourseRepo.Get(courseId);
                 if (courseFromDb == null) return null;
+                if (courseFromDb.CreatorId != idFromJwt) {
+                    return null;
+                }
                 if (courseFromDb.Published == false) {
                     courseFromDb.Published = true;
                 } else {

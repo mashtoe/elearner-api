@@ -3,6 +3,7 @@ using ELearner.Core.ApplicationService;
 using ELearner.Core.Entity.BusinessObjects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Elearner.API.Helpers;
 
 namespace ELearner.WebAPI.Controllers
 {
@@ -41,6 +42,11 @@ namespace ELearner.WebAPI.Controllers
             {
                 return BadRequest();
             }
+            int idFromJwt = new JwtHelper().GetUserIdFromToken(Request);
+            if (idFromJwt != application.UserId) {
+                return BadRequest();
+            }
+
             var applicationCreated = _applicationService.Create(application);
             if (applicationCreated != null) {
                 return Ok(applicationCreated);

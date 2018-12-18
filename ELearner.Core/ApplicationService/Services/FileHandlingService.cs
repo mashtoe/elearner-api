@@ -31,15 +31,19 @@ namespace ELearner.Core.ApplicationService.Services {
             return _fileHanlder.GetVideoStream(url);
         }
 
-        public LessonBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId, string ftpFileName) {
+        public LessonBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId, string ftpFileName, int idFromJwt) {
             using (var uow = _facade.UnitOfWork) {
+                var course = uow.CourseRepo.Get(courseId);
+                if (course.CreatorId != idFromJwt) {
+                    return null;
+                }
+
                 // generate filename
                 // upload file
                 string fileName = file.FileName;
                 string fullFileName = _fileHanlder.UploadFile(file, progress, jobId, ftpFileName);
                 if (fullFileName != null) {
                     // create and return material object on success
-                    var course = uow.CourseRepo.Get(courseId);
                     var lesson = new Lesson() {
                         VideoId = fullFileName,
                         Title = fileName,

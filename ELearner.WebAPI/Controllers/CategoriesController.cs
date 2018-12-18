@@ -42,7 +42,7 @@ namespace ELearner.WebAPI.Controllers
             }
             return Ok(_categoryService.Create(category));
         }
-        public ActionResult<CategoryBO> Put(int id, [FromBody]CategoryBO category)
+        /*public ActionResult<CategoryBO> Put(int id, [FromBody]CategoryBO category)
         {
             if (category == null)
             {
@@ -50,7 +50,7 @@ namespace ELearner.WebAPI.Controllers
             }
             category.Id = id;
             return Ok(_categoryService.Update(category));
-        }
+        }*/
         [Authorize(Roles = "Admin")]
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
