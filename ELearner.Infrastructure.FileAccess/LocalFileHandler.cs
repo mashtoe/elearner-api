@@ -14,7 +14,7 @@ namespace ELearner.Infrastructure.FileAccess {
 
         public Stream GetVideoStream(string id) {
             var url = localPath + id;
-            var stream = (Stream)new FileStream(id, FileMode.Open, System.IO.FileAccess.Read);
+            var stream = (Stream)new FileStream(url, FileMode.Open, System.IO.FileAccess.Read);
             return stream;
         }
 
