@@ -13,22 +13,19 @@ using System.Text;
 namespace ELearner.Core.ApplicationService.Services {
     public class FileHandlingService : IFileHandlingService {
 
-        readonly IFileHandler _fileHanlder;
+        readonly IFileHandler _fileHandler;
         readonly IDataFacade _facade;
         readonly LessonConverter _lesConv;
 
 
         public FileHandlingService(IDataFacade facade, IFileHandler fileHandler) {
             _facade = facade;
-            _fileHanlder = fileHandler;
+            _fileHandler = fileHandler;
             _lesConv = new LessonConverter();
         }
 
         public Stream GetVideoStream(string name) {
-            var url = "http://elearning.vps.hartnet.dk/lessonFiles/" + name;
-            //var url = "C:/ElearnerFiles/long.mp4";
-            //var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-            return _fileHanlder.GetVideoStream(url);
+            return _fileHandler.GetVideoStream(name);
         }
 
         public LessonBO UploadFile(IFormFile file, int courseId, IProgress<UploadProgress> progress, int jobId, string ftpFileName, int idFromJwt) {
@@ -41,7 +38,7 @@ namespace ELearner.Core.ApplicationService.Services {
                 // generate filename
                 // upload file
                 string fileName = file.FileName;
-                string fullFileName = _fileHanlder.UploadFile(file, progress, jobId, ftpFileName);
+                string fullFileName = _fileHandler.UploadFile(file, progress, jobId, ftpFileName);
                 if (fullFileName != null) {
                     // create and return material object on success
                     var lesson = new Lesson() {

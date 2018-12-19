@@ -12,6 +12,10 @@ namespace Elearner.Infrastructure.Data.Facade {
                 .UseSqlite(conf.GetConnectionString("DefaultConnection"))
                     .Options;
             _options = options;
+
+            // use set RemoteFileHandler instead of LocalFileHandler (in startup) if you use UseSqlServer 
+            // and do not include EnsureDeleted in ElearnerAppContext 
+
             /*
             var options = new DbContextOptionsBuilder<ElearnerAppContext>()
                 .UseSqlServer(conf.GetConnectionString("Azure"))
