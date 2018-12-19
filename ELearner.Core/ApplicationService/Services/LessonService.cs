@@ -87,7 +87,7 @@ namespace ELearner.Core.ApplicationService.Services
                 return _lessonConv.Convert(lessonDeleted);
             }
         }
-
+        /*
         public Stream GetVideoStream(string name) {
             var url = "http://elearning.vps.hartnet.dk/lessonFiles/" + name;
             // CTRL E -> V ev
@@ -95,6 +95,6 @@ namespace ELearner.Core.ApplicationService.Services
             //var url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
             return _videoStream.GetVideoStream(url);
-        }
+        }*/
     }
 }

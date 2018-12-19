@@ -15,7 +15,7 @@ namespace ELearner.Core.ApplicationService
         LessonBO Update(LessonBO lesson);
         //Delete one lesson with id (CRUD: Delete)
         LessonBO Delete(int id);
-        Stream GetVideoStream(string id);
+        // Stream GetVideoStream(string id);
 
     }
 }

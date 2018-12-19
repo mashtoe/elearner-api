@@ -50,7 +50,7 @@ namespace Elearner.API {
             services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IDataSeeder, DataSeeder>();
-            services.AddScoped<IFileHandler, RemoteFileHandler>();
+            services.AddScoped<IFileHandler, LocalFileHandler>();
             services.AddScoped<IFileHandlingService, FileHandlingService>();
 
 

@@ -17,7 +17,8 @@ namespace ELearner.Infrastructure.FileAccess {
         }
 
         public Stream GetVideoStream(string name) {
-            return new PartialHTTPStream(name);
+            var url = "http://elearning.vps.hartnet.dk/lessonFiles/" + name;
+            return new PartialHTTPStream(url);
         }
 
 
