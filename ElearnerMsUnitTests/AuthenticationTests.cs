@@ -22,7 +22,7 @@ namespace ElearnerMsUnitTests {
         [TestMethod]
         public void CheckIfSaltingWorks() {
             var service = new AuthService(null, null);
-            string password = "supersecretpassword";
+            string password = "password";
             byte[] hash, salt;
             byte[] hash2, salt2;
             service.CreatePasswordHash(password, out hash, out salt);
