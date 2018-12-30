@@ -39,6 +39,8 @@ namespace Elearner.API {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+
+            #region omitted code
             //services.AddDbContext<ElearnerAppContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContext<ElearnerAppContext>(option => option.UseInMemoryDatabase("TheDB"));
             services.AddScoped<ICourseService, CourseService>();
@@ -50,8 +52,10 @@ namespace Elearner.API {
             services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IDataSeeder, DataSeeder>();
-            services.AddScoped<IFileHandler, LocalFileHandler>();
             services.AddScoped<IFileHandlingService, FileHandlingService>();
+            #endregion
+
+            services.AddScoped<IFileHandler, RemoteFileHandler>();
 
 
 

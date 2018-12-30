@@ -60,11 +60,11 @@ namespace ELearner.Infrastructure.FileAccess {
                                 localFileStream.Write(buffer, 0, read);
                                 int newProgress = (int)(fileStream.Position * 100 / fileStream.Length);
                                 if (currentProgress != newProgress) {
-                                    progress.Report(new UploadProgress() { JobId = jobId, Progress = currentProgress, FileName = fileName });
+                                    progress.Report(new UploadProgress() { UserId = jobId, Progress = currentProgress, FileName = fileName });
                                     currentProgress = newProgress;
                                 }
                             }
-                            progress.Report(new UploadProgress() { JobId = jobId, Progress = 100, FileName = fileName });
+                            progress.Report(new UploadProgress() { UserId = jobId, Progress = 100, FileName = fileName });
                         }
                     }
                 }

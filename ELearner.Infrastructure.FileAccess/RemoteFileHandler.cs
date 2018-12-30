@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ELearner.Infrastructure.FileAccess {
-    public class RemoteFileHandler: IFileHandler {
+    public class RemoteFileHandler : IFileHandler {
 
         // private static string pathFtp = "ftp://elearning@elearning.vps.hartnet.dk/www/lessonFiles/";
 
@@ -22,31 +22,21 @@ namespace ELearner.Infrastructure.FileAccess {
         }
 
 
-        public string UploadFile(IFormFile file, IProgress<UploadProgress> progress, int jobId, string fileName) {
+        public string UploadFile(IFormFile file, IProgress<UploadProgress> progress, int userId, string fileName) {
+            if (!file.ContentType.Equals("video/mp4")) {
+                return null;
+            }
+
             try {
                 string fullFileName = "";
                 using (FtpClient client = new FtpClient()) {
                     SetCredentials(client);
-                    if (file.ContentType.Equals("video/mp4")) {
-                        fullFileName = fileName + ".mp4";
-                        string fileUri = "/www/lessonFiles/" + fullFileName;
+                    fullFileName = fileName + ".mp4";
+                    string filePath = "/www/lessonFiles/" + fullFileName;
 
-                        using (var ftpStream = client.OpenWrite(fileUri)) {
-                            using (var fileStream = file.OpenReadStream()) {
-                                // fileStream.CopyTo(ftpStream);
-                                byte[] buffer = new byte[512 * 1024];
-                                int read;
-                                int currentProgress = 0;
-                                while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0) {
-                                    ftpStream.Write(buffer, 0, read);
-                                    int newProgress = (int)(fileStream.Position * 100 / fileStream.Length);
-                                    if (currentProgress != newProgress) {
-                                        progress.Report(new UploadProgress() { JobId = jobId, Progress = currentProgress, FileName = fileName });
-                                        currentProgress = newProgress;
-                                    }
-                                }
-                                progress.Report(new UploadProgress() { JobId = jobId, Progress = 100, FileName = fileName });
-                            }
+                    using (var ftpStream = client.OpenWrite(filePath)) {
+                        using (var fileStream = file.OpenReadStream()) {
+                            CopyFromStreamToStream(fileStream, ftpStream, progress, userId, fileName);
                         }
                     }
                 }
@@ -54,10 +44,24 @@ namespace ELearner.Infrastructure.FileAccess {
             } catch (Exception ex) {
                 return null;
             }
-
         }
 
-        
+        private void CopyFromStreamToStream(Stream readStream, Stream writeStream, IProgress<UploadProgress> progress, int userId, string fileName) {
+            byte[] buffer = new byte[512 * 1024];
+            int read;
+            int currentProgress = 0;
+            while ((read = readStream.Read(buffer, 0, buffer.Length)) > 0) {
+                writeStream.Write(buffer, 0, read);
+                int newProgress = (int)(readStream.Position * 100 / readStream.Length);
+                if (currentProgress != newProgress) {
+                    progress.Report(new UploadProgress() { UserId = userId, Progress = currentProgress, FileName = fileName });
+                    currentProgress = newProgress;
+                }
+            }
+            progress.Report(new UploadProgress() { UserId = userId, Progress = 100, FileName = fileName });
+        }
+
+
         private void SetCredentials(FtpClient client) {
             client.Host = "elearning.vps.hartnet.dk";
             // client.Port = _settings.FtpsRemotePort;

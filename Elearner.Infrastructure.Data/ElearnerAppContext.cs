@@ -6,6 +6,14 @@ using ELearner.Core.Entity.Entities;
 namespace Elearner.Infrastructure.Data {
     public class ElearnerAppContext : DbContext {
 
+        public DbSet<User> Users { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<UserCourse> UserCourses { get; set; }
+        public DbSet<Section> Sections { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Application> Applications { get; set; }
+
         private static bool firstInstance = true;
 
         public ElearnerAppContext(DbContextOptions<ElearnerAppContext> options) : base(options) {
@@ -15,20 +23,12 @@ namespace Elearner.Infrastructure.Data {
             }
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<UserCourse> UserCourses { get; set; }
-        public DbSet<Section> Sections {get; set;}
-        public DbSet<Lesson> Lessons {get; set;}
-        public DbSet<Category> Categories {get; set;}
-        public DbSet<Application> Applications {get; set;}
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
 
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            #region Many-Many User Course
+            #region omitted relations
             modelBuilder.Entity<UserCourse>()
                 .HasKey(t => new { t.UserID, t.CourseId });
 

@@ -4,6 +4,8 @@ using System.Text;
 
 namespace ELearner.Core.Entity.Entities {
     public class Course {
+
+        #region omitted properties
         public string Name { get; set; }
         public int Id { get; set; }
         public string Description { get; set; }
@@ -18,10 +20,11 @@ namespace ELearner.Core.Entity.Entities {
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public int? CreatorId { get; set; }
-        public User Creator { get; set; }
-
         public List<Lesson> Lessons { get; set; }
         // public List<UndistributedCourseMaterial> UndistributedCourseMaterial { get; set; }
+        #endregion
+
+        public int? CreatorId { get; set; }
+        public User Creator { get; set; }
     }
 }

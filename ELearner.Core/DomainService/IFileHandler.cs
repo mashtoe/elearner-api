@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ELearner.Core.DomainService {
     public interface IFileHandler {
         Stream GetVideoStream(string id);
-        // return name of uploaded file pls
+        // Return name of uploaded file (this used to find uploaded file again)
         string UploadFile(IFormFile file, IProgress<UploadProgress> progress, int jobId, string fileName);
     }
 }

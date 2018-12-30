@@ -72,7 +72,7 @@ namespace Elearner.API.Controllers
 
         void ReportProgress(UploadProgress uploadProgress)
         {
-             _hubContext.Clients.Group(uploadProgress.JobId + "").SendAsync("progress", uploadProgress);
+             _hubContext.Clients.Group(uploadProgress.UserId + "").SendAsync("progress", uploadProgress);
 
         }
     }
