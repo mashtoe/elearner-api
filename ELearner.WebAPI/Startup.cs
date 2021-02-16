@@ -50,7 +50,7 @@ namespace Elearner.API {
             services.AddScoped<IApplicationService, ApplicationService>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IDataSeeder, DataSeeder>();
-            services.AddScoped<IFileHandler, RemoteFileHandler>();
+            services.AddScoped<IFileHandler, LocalFileHandler>();
             services.AddScoped<IFileHandlingService, FileHandlingService>();
 
 
@@ -103,7 +103,7 @@ namespace Elearner.API {
                     // since datseeder is located in the core, the dataseeder dont know anything about 
                     // what kind of data persistance or database we use
                     var service = scope.ServiceProvider.GetService<IDataSeeder>();
-                    service.SeedData();
+                    // service.SeedData();
                 }
             } else {
                 app.UseExceptionHandler(builder => {

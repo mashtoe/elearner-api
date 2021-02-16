@@ -9,10 +9,31 @@ namespace ELearner.Core.Utilities.FilterStrategy {
 
         public IEnumerable<Course> Filter(IEnumerable<Course> courses) {
             courses = courses.Where(c => 
-            c.Name.ToLower().Contains(Query.ToLower()) || 
-            c.Description.ToLower().Contains(Query.ToLower()) ||
-            c.Creator.Username.ToLower().Contains(Query.ToLower()));
+            NameContainsQuery(c) || 
+            DescriptionContainsQuery(c) ||
+            CreatorUsernameContainsQuery(c) );
             return courses;
+        }
+
+        private bool NameContainsQuery(Course course) {
+            if (course.Name != null) {
+                return course.Name.ToLower().Contains(Query.ToLower());
+            }
+            return false;
+        }
+
+        private bool DescriptionContainsQuery(Course course) {
+            if (course.Description != null) {
+                return course.Description.ToLower().Contains(Query.ToLower());
+            }
+            return false;
+        }
+
+        private bool CreatorUsernameContainsQuery(Course course) {
+            if (course.Description != null) {
+                return course.Creator.Username.ToLower().Contains(Query.ToLower());
+            }
+            return false;
         }
     }
 }

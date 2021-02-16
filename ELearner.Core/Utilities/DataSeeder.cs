@@ -63,12 +63,12 @@ namespace ELearner.Core.Utilities
             {
                 Name = "Math"
             };
-            #endregion
-
             var favCategory = _catService.Create(category);
 
+            #endregion
+
             #region Building course
-            var lessons = new List<LessonBO>();
+            /*var lessons = new List<LessonBO>();
             for (int i = 0; i < 20; i++)
             {
                 var lesson = new LessonBO()
@@ -124,7 +124,7 @@ namespace ELearner.Core.Utilities
             material.Add(new LessonBO() {
                 VideoId = "long.mp4",
                 Title = "Long"
-            });
+            });*/
 
 
             var course = new CourseBO()
@@ -132,15 +132,15 @@ namespace ELearner.Core.Utilities
                 Name = " Building Course",
                 UserIds = userIds,
                 CategoryId = favCategory.Id,
-                Sections = sections,
+                // Sections = sections,
                 CreatorId = educatorCreated.Id,
                 Published = true,
                 Description = "Your body can’t digest corn. So if you ate literally nothing but corn every day you’d reach the point where you’re shitting out pure corn and then you’ve got an infinite food source.",
-                Lessons = material
+                // Lessons = material
             };
             _courseService.Create(course);
             #endregion
-
+            /*
             #region filler courses
             for (int i = 0; i < 50; i++)
             {
@@ -176,7 +176,7 @@ namespace ELearner.Core.Utilities
                 _courseService.Create(crs);
             }
             #endregion
-
+            */
             #region categories
 
             var cat_1 = new CategoryBO()

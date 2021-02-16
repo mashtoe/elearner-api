@@ -12,7 +12,6 @@ namespace ELearner.Core.Utilities.FilterStrategy {
         public IEnumerable<Course> Filter(IEnumerable<Course> courses) {
             if (User != null) {
                 courses = courses.Where(c => User.Courses.Exists(uc => uc.CourseId == c.Id));
-                //courses = courses.Where(c => c.Users.Exists(u => u.UserID == User.Id));
             }
             return courses;
         }

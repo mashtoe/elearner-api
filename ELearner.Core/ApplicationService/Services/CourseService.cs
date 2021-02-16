@@ -34,6 +34,9 @@ namespace ELearner.Core.ApplicationService.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
+                if (course == null) {
+                    return null;
+                }
                 var fullyConvertedCourse = ConvertCourseWithSectionsAndLessons(course);
                 var courseCreated = uow.CourseRepo.Create(fullyConvertedCourse);
                 uow.Complete();
